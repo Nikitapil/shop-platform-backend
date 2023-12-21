@@ -17,3 +17,10 @@ model User {
   password String
   name     String?
 }
+
+model Token {
+  id String @id @default(uuid())
+
+  userId String
+  token  String @db.Text
+}
