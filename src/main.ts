@@ -3,6 +3,7 @@ import { AppModule } from './app.module';
 import * as process from 'process';
 import { ValidationPipe } from '@nestjs/common';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import cookieParser from 'cookie-parser';
 
 async function start() {
   const PORT = process.env.PORT || 5000;
@@ -23,6 +24,8 @@ async function start() {
       whitelist: true
     })
   );
+
+  app.use(cookieParser());
 
   await app.listen(PORT, () => console.log(`Server started on port ${PORT}`));
 }
