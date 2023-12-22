@@ -1,7 +1,7 @@
 import { UserReturnDto } from '../../dtos-global/UserReturnDto';
 import { ApiProperty } from '@nestjs/swagger';
 
-export class RegisterReturnDto {
+export class AuthResponseDto {
   @ApiProperty({ type: UserReturnDto })
   user: UserReturnDto;
 

@@ -1,4 +1,9 @@
-import { ForbiddenException, HttpException, Injectable } from '@nestjs/common';
+import {
+  ForbiddenException,
+  HttpException,
+  Injectable,
+  NotFoundException
+} from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { RegisterDto } from './dto/RegisterDto';
 import * as bcrypt from 'bcrypt';
@@ -9,6 +14,7 @@ import {
   ACCESS_TOKEN_EXPIRE_TIME,
   REFRESH_TOKEN_EXPIRE_TIME
 } from './constants';
+import { LoginDto } from './dto/LoginDto';
 
 @Injectable()
 export class AuthService {
@@ -44,6 +50,25 @@ export class AuthService {
         400
       );
     }
+  }
+
+  async login(dto: LoginDto) {
+    const user = await this.prisma.user.findUnique({
+      where: { email: dto.email }
+    });
+    if (!user) {
+      throw new NotFoundException('Wrong email or password');
+    }
+
+    const { password, ...restUser } = user;
+
+    const isPasswordValid = bcrypt.compare(dto.password, password);
+
+    if (!isPasswordValid) {
+      throw new NotFoundException('Wrong email or password');
+    }
+
+    return await this.generateUserDataWithTokens(restUser);
   }
 
   private createTokenPayload(user: UserReturnDto) {
