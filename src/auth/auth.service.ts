@@ -14,6 +14,7 @@ import * as process from 'process';
 import { ACCESS_TOKEN_EXPIRE_TIME, REFRESH_TOKEN_EXPIRE_TIME } from './constants';
 import { LoginDto } from './dto/LoginDto';
 import { safeUserSelect } from '../db-query-options/user-options';
+import { SuccessMessageDto } from '../dtos-global/SuccessMessageDto';
 
 @Injectable()
 export class AuthService {
@@ -105,7 +106,7 @@ export class AuthService {
       await this.prisma.token.deleteMany({
         where: { token }
       });
-      return { message: 'success' };
+      return new SuccessMessageDto();
     } catch (e) {
       throw new HttpException({ message: e.message || 'logout error' }, 400);
     }

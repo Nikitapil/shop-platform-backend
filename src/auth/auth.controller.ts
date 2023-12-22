@@ -7,6 +7,7 @@ import { COOKIE_EXPIRE_TIME, REFRESH_TOKEN_NAME } from './constants';
 import { AuthResponseDto } from './dto/AuthResponseDto';
 import { LoginDto } from './dto/LoginDto';
 import { Cookies } from '../decorators/Cookies';
+import { SuccessMessageDto } from '../dtos-global/SuccessMessageDto';
 
 @ApiTags('Auth')
 @Controller('auth')
@@ -71,11 +72,14 @@ export class AuthController {
     };
   }
 
+  @ApiOperation({ summary: 'auth refresh data' })
+  @ApiResponse({ status: 200, type: SuccessMessageDto })
+  @HttpCode(HttpStatus.OK)
   @Post('/logout')
   async logout(
     @Cookies(REFRESH_TOKEN_NAME) token: string,
     @Res({ passthrough: true }) res: Response
-  ) {
+  ): Promise<SuccessMessageDto> {
     res.clearCookie(REFRESH_TOKEN_NAME);
     return await this.authService.logout(token);
   }
