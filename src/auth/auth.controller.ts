@@ -55,11 +55,13 @@ export class AuthController {
     };
   }
 
+  @ApiOperation({ summary: 'auth refresh data' })
+  @ApiResponse({ status: 200, type: AuthResponseDto })
   @Get('/refresh')
   async refresh(
     @Cookies(REFRESH_TOKEN_NAME) token: string,
     @Res({ passthrough: true }) response: Response
-  ) {
+  ): Promise<AuthResponseDto> {
     const { refreshToken, user, accessToken } = await this.authService.refresh(token);
 
     this.setRefreshToken(response, refreshToken);
@@ -67,5 +69,14 @@ export class AuthController {
       user,
       accessToken
     };
+  }
+
+  @Post('/logout')
+  async logout(
+    @Cookies(REFRESH_TOKEN_NAME) token: string,
+    @Res({ passthrough: true }) res: Response
+  ) {
+    res.clearCookie(REFRESH_TOKEN_NAME);
+    return await this.authService.logout(token);
   }
 }

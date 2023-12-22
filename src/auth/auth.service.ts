@@ -100,6 +100,17 @@ export class AuthService {
     }
   }
 
+  async logout(token: string) {
+    try {
+      await this.prisma.token.deleteMany({
+        where: { token }
+      });
+      return { message: 'success' };
+    } catch (e) {
+      throw new HttpException({ message: e.message || 'logout error' }, 400);
+    }
+  }
+
   private createTokenPayload(user: UserReturnDto) {
     return {
       id: user.id,
