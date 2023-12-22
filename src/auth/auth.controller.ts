@@ -1,18 +1,12 @@
-import {
-  Body,
-  Controller,
-  HttpCode,
-  HttpStatus,
-  Post,
-  Res
-} from '@nestjs/common';
+import { Body, Controller, Get, HttpCode, HttpStatus, Post, Res } from '@nestjs/common';
 import { RegisterDto } from './dto/RegisterDto';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { AuthService } from './auth.service';
 import { Response } from 'express';
-import { COOKIE_EXPIRE_TIME } from './constants';
+import { COOKIE_EXPIRE_TIME, REFRESH_TOKEN_NAME } from './constants';
 import { AuthResponseDto } from './dto/AuthResponseDto';
 import { LoginDto } from './dto/LoginDto';
+import { Cookies } from '../decorators/Cookies';
 
 @ApiTags('Auth')
 @Controller('auth')
@@ -20,7 +14,7 @@ export class AuthController {
   constructor(private authService: AuthService) {}
 
   private setRefreshToken(response: Response, token: string) {
-    response.cookie('shopper-token', token, {
+    response.cookie(REFRESH_TOKEN_NAME, token, {
       maxAge: COOKIE_EXPIRE_TIME,
       httpOnly: true,
       sameSite: 'none',
@@ -35,9 +29,7 @@ export class AuthController {
     @Body() dto: RegisterDto,
     @Res({ passthrough: true }) response: Response
   ): Promise<AuthResponseDto> {
-    const { refreshToken, user, accessToken } = await this.authService.register(
-      dto
-    );
+    const { refreshToken, user, accessToken } = await this.authService.register(dto);
 
     this.setRefreshToken(response, refreshToken);
     return {
@@ -53,10 +45,22 @@ export class AuthController {
   async login(
     @Body() dto: LoginDto,
     @Res({ passthrough: true }) response: Response
+  ): Promise<AuthResponseDto> {
+    const { refreshToken, user, accessToken } = await this.authService.login(dto);
+
+    this.setRefreshToken(response, refreshToken);
+    return {
+      user,
+      accessToken
+    };
+  }
+
+  @Get('/refresh')
+  async refresh(
+    @Cookies(REFRESH_TOKEN_NAME) token: string,
+    @Res({ passthrough: true }) response: Response
   ) {
-    const { refreshToken, user, accessToken } = await this.authService.login(
-      dto
-    );
+    const { refreshToken, user, accessToken } = await this.authService.refresh(token);
 
     this.setRefreshToken(response, refreshToken);
     return {

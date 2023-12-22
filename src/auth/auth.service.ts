@@ -2,7 +2,8 @@ import {
   ForbiddenException,
   HttpException,
   Injectable,
-  NotFoundException
+  NotFoundException,
+  UnauthorizedException
 } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { RegisterDto } from './dto/RegisterDto';
@@ -10,11 +11,9 @@ import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
 import { UserReturnDto } from '../dtos-global/UserReturnDto';
 import * as process from 'process';
-import {
-  ACCESS_TOKEN_EXPIRE_TIME,
-  REFRESH_TOKEN_EXPIRE_TIME
-} from './constants';
+import { ACCESS_TOKEN_EXPIRE_TIME, REFRESH_TOKEN_EXPIRE_TIME } from './constants';
 import { LoginDto } from './dto/LoginDto';
+import { safeUserSelect } from '../db-query-options/user-options';
 
 @Injectable()
 export class AuthService {
@@ -38,17 +37,12 @@ export class AuthService {
           password
         },
         select: {
-          id: true,
-          email: true,
-          name: true
+          ...safeUserSelect
         }
       });
       return await this.generateUserDataWithTokens(newUser);
     } catch (e) {
-      throw new HttpException(
-        { message: e.message || 'Registration error' },
-        400
-      );
+      throw new HttpException({ message: e.message || 'Registration error' }, 400);
     }
   }
 
@@ -62,13 +56,48 @@ export class AuthService {
 
     const { password, ...restUser } = user;
 
-    const isPasswordValid = bcrypt.compare(dto.password, password);
+    const isPasswordValid = await bcrypt.compare(dto.password, password);
 
     if (!isPasswordValid) {
       throw new NotFoundException('Wrong email or password');
     }
 
     return await this.generateUserDataWithTokens(restUser);
+  }
+
+  async refresh(refreshToken: string) {
+    if (!refreshToken) {
+      throw new UnauthorizedException('Unauthorized');
+    }
+    try {
+      const user = this.jwtService.verify(refreshToken, {
+        secret: process.env.REFRESH_SECRET
+      });
+      const tokenFromDb = await this.prisma.token.findFirst({
+        where: {
+          userId: user.id
+        }
+      });
+
+      if (!user || !tokenFromDb) {
+        throw new UnauthorizedException('Unauthorized');
+      }
+
+      const userFromDb = await this.prisma.user.findUnique({
+        where: { id: user.id },
+        select: {
+          ...safeUserSelect
+        }
+      });
+
+      if (!userFromDb) {
+        throw new UnauthorizedException('Unauthorized');
+      }
+
+      return await this.generateUserDataWithTokens(userFromDb);
+    } catch (e) {
+      throw new UnauthorizedException('Unauthorized');
+    }
   }
 
   private createTokenPayload(user: UserReturnDto) {
