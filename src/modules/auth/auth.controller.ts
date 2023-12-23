@@ -6,8 +6,8 @@ import { Response } from 'express';
 import { COOKIE_EXPIRE_TIME, REFRESH_TOKEN_NAME } from './constants';
 import { AuthResponseDto } from './dto/AuthResponseDto';
 import { LoginDto } from './dto/LoginDto';
-import { Cookies } from '../decorators/Cookies';
-import { SuccessMessageDto } from '../dtos-global/SuccessMessageDto';
+import { Cookies } from '../../decorators/Cookies';
+import { SuccessMessageDto } from '../../dtos-global/SuccessMessageDto';
 
 @ApiTags('Auth')
 @Controller('auth')

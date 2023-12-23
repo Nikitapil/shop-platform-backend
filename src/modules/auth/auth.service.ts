@@ -9,12 +9,12 @@ import { PrismaService } from '../prisma/prisma.service';
 import { RegisterDto } from './dto/RegisterDto';
 import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
-import { UserReturnDto } from '../dtos-global/UserReturnDto';
+import { UserReturnDto } from '../../dtos-global/UserReturnDto';
 import * as process from 'process';
 import { ACCESS_TOKEN_EXPIRE_TIME, REFRESH_TOKEN_EXPIRE_TIME } from './constants';
 import { LoginDto } from './dto/LoginDto';
-import { safeUserSelect } from '../db-query-options/user-options';
-import { SuccessMessageDto } from '../dtos-global/SuccessMessageDto';
+import { safeUserSelect } from '../../db-query-options/user-options';
+import { SuccessMessageDto } from '../../dtos-global/SuccessMessageDto';
 
 @Injectable()
 export class AuthService {
@@ -115,7 +115,8 @@ export class AuthService {
   private createTokenPayload(user: UserReturnDto) {
     return {
       id: user.id,
-      email: user.email
+      email: user.email,
+      roles: user.roles
     };
   }
 
