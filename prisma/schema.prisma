@@ -31,3 +31,19 @@ model Token {
   userId String
   token  String @db.Text
 }
+
+model Product {
+  id String @id @default(uuid())
+
+  name String
+
+  description String
+
+  imageUrl String
+
+  price String
+
+  createdAt DateTime @default(now())
+
+  updatedAt DateTime @updatedAt
+}
