@@ -1,10 +1,4 @@
-import {
-  Body,
-  Controller,
-  Post,
-  UploadedFile,
-  UseInterceptors
-} from '@nestjs/common';
+import { Body, Controller, Post, UploadedFile, UseInterceptors } from '@nestjs/common';
 import { Roles } from '../../decorators/Roles.decorator';
 import { EUserRoles } from '../../domain/users';
 import { FileInterceptor } from '@nestjs/platform-express';
@@ -21,8 +15,8 @@ import { ProductsService } from './products.service';
 export class ProductsController {
   constructor(private productsService: ProductsService) {}
 
-  @Roles([EUserRoles.ADMIN])
   @Post()
+  @Roles([EUserRoles.ADMIN])
   @UseInterceptors(FileInterceptor('image', { ...getFileInterceptorOptions('products') }))
   create(
     @UploadedFile(getFileParsePipeWithTypeValidation('image/*'))
