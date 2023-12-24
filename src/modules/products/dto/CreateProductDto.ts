@@ -11,6 +11,10 @@ export class CreateProductDto {
   @IsString()
   description: string;
 
+  @ApiProperty({ description: 'Product category id', type: String })
+  @IsString()
+  categoryId: string;
+
   @ApiProperty({ description: 'Product price', type: Number })
   @IsNumber()
   @Transform(({ value }) => {

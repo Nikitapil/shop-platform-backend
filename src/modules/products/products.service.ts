@@ -12,6 +12,26 @@ export class ProductsService {
       throw new BadRequestException('No image for product');
     }
 
-    return createFileLink('/products', file.filename);
+    const imageUrl = createFileLink('/products', file.filename);
+
+    try {
+      const category = await this.prismaService.productCategory.findUnique({
+        where: { id: dto.categoryId }
+      });
+      if (!category) {
+        throw new BadRequestException('Invalid categoryId');
+      }
+      return await this.prismaService.product.create({
+        data: {
+          ...dto,
+          imageUrl
+        },
+        include: {
+          category: true
+        }
+      });
+    } catch (e) {
+      throw new BadRequestException(e.message || 'Error while creating product');
+    }
   }
 }
