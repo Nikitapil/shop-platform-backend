@@ -32,6 +32,14 @@ model Token {
   token  String @db.Text
 }
 
+model ProductCategory {
+  id String @id @default(uuid())
+
+  name String @unique
+
+  products Product[]
+}
+
 model Product {
   id String @id @default(uuid())
 
@@ -42,6 +50,9 @@ model Product {
   imageUrl String
 
   price Int
+
+  categoryId String
+  category   ProductCategory @relation(fields: [categoryId], references: [id])
 
   createdAt DateTime @default(now())
 

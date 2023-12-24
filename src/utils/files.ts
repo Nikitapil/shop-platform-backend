@@ -4,6 +4,7 @@ import { MulterOptions } from '@nestjs/platform-express/multer/interfaces/multer
 import { diskStorage } from 'multer';
 import { existsSync, mkdirSync } from 'fs';
 import path from 'path';
+import { FileTypeValidator, ParseFilePipe } from '@nestjs/common';
 
 export const generateFileName = (file: Express.Multer.File) => {
   return `${uuidv4()}${extname(file.originalname)}`;
@@ -24,4 +25,14 @@ export const getFileInterceptorOptions = (destination: string): MulterOptions =>
       }
     })
   };
+};
+
+export const createFileLink = (destination: string, filename: string) => {
+  return `${destination}/${filename}`;
+};
+
+export const getFileParsePipeWithTypeValidation = (fileType: string) => {
+  return new ParseFilePipe({
+    validators: [new FileTypeValidator({ fileType: fileType })]
+  });
 };

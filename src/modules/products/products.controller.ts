@@ -1,8 +1,17 @@
-import { Body, Controller, Post, UploadedFile, UseInterceptors } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Post,
+  UploadedFile,
+  UseInterceptors
+} from '@nestjs/common';
 import { Roles } from '../../decorators/Roles.decorator';
 import { EUserRoles } from '../../domain/users';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { getFileInterceptorOptions } from '../../utils/files';
+import {
+  getFileInterceptorOptions,
+  getFileParsePipeWithTypeValidation
+} from '../../utils/files';
 import { ApiTags } from '@nestjs/swagger';
 import { CreateProductDto } from './dto/CreateProductDto';
 import { ProductsService } from './products.service';
@@ -15,7 +24,11 @@ export class ProductsController {
   @Roles([EUserRoles.ADMIN])
   @Post()
   @UseInterceptors(FileInterceptor('image', { ...getFileInterceptorOptions('products') }))
-  create(@UploadedFile() file: Express.Multer.File, @Body() dto: CreateProductDto) {
-    this.productsService.createProduct({ dto, file });
+  create(
+    @UploadedFile(getFileParsePipeWithTypeValidation('image/*'))
+    file: Express.Multer.File,
+    @Body() dto: CreateProductDto
+  ) {
+    return this.productsService.createProduct({ dto, file });
   }
 }
