@@ -35,13 +35,13 @@ model Token {
 model Product {
   id String @id @default(uuid())
 
-  name String
+  name String @db.Text
 
-  description String
+  description String @db.Text
 
   imageUrl String
 
-  price String
+  price Int
 
   createdAt DateTime @default(now())
 
