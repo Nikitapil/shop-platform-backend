@@ -1,7 +1,8 @@
 import {
   Body,
   Controller,
-  Get,
+  Delete,
+  Get, Param,
   Post,
   Put,
   Query,
@@ -21,6 +22,7 @@ import { ProductsService } from './products.service';
 import { ProductReturnDto } from '../../dtos-global/ProductReturnDto';
 import { GetProductsQueryDto } from './dto/GetProductsQueryDto';
 import { UpdateProductDto } from './dto/UpdateProductDto';
+import { SuccessMessageDto } from '../../dtos-global/SuccessMessageDto';
 
 @ApiTags('Products')
 @Controller('products')
@@ -58,5 +60,13 @@ export class ProductsController {
   @Get()
   getProducts(@Query() dto: GetProductsQueryDto): Promise<ProductReturnDto[]> {
     return this.productsService.getProducts(dto);
+  }
+
+  @ApiOperation({ summary: 'get products' })
+  @ApiResponse({ status: 200, type: SuccessMessageDto })
+  @Roles([EUserRoles.ADMIN])
+  @Delete(':id')
+  deleteProduct(@Param('id') id: string): Promise<SuccessMessageDto> {
+    return this.productsService.deleteProduct(id);
   }
 }

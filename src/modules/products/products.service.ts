@@ -1,10 +1,16 @@
-import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  HttpException,
+  Injectable,
+  NotFoundException
+} from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { ICreateProductParams, IUpdateProductParams } from './types';
 import { createFileLink, deleteFile } from '../../utils/files';
 import { GetProductsQueryDto } from './dto/GetProductsQueryDto';
 import { getOffset } from '../../utils/pagination';
 import { Prisma } from '@prisma/client';
+import { SuccessMessageDto } from '../../dtos-global/SuccessMessageDto';
 
 @Injectable()
 export class ProductsService {
@@ -39,9 +45,7 @@ export class ProductsService {
   async editProduct({ file, dto }: IUpdateProductParams) {
     const { id, ...data } = dto;
 
-    const product = await this.prismaService.product.findUnique({
-      where: { id }
-    });
+    const product = await this.getProductById(id);
 
     if (!product) {
       throw new NotFoundException('Product not found');
@@ -115,8 +119,35 @@ export class ProductsService {
     }
   }
 
+  async deleteProduct(id: string) {
+    try {
+      const product = await this.getProductById(id);
+      if (!product) {
+        throw new NotFoundException('Product not found');
+      }
+
+      await this.prismaService.product.delete({
+        where: { id }
+      });
+
+      deleteFile(product.imageUrl);
+      return new SuccessMessageDto();
+    } catch (e) {
+      if (e instanceof HttpException) {
+        throw e;
+      }
+      throw new BadRequestException(e.message || 'Error while deleting product');
+    }
+  }
+
   private async getCategoryById(id: string) {
     return this.prismaService.productCategory.findUnique({
+      where: { id }
+    });
+  }
+
+  private async getProductById(id: string) {
+    return this.prismaService.product.findUnique({
       where: { id }
     });
   }
