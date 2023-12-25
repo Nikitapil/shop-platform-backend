@@ -39,7 +39,6 @@ export class CategoriesController {
 
   @ApiOperation({ summary: 'Get categories' })
   @ApiResponse({ status: 201, type: [CategoryReturnDto] })
-  @Roles([EUserRoles.ADMIN])
   @Get()
   getCategories(): Promise<CategoryReturnDto[]> {
     return this.categoriesService.getCategories();

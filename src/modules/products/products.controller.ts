@@ -3,6 +3,7 @@ import {
   Controller,
   Get,
   Post,
+  Query,
   UploadedFile,
   UseInterceptors
 } from '@nestjs/common';
@@ -17,6 +18,7 @@ import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { CreateProductDto } from './dto/CreateProductDto';
 import { ProductsService } from './products.service';
 import { ProductReturnDto } from '../../dtos-global/ProductReturnDto';
+import { GetProductsQueryDto } from './dto/GetProductsQueryDto';
 
 @ApiTags('Products')
 @Controller('products')
@@ -36,6 +38,10 @@ export class ProductsController {
     return this.productsService.createProduct({ dto, file });
   }
 
+  @ApiOperation({ summary: 'get products' })
+  @ApiResponse({ status: 200, type: [ProductReturnDto] })
   @Get()
-  getProducts() {}
+  getProducts(@Query() dto: GetProductsQueryDto): Promise<ProductReturnDto[]> {
+    return this.productsService.getProducts(dto);
+  }
 }
