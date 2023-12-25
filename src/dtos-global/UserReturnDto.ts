@@ -13,4 +13,8 @@ export class UserReturnDto {
   @ApiProperty({ description: 'user role', type: ['ADMIN', 'USER'] })
   @ApiProperty()
   roles: string[];
+
+  @ApiProperty({ description: 'user cartId', type: String })
+  @ApiProperty()
+  cartId: string;
 }
