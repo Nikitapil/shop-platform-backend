@@ -3,6 +3,7 @@ import {
   Controller,
   Get,
   Post,
+  Put,
   Query,
   UploadedFile,
   UseInterceptors
@@ -19,6 +20,7 @@ import { CreateProductDto } from './dto/CreateProductDto';
 import { ProductsService } from './products.service';
 import { ProductReturnDto } from '../../dtos-global/ProductReturnDto';
 import { GetProductsQueryDto } from './dto/GetProductsQueryDto';
+import { UpdateProductDto } from './dto/UpdateProductDto';
 
 @ApiTags('Products')
 @Controller('products')
@@ -36,6 +38,19 @@ export class ProductsController {
     @Body() dto: CreateProductDto
   ): Promise<ProductReturnDto> {
     return this.productsService.createProduct({ dto, file });
+  }
+
+  @ApiOperation({ summary: 'Edit product' })
+  @ApiResponse({ status: 200, type: ProductReturnDto })
+  @Put()
+  @Roles([EUserRoles.ADMIN])
+  @UseInterceptors(FileInterceptor('image', { ...getFileInterceptorOptions('products') }))
+  edit(
+    @UploadedFile(getFileParsePipeWithTypeValidation('image/*'))
+    file: Express.Multer.File,
+    @Body() dto: UpdateProductDto
+  ): Promise<ProductReturnDto> {
+    return this.productsService.editProduct({ dto, file });
   }
 
   @ApiOperation({ summary: 'get products' })

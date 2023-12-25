@@ -1,7 +1,7 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
-import { ICreateProductParams } from './types';
-import { createFileLink } from '../../utils/files';
+import { ICreateProductParams, IUpdateProductParams } from './types';
+import { createFileLink, deleteFile } from '../../utils/files';
 import { GetProductsQueryDto } from './dto/GetProductsQueryDto';
 import { getOffset } from '../../utils/pagination';
 import { Prisma } from '@prisma/client';
@@ -18,9 +18,7 @@ export class ProductsService {
     const imageUrl = createFileLink('/products', file.filename);
 
     try {
-      const category = await this.prismaService.productCategory.findUnique({
-        where: { id: dto.categoryId }
-      });
+      const category = await this.getCategoryById(dto.categoryId);
       if (!category) {
         throw new BadRequestException('Invalid categoryId');
       }
@@ -35,6 +33,45 @@ export class ProductsService {
       });
     } catch (e) {
       throw new BadRequestException(e.message || 'Error while creating product');
+    }
+  }
+
+  async editProduct({ file, dto }: IUpdateProductParams) {
+    const { id, ...data } = dto;
+
+    const product = await this.prismaService.product.findUnique({
+      where: { id }
+    });
+
+    if (!product) {
+      throw new NotFoundException('Product not found');
+    }
+
+    if (!file) {
+      throw new BadRequestException('No image for product');
+    }
+
+    deleteFile(product.imageUrl);
+
+    const imageUrl = createFileLink('/products', file.filename);
+
+    try {
+      const category = await this.getCategoryById(dto.categoryId);
+      if (!category) {
+        throw new BadRequestException('Invalid categoryId');
+      }
+      return await this.prismaService.product.update({
+        where: { id },
+        data: {
+          ...data,
+          imageUrl
+        },
+        include: {
+          category: true
+        }
+      });
+    } catch (e) {
+      throw new BadRequestException(e.message || 'Error while editing product');
     }
   }
 
@@ -76,5 +113,11 @@ export class ProductsService {
     } catch (e) {
       throw new BadRequestException('Error while getting products');
     }
+  }
+
+  private async getCategoryById(id: string) {
+    return this.prismaService.productCategory.findUnique({
+      where: { id }
+    });
   }
 }

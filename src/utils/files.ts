@@ -4,7 +4,13 @@ import { MulterOptions } from '@nestjs/platform-express/multer/interfaces/multer
 import { diskStorage } from 'multer';
 import { existsSync, mkdirSync } from 'fs';
 import path from 'path';
-import { FileTypeValidator, ParseFilePipe } from '@nestjs/common';
+import {
+  FileTypeValidator,
+  HttpException,
+  HttpStatus,
+  ParseFilePipe
+} from '@nestjs/common';
+import fs from 'fs';
 
 export const generateFileName = (file: Express.Multer.File) => {
   return `${uuidv4()}${extname(file.originalname)}`;
@@ -35,4 +41,14 @@ export const getFileParsePipeWithTypeValidation = (fileType: string) => {
   return new ParseFilePipe({
     validators: [new FileTypeValidator({ fileType: fileType })]
   });
+};
+
+export const deleteFile = (link: string) => {
+  try {
+    const filePath = path.join(__dirname, '..', 'static', link);
+    console.log(filePath);
+    fs.unlinkSync(filePath);
+  } catch (e) {
+    throw new HttpException('Error in writing file', HttpStatus.INTERNAL_SERVER_ERROR);
+  }
 };
