@@ -47,11 +47,9 @@ export class CartService {
             increment: product.price
           }
         },
-        include: {
-          ...cartInclude
-        }
+        include: cartInclude
       });
-      return { cart };
+      return cart;
     } catch (e) {
       throw new BadRequestException(e.message || 'Error while adding product to cart');
     }
@@ -101,12 +99,10 @@ export class CartService {
             decrement: productInCart.product.price
           }
         },
-        include: {
-          ...cartInclude
-        }
+        include: cartInclude
       });
 
-      return { cart };
+      return cart;
     } catch (e) {
       throw new BadRequestException(e.message || 'Error while adding product to cart');
     }

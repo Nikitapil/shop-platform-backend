@@ -1,9 +1,11 @@
-import { Prisma } from '@prisma/client';
-
-export const cartInclude: Prisma.CartInclude = {
+export const cartInclude = {
   productInCart: {
     include: {
-      product: true
+      product: {
+        include: {
+          category: true
+        }
+      }
     }
   }
-};
+} as const;
