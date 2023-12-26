@@ -1,6 +1,8 @@
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
-import { IAddToCartParams } from './types';
+import { IAddToCartParams, IRemoveFromCartParams } from './types';
+import { Prisma } from '@prisma/client';
+import { cartInclude } from '../../db-query-options/cart-options';
 
 @Injectable()
 export class CartService {
@@ -46,13 +48,64 @@ export class CartService {
           }
         },
         include: {
-          productInCart: {
-            include: {
-              product: true
-            }
-          }
+          ...cartInclude
         }
       });
+      return { cart };
+    } catch (e) {
+      throw new BadRequestException(e.message || 'Error while adding product to cart');
+    }
+  }
+
+  async removeFromCart({ dto, user }: IRemoveFromCartParams) {
+    const { cartId } = user;
+    const { productInCartId } = dto;
+
+    const productInCart = await this.prisma.productInCart.findUnique({
+      where: { id: productInCartId },
+      include: {
+        product: true
+      }
+    });
+
+    if (!productInCart) {
+      throw new BadRequestException('product is not in cart');
+    }
+
+    try {
+      const productInCartInput: Prisma.CartUpdateInput['productInCart'] =
+        productInCart.count === 1
+          ? {
+              delete: {
+                id: productInCartId
+              }
+            }
+          : {
+              update: {
+                where: {
+                  id: productInCartId
+                },
+                data: {
+                  count: {
+                    decrement: 1
+                  }
+                }
+              }
+            };
+
+      const cart = await this.prisma.cart.update({
+        where: { id: cartId },
+        data: {
+          productInCart: productInCartInput,
+          price: {
+            decrement: productInCart.product.price
+          }
+        },
+        include: {
+          ...cartInclude
+        }
+      });
+
       return { cart };
     } catch (e) {
       throw new BadRequestException(e.message || 'Error while adding product to cart');
