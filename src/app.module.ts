@@ -5,6 +5,7 @@ import { ProductsModule } from './modules/products/products.module';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
 import { CategoriesModule } from './modules/categories/categories.module';
+import { CartModule } from './modules/cart/cart.module';
 
 @Module({
   imports: [
@@ -14,7 +15,8 @@ import { CategoriesModule } from './modules/categories/categories.module';
     ServeStaticModule.forRoot({
       rootPath: join(__dirname, 'static')
     }),
-    CategoriesModule
+    CategoriesModule,
+    CartModule
   ]
 })
 export class AppModule {}

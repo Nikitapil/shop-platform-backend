@@ -49,7 +49,7 @@ model Product {
   name        String @db.Text
   description String @db.Text
   imageUrl    String
-  price       Int
+  price       Float
 
   categoryId String
   category   ProductCategory @relation(fields: [categoryId], references: [id], onDelete: Cascade, onUpdate: Cascade)
@@ -63,7 +63,9 @@ model Product {
 model Cart {
   id String @id @default(uuid())
 
-  user          User?
+  user User?
+
+  price         Float           @default(0)
   productInCart ProductInCart[]
 }
 
@@ -77,4 +79,6 @@ model ProductInCart {
   cartId String
 
   count Int
+
+  @@unique([productId, cartId], name: "uniqKey")
 }

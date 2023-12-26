@@ -15,6 +15,7 @@ import { ACCESS_TOKEN_EXPIRE_TIME, REFRESH_TOKEN_EXPIRE_TIME } from './constants
 import { LoginDto } from './dto/LoginDto';
 import { safeUserSelect } from '../../db-query-options/user-options';
 import { SuccessMessageDto } from '../../dtos-global/SuccessMessageDto';
+import { IUserFromToken } from '../../domain/users';
 
 @Injectable()
 export class AuthService {
@@ -115,7 +116,7 @@ export class AuthService {
     }
   }
 
-  private createTokenPayload(user: UserReturnDto) {
+  private createTokenPayload(user: UserReturnDto): IUserFromToken {
     return {
       id: user.id,
       email: user.email,
