@@ -22,6 +22,8 @@ model User {
   roles  Role[] @default([USER])
   cart   Cart?  @relation(fields: [cartId], references: [id])
   cartId String @unique
+
+  favoritesProductsOnUser FavoritesProductsOnUser[]
 }
 
 model Token {
@@ -58,6 +60,8 @@ model Product {
 
   updatedAt     DateTime        @updatedAt
   productInCart ProductInCart[]
+
+  favoritesProductsOnUser FavoritesProductsOnUser[]
 }
 
 model Cart {
@@ -81,4 +85,14 @@ model ProductInCart {
   count Int
 
   @@unique([productId, cartId], name: "uniqKey")
+}
+
+model FavoritesProductsOnUser {
+  id String @id @default(uuid())
+
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  userId String
+
+  product   Product @relation(fields: [productId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  productId String
 }
