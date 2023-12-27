@@ -3,6 +3,8 @@ import { PrismaService } from '../prisma/prisma.service';
 import { IAddToCartParams, IRemoveFromCartParams } from './types';
 import { Prisma } from '@prisma/client';
 import { cartInclude } from '../../db-query-options/cart-options';
+import { IUserFromToken } from '../../domain/users';
+import { getTaxSum } from '../../utils/prices';
 
 @Injectable()
 export class CartService {
@@ -49,7 +51,7 @@ export class CartService {
         },
         include: cartInclude
       });
-      return cart;
+      return { ...cart, taxSum: getTaxSum(cart.price) };
     } catch (e) {
       throw new BadRequestException(e.message || 'Error while adding product to cart');
     }
@@ -102,9 +104,21 @@ export class CartService {
         include: cartInclude
       });
 
-      return cart;
+      return { ...cart, taxSum: getTaxSum(cart.price) };
     } catch (e) {
       throw new BadRequestException(e.message || 'Error while adding product to cart');
+    }
+  }
+
+  async getCart(user: IUserFromToken) {
+    try {
+      const cart = await this.prisma.cart.findUnique({
+        where: { id: user.cartId },
+        include: cartInclude
+      });
+      return { ...cart, taxSum: getTaxSum(cart.price) };
+    } catch (e) {
+      throw new BadRequestException(e.message || 'Error while loading cart');
     }
   }
 }

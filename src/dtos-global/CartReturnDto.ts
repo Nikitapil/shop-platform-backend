@@ -10,4 +10,7 @@ export class CartReturnDto {
 
   @ApiProperty({ description: 'products in cart', type: [ProductInCartReturnDto] })
   productInCart: ProductInCartReturnDto[];
+
+  @ApiProperty({ description: 'Sum of tax', type: Number })
+  taxSum: number;
 }

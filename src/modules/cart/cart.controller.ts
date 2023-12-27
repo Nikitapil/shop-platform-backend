@@ -1,4 +1,4 @@
-import { Body, Controller, Put, UseGuards } from '@nestjs/common';
+import {Body, Controller, Get, Put, UseGuards} from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { JwtGuard } from '../../guards/auth/jwt.guard';
 import { AddToCartDto } from './dto/AddToCartDto';
@@ -33,5 +33,11 @@ export class CartController {
     @User() user: IUserFromToken
   ): Promise<CartReturnDto> {
     return this.cartService.removeFromCart({ dto, user });
+  }
+
+  @UseGuards(JwtGuard)
+  @Get()
+  getCart(@User() user: IUserFromToken): Promise<CartReturnDto> {
+    return this.cartService.getCart(user);
   }
 }
