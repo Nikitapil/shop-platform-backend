@@ -95,4 +95,6 @@ model FavoritesProductsOnUser {
 
   product   Product @relation(fields: [productId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   productId String
+
+  @@unique([userId, productId], name: "uniqueKey")
 }

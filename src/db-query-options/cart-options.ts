@@ -1,11 +1,13 @@
-export const cartInclude = {
-  productInCart: {
-    include: {
-      product: {
-        include: {
-          category: true
+import { getProductInclude } from './products-options';
+
+export const getCartInclude = (userId: string) => {
+  return {
+    productInCart: {
+      include: {
+        product: {
+          include: getProductInclude(userId)
         }
       }
     }
-  }
-} as const;
+  };
+};

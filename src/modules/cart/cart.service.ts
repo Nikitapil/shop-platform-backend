@@ -2,9 +2,9 @@ import { BadRequestException, Injectable, NotFoundException } from '@nestjs/comm
 import { PrismaService } from '../prisma/prisma.service';
 import { IAddToCartParams, IRemoveFromCartParams } from './types';
 import { Prisma } from '@prisma/client';
-import { cartInclude } from '../../db-query-options/cart-options';
 import { IUserFromToken } from '../../domain/users';
-import { getTaxSum } from '../../utils/prices';
+import { getCartInclude } from '../../db-query-options/cart-options';
+import { CartReturnDto } from '../../dtos-global/CartReturnDto';
 
 @Injectable()
 export class CartService {
@@ -49,9 +49,9 @@ export class CartService {
             increment: product.price
           }
         },
-        include: cartInclude
+        include: getCartInclude(user.id)
       });
-      return { ...cart, taxSum: getTaxSum(cart.price) };
+      return new CartReturnDto(cart);
     } catch (e) {
       throw new BadRequestException(e.message || 'Error while adding product to cart');
     }
@@ -101,10 +101,10 @@ export class CartService {
             decrement: productInCart.product.price
           }
         },
-        include: cartInclude
+        include: getCartInclude(user.id)
       });
 
-      return { ...cart, taxSum: getTaxSum(cart.price) };
+      return new CartReturnDto(cart);
     } catch (e) {
       throw new BadRequestException(e.message || 'Error while adding product to cart');
     }
@@ -114,9 +114,9 @@ export class CartService {
     try {
       const cart = await this.prisma.cart.findUnique({
         where: { id: user.cartId },
-        include: cartInclude
+        include: getCartInclude(user.id)
       });
-      return { ...cart, taxSum: getTaxSum(cart.price) };
+      return new CartReturnDto(cart);
     } catch (e) {
       throw new BadRequestException(e.message || 'Error while loading cart');
     }
