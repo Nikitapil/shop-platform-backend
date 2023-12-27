@@ -35,6 +35,8 @@ export class CartController {
     return this.cartService.removeFromCart({ dto, user });
   }
 
+  @ApiOperation({ summary: 'Get cars' })
+  @ApiResponse({ status: 200, type: CartReturnDto })
   @UseGuards(JwtGuard)
   @Get()
   getCart(@User() user: IUserFromToken): Promise<CartReturnDto> {
