@@ -35,7 +35,7 @@ export class CartController {
     return this.cartService.removeFromCart({ dto, user });
   }
 
-  @ApiOperation({ summary: 'Get cars' })
+  @ApiOperation({ summary: 'Get cart' })
   @ApiResponse({ status: 200, type: CartReturnDto })
   @UseGuards(JwtGuard)
   @Get()
