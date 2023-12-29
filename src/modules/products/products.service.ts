@@ -117,8 +117,13 @@ export class ProductsService {
       include: getProductInclude(user?.id)
     });
 
+    const totalCount = await this.prismaService.product.count({ where });
+
     try {
-      return products.map((product) => new ProductReturnDto(product));
+      return {
+        products: products.map((product) => new ProductReturnDto(product)),
+        totalCount
+      };
     } catch (e) {
       throw new BadRequestException('Error while getting products');
     }
