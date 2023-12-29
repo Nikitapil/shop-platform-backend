@@ -1,5 +1,5 @@
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
-import { ICreateOrderParams, IGetOrdersParams } from './types';
+import { ICreateOrderParams, IGetOrdersParams, IUpdateOrderStatusParams } from './types';
 import { PrismaService } from '../prisma/prisma.service';
 import { getCartInclude } from '../../db-query-options/cart-options';
 import { EOrderStatuses } from '../../domain/orders';
@@ -9,6 +9,7 @@ import { EUserRoles } from '../../domain/users';
 import { Prisma } from '@prisma/client';
 import { getOffset } from '../../utils/pagination';
 import { OrderReturnDto } from '../../dtos-global/OrderReturnDto';
+import { SuccessMessageDto } from '../../dtos-global/SuccessMessageDto';
 
 @Injectable()
 export class OrdersService {
@@ -94,6 +95,39 @@ export class OrdersService {
       });
 
       return { orders: orders.map((order) => new OrderReturnDto(order)), totalCount };
+    } catch (e) {
+      throw new BadRequestException('Error while getting orders');
+    }
+  }
+
+  async updateOrderStatus({ dto }: IUpdateOrderStatusParams) {
+    const order = await this.prisma.order.findUnique({
+      where: { id: dto.id }
+    });
+
+    if (!order) {
+      throw new NotFoundException('Order not found');
+    }
+
+    if (dto.status === EOrderStatuses.CANCELED && !dto.cancelReason) {
+      throw new BadRequestException('cancel reason is required if status is canceled');
+    }
+
+    if (dto.status !== EOrderStatuses.CANCELED && dto.cancelReason) {
+      throw new BadRequestException(
+        'cancel reason is not allowed when status is not canceled'
+      );
+    }
+
+    try {
+      await this.prisma.order.update({
+        where: { id: dto.id },
+        data: {
+          status: dto.status,
+          cancelReason: dto.cancelReason || null
+        }
+      });
+      return new SuccessMessageDto();
     } catch (e) {
       throw new BadRequestException('Error while getting orders');
     }

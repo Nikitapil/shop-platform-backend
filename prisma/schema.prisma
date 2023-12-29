@@ -130,6 +130,8 @@ model Order {
   price Float @default(0)
 
   status OrderStatus
+
+  cancelReason String?
 }
 
 model ProductInOrder {

@@ -1,13 +1,16 @@
-import { Body, Controller, Get, Post, Query, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Post, Put, Query, UseGuards } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { OrdersService } from './orders.service';
 import { JwtGuard } from '../../guards/auth/jwt.guard';
 import { CreateOrderDto } from './dto/CreateOrderDto';
 import { User } from '../../decorators/User.decorator';
-import { IUserFromToken } from '../../domain/users';
+import { EUserRoles, IUserFromToken } from '../../domain/users';
 import { CreateOrderReturnDto } from '../../dtos-global/CreateOrderReturnDto';
 import { GetOrdersQueryDto } from './dto/GetOrdersQueryDto';
 import { GetOrdersReturnDto } from '../../dtos-global/GetOrdersReturnDto';
+import { Roles } from '../../decorators/Roles.decorator';
+import { UpdateOrderStatusDto } from './dto/UpdateOrderStatusDto';
+import { SuccessMessageDto } from '../../dtos-global/SuccessMessageDto';
 
 @ApiTags('Orders')
 @Controller('orders')
@@ -34,5 +37,13 @@ export class OrdersController {
     @User() user: IUserFromToken
   ): Promise<GetOrdersReturnDto> {
     return this.ordersService.getOrders({ dto, user });
+  }
+
+  @ApiOperation({ summary: 'Update order status' })
+  @ApiResponse({ status: 200, type: SuccessMessageDto })
+  @Roles([EUserRoles.ADMIN])
+  @Put()
+  updateOrderStatus(@Body() dto: UpdateOrderStatusDto): Promise<SuccessMessageDto> {
+    return this.ordersService.updateOrderStatus({ dto });
   }
 }

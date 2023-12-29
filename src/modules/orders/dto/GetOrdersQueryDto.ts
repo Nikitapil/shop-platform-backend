@@ -18,11 +18,23 @@ export class GetOrdersQueryDto {
   })
   limit: number;
 
+  @ApiProperty({
+    description: 'orders by param',
+    type: String,
+    enum: ['updatedAt', 'createdAt'],
+    nullable: true
+  })
   @IsEnum(['updatedAt', 'createdAt'])
   @IsString()
   @IsOptional()
   order?: 'createdAt' | 'updatedAt';
 
+  @ApiProperty({
+    description: 'orders status',
+    type: String,
+    enum: ['CREATED', 'INPROGRESS', 'CANCELED', 'CLOSED'],
+    nullable: true
+  })
   @IsString()
   @IsEnum(['CREATED', 'INPROGRESS', 'CANCELED', 'CLOSED'])
   @IsOptional()

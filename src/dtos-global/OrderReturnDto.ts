@@ -38,6 +38,9 @@ export class OrderReturnDto {
   @ApiProperty({ description: 'order products', type: [ProductInOrderReturnDto] })
   productsInOrder: ProductInOrderReturnDto[];
 
+  @ApiProperty({ description: 'order cancel reason', type: String, nullable: true })
+  cancelReason?: string;
+
   constructor(order: IOrderFromDb) {
     this.id = order.id;
     this.userId = order.userId;
@@ -48,6 +51,7 @@ export class OrderReturnDto {
     this.updatedAt = order.updatedAt;
     this.price = order.price;
     this.status = order.status;
+    this.cancelReason = order.cancelReason || null;
     this.productsInOrder = order.productsInOrder.map((productInOrder) => ({
       ...productInOrder,
       product: new ProductReturnDto(productInOrder.product)

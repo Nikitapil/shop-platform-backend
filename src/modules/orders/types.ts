@@ -2,6 +2,7 @@ import { CreateOrderDto } from './dto/CreateOrderDto';
 import { IUserFromToken } from '../../domain/users';
 import { IProductFromDb } from '../products/types';
 import { GetOrdersQueryDto } from './dto/GetOrdersQueryDto';
+import { UpdateOrderStatusDto } from './dto/UpdateOrderStatusDto';
 
 export interface ICreateOrderParams {
   dto: CreateOrderDto;
@@ -11,6 +12,10 @@ export interface ICreateOrderParams {
 export interface IGetOrdersParams {
   dto: GetOrdersQueryDto;
   user: IUserFromToken;
+}
+
+export interface IUpdateOrderStatusParams {
+  dto: UpdateOrderStatusDto;
 }
 
 export interface IProductsInOrder {
@@ -32,4 +37,5 @@ export interface IOrderFromDb {
   price: number;
   status: string;
   productsInOrder: IProductsInOrder[];
+  cancelReason?: string;
 }
