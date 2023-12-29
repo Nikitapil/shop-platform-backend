@@ -1,9 +1,15 @@
 import { CreateOrderDto } from './dto/CreateOrderDto';
 import { IUserFromToken } from '../../domain/users';
 import { IProductFromDb } from '../products/types';
+import { GetOrdersQueryDto } from './dto/GetOrdersQueryDto';
 
 export interface ICreateOrderParams {
   dto: CreateOrderDto;
+  user: IUserFromToken;
+}
+
+export interface IGetOrdersParams {
+  dto: GetOrdersQueryDto;
   user: IUserFromToken;
 }
 
