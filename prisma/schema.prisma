@@ -35,6 +35,8 @@ model User {
 
   address String?
   phone   String?
+
+  productReviews ProductReview[]
 }
 
 model Token {
@@ -74,6 +76,7 @@ model Product {
 
   favoritesProductsOnUser FavoritesProductsOnUser[]
   productsInOrder         ProductInOrder[]
+  reviews                 ProductReview[]
 }
 
 model Cart {
@@ -144,4 +147,18 @@ model ProductInOrder {
   productId String
 
   count Int
+}
+
+model ProductReview {
+  id String @id @default(uuid())
+
+  rating Int
+
+  text String @db.Text
+
+  user   User   @relation(fields: [userId], references: [id])
+  userId String
+
+  product   Product @relation(fields: [productId], references: [id])
+  productId String
 }
