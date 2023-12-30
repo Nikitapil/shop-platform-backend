@@ -18,6 +18,11 @@ export interface IUpdateOrderStatusParams {
   dto: UpdateOrderStatusDto;
 }
 
+export interface IGetSingleOrderParams {
+  orderId: string;
+  user: IUserFromToken;
+}
+
 export interface IProductsInOrder {
   id: string;
   orderId: string;

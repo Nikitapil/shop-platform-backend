@@ -1,5 +1,15 @@
-import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
-import { ICreateOrderParams, IGetOrdersParams, IUpdateOrderStatusParams } from './types';
+import {
+  BadRequestException,
+  Injectable,
+  NotAcceptableException,
+  NotFoundException
+} from '@nestjs/common';
+import {
+  ICreateOrderParams,
+  IGetOrdersParams,
+  IGetSingleOrderParams,
+  IUpdateOrderStatusParams
+} from './types';
 import { PrismaService } from '../prisma/prisma.service';
 import { getCartInclude } from '../../db-query-options/cart-options';
 import { EOrderStatuses } from '../../domain/orders';
@@ -131,5 +141,22 @@ export class OrdersService {
     } catch (e) {
       throw new BadRequestException('Error while getting orders');
     }
+  }
+
+  async getSingleOrder({ orderId, user }: IGetSingleOrderParams) {
+    const order = await this.prisma.order.findUnique({
+      where: { id: orderId },
+      include: getOrderInclude(user.id)
+    });
+
+    if (!order) {
+      throw new NotFoundException('Order not found');
+    }
+
+    if (order.userId !== user.id && !user.roles.includes(EUserRoles.ADMIN)) {
+      throw new NotAcceptableException('Permission denied');
+    }
+
+    return new OrderReturnDto(order);
   }
 }

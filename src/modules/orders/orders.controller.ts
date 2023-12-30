@@ -1,4 +1,13 @@
-import { Body, Controller, Get, Post, Put, Query, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  Post,
+  Put,
+  Query,
+  UseGuards
+} from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { OrdersService } from './orders.service';
 import { JwtGuard } from '../../guards/auth/jwt.guard';
@@ -11,6 +20,7 @@ import { GetOrdersReturnDto } from '../../dtos-global/GetOrdersReturnDto';
 import { Roles } from '../../decorators/Roles.decorator';
 import { UpdateOrderStatusDto } from './dto/UpdateOrderStatusDto';
 import { SuccessMessageDto } from '../../dtos-global/SuccessMessageDto';
+import { OrderReturnDto } from '../../dtos-global/OrderReturnDto';
 
 @ApiTags('Orders')
 @Controller('orders')
@@ -37,6 +47,17 @@ export class OrdersController {
     @User() user: IUserFromToken
   ): Promise<GetOrdersReturnDto> {
     return this.ordersService.getOrders({ dto, user });
+  }
+
+  @ApiOperation({ summary: 'Get order by id' })
+  @ApiResponse({ status: 200, type: OrderReturnDto })
+  @UseGuards(JwtGuard)
+  @Get(':id')
+  getOrderById(
+    @Param('id') orderId: string,
+    @User() user: IUserFromToken
+  ): Promise<OrderReturnDto> {
+    return this.ordersService.getSingleOrder({ orderId, user });
   }
 
   @ApiOperation({ summary: 'Update order status' })
