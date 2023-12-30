@@ -77,6 +77,17 @@ export class ProductsController {
     return this.productsService.getProducts({ dto, user });
   }
 
+  @ApiOperation({ summary: 'Get product' })
+  @ApiResponse({ status: 200, type: ProductReturnDto })
+  @UseGuards(ApplyUserGuard)
+  @Get(':id')
+  getProduct(
+    @Param('id') id: string,
+    @User() user: IUserFromToken | null
+  ): Promise<ProductReturnDto> {
+    return this.productsService.getProduct({ id, user });
+  }
+
   @ApiOperation({ summary: 'delete product' })
   @ApiResponse({ status: 200, type: SuccessMessageDto })
   @Roles([EUserRoles.ADMIN])

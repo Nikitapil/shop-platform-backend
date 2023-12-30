@@ -7,7 +7,8 @@ import {
 import { PrismaService } from '../prisma/prisma.service';
 import {
   ICreateProductParams,
-  IGetProductsDto,
+  IGetProductsParams,
+  IGetSingleProductParams,
   IToggleFavoritesParams,
   IUpdateProductParams
 } from './types';
@@ -84,7 +85,7 @@ export class ProductsService {
     }
   }
 
-  async getProducts({ dto, user }: IGetProductsDto) {
+  async getProducts({ dto, user }: IGetProductsParams) {
     const { page, limit, priceSorting, search, categoryId } = dto;
     const offset = getOffset(page, limit);
 
@@ -127,6 +128,14 @@ export class ProductsService {
     } catch (e) {
       throw new BadRequestException('Error while getting products');
     }
+  }
+
+  async getProduct({ id, user }: IGetSingleProductParams) {
+    const product = await this.prismaService.product.findUnique({
+      where: { id },
+      include: getProductInclude(user?.id)
+    });
+    return new ProductReturnDto(product);
   }
 
   async deleteProduct(id: string) {

@@ -21,8 +21,13 @@ export interface IToggleFavoritesParams extends IUserParam {
   dto: ToggleFavoritesDto;
 }
 
-export interface IGetProductsDto {
+export interface IGetProductsParams {
   dto: GetProductsQueryDto;
+  user?: IUserFromToken;
+}
+
+export interface IGetSingleProductParams {
+  id: string;
   user?: IUserFromToken;
 }
 
