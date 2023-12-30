@@ -16,6 +16,7 @@ import { LoginDto } from './dto/LoginDto';
 import { safeUserSelect } from '../../db-query-options/user-options';
 import { SuccessMessageDto } from '../../dtos-global/SuccessMessageDto';
 import { IUserFromToken } from '../../domain/users';
+import { IUpdateUserDataParams } from './types';
 
 @Injectable()
 export class AuthService {
@@ -113,6 +114,22 @@ export class AuthService {
       return new SuccessMessageDto();
     } catch (e) {
       throw new HttpException({ message: e.message || 'logout error' }, 400);
+    }
+  }
+
+  async updateUserData({ dto, user }: IUpdateUserDataParams) {
+    try {
+      const updatedUser = await this.prisma.user.update({
+        where: { id: user.id },
+        data: {
+          ...dto
+        },
+        select: { ...safeUserSelect }
+      });
+
+      return await this.generateUserDataWithTokens(updatedUser);
+    } catch (e) {
+      throw new HttpException({ message: e.message || 'update user error' }, 400);
     }
   }
 

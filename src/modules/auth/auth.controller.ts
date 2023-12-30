@@ -1,4 +1,14 @@
-import { Body, Controller, Get, HttpCode, HttpStatus, Post, Res } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  HttpCode,
+  HttpStatus,
+  Post,
+  Put,
+  Res,
+  UseGuards
+} from '@nestjs/common';
 import { RegisterDto } from './dto/RegisterDto';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { AuthService } from './auth.service';
@@ -8,6 +18,10 @@ import { AuthResponseDto } from './dto/AuthResponseDto';
 import { LoginDto } from './dto/LoginDto';
 import { Cookies } from '../../decorators/Cookies';
 import { SuccessMessageDto } from '../../dtos-global/SuccessMessageDto';
+import { JwtGuard } from '../../guards/auth/jwt.guard';
+import { UpdateUserDataDto } from './dto/UpdateUserDataDto';
+import { User } from '../../decorators/User.decorator';
+import { IUserFromToken } from '../../domain/users';
 
 @ApiTags('Auth')
 @Controller('auth')
@@ -82,5 +96,24 @@ export class AuthController {
   ): Promise<SuccessMessageDto> {
     res.clearCookie(REFRESH_TOKEN_NAME);
     return await this.authService.logout(token);
+  }
+
+  @UseGuards(JwtGuard)
+  @Put()
+  async updateUserData(
+    @Body() dto: UpdateUserDataDto,
+    @User() userFromToken: IUserFromToken,
+    @Res({ passthrough: true }) response: Response
+  ) {
+    const { refreshToken, user, accessToken } = await this.authService.updateUserData({
+      dto,
+      user: userFromToken
+    });
+
+    this.setRefreshToken(response, refreshToken);
+    return {
+      user,
+      accessToken
+    };
   }
 }
