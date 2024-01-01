@@ -6,6 +6,11 @@ export interface ICreateReviewParams {
   user: IUserFromToken;
 }
 
+export interface IDeleteReviewParams {
+  id: string;
+  user: IUserFromToken;
+}
+
 export interface IProductReviewFromDb {
   id: string;
   rating: number;
