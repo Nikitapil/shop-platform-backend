@@ -7,6 +7,7 @@ import {
 import { PrismaService } from '../prisma/prisma.service';
 import {
   ICreateProductParams,
+  IGetFavoriteProductsParams,
   IGetManyQuizzesParams,
   IGetProductsParams,
   IGetSingleProductParams,
@@ -109,6 +110,36 @@ export class ProductsService {
     if (categoryId) {
       where.categoryId = categoryId;
     }
+
+    try {
+      const products = await this.getManyProducts({
+        page,
+        limit,
+        where,
+        order,
+        user
+      });
+
+      return products;
+    } catch (e) {
+      throw new BadRequestException('Error while getting products');
+    }
+  }
+
+  async getFavoritesProducts({ dto, user }: IGetFavoriteProductsParams) {
+    const { page, limit } = dto;
+
+    const order: Prisma.ProductOrderByWithRelationInput = {
+      name: 'asc'
+    };
+
+    const where: Prisma.ProductWhereInput = {
+      favoritesProductsOnUser: {
+        some: {
+          userId: user.id
+        }
+      }
+    };
 
     try {
       const products = await this.getManyProducts({

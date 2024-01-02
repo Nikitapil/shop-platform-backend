@@ -32,6 +32,7 @@ import { User } from '../../decorators/User.decorator';
 import { ToggleFavoriteReturnDto } from './dto/ToggleFavoriteReturnDto';
 import { ApplyUserGuard } from '../../guards/users/apply-user.guard';
 import { GetProductsReturnDto } from '../../dtos-global/GetProductsReturnDto';
+import {GetFavoriteProductsDto} from "./dto/GetFavoriteProductsDto";
 
 @ApiTags('Products')
 @Controller('products')
@@ -75,6 +76,17 @@ export class ProductsController {
     @User() user: IUserFromToken | null
   ): Promise<GetProductsReturnDto> {
     return this.productsService.getProducts({ dto, user });
+  }
+
+  @ApiOperation({ summary: 'get favorite products' })
+  @ApiResponse({ status: 200, type: GetProductsReturnDto })
+  @UseGuards(JwtGuard)
+  @Get('favorites')
+  getFavoriteProducts(
+    @Query() dto: GetFavoriteProductsDto,
+    @User() user: IUserFromToken | null
+  ): Promise<GetProductsReturnDto> {
+    return this.productsService.getFavoritesProducts({ dto, user });
   }
 
   @ApiOperation({ summary: 'Get product' })

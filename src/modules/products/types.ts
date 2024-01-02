@@ -5,6 +5,7 @@ import { IUserFromToken, IUserParam } from '../../domain/users';
 import { GetProductsQueryDto } from './dto/GetProductsQueryDto';
 import { CategoryReturnDto } from '../../dtos-global/CategoryReturnDto';
 import { Prisma } from '@prisma/client';
+import { GetFavoriteProductsDto } from './dto/GetFavoriteProductsDto';
 
 export interface ICreateProductParams {
   dto: CreateProductDto;
@@ -25,6 +26,11 @@ export interface IToggleFavoritesParams extends IUserParam {
 export interface IGetProductsParams {
   dto: GetProductsQueryDto;
   user?: IUserFromToken;
+}
+
+export interface IGetFavoriteProductsParams {
+  dto: GetFavoriteProductsDto;
+  user: IUserFromToken;
 }
 
 export interface IGetSingleProductParams {
