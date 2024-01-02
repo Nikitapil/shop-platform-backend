@@ -4,6 +4,7 @@ import { ToggleFavoritesDto } from './dto/ToggleFavoritesDto';
 import { IUserFromToken, IUserParam } from '../../domain/users';
 import { GetProductsQueryDto } from './dto/GetProductsQueryDto';
 import { CategoryReturnDto } from '../../dtos-global/CategoryReturnDto';
+import { Prisma } from '@prisma/client';
 
 export interface ICreateProductParams {
   dto: CreateProductDto;
@@ -55,4 +56,12 @@ export interface IRatingFromDb {
     rating: number;
   };
   productId: string;
+}
+
+export interface IGetManyQuizzesParams {
+  page: number;
+  limit: number;
+  where: Prisma.ProductWhereInput;
+  order: Prisma.ProductOrderByWithRelationInput;
+  user?: IUserFromToken;
 }

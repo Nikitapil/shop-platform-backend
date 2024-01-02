@@ -7,6 +7,7 @@ import {
 import { PrismaService } from '../prisma/prisma.service';
 import {
   ICreateProductParams,
+  IGetManyQuizzesParams,
   IGetProductsParams,
   IGetSingleProductParams,
   IToggleFavoritesParams,
@@ -87,7 +88,6 @@ export class ProductsService {
 
   async getProducts({ dto, user }: IGetProductsParams) {
     const { page, limit, priceSorting, search, categoryId } = dto;
-    const offset = getOffset(page, limit);
 
     let order: Prisma.ProductOrderByWithRelationInput = {
       name: 'asc'
@@ -110,26 +110,16 @@ export class ProductsService {
       where.categoryId = categoryId;
     }
 
-    const products = await this.prismaService.product.findMany({
-      where,
-      orderBy: order,
-      take: limit,
-      skip: offset,
-      include: getProductInclude(user?.id)
-    });
-
-    const totalCount = await this.prismaService.product.count({ where });
-
-    const productsIds = products.map((product) => product.id);
-
-    const ratings = await this.getProductsRatings(productsIds);
-
     try {
-      return {
-        products: products.map((product) => new ProductReturnDto(product, ratings)),
-        totalCount,
-        ratings
-      };
+      const products = await this.getManyProducts({
+        page,
+        limit,
+        where,
+        order,
+        user
+      });
+
+      return products;
     } catch (e) {
       throw new BadRequestException('Error while getting products');
     }
@@ -140,7 +130,8 @@ export class ProductsService {
       where: { id },
       include: getProductInclude(user?.id)
     });
-    return new ProductReturnDto(product);
+    const ratings = await this.getProductsRatings([product.id]);
+    return new ProductReturnDto(product, ratings);
   }
 
   async deleteProduct(id: string) {
@@ -218,5 +209,38 @@ export class ProductsService {
         rating: true
       }
     });
+  }
+
+  private async getManyProducts({
+    page,
+    limit,
+    where,
+    user,
+    order
+  }: IGetManyQuizzesParams) {
+    const offset = getOffset(page, limit);
+
+    const products = await this.prismaService.product.findMany({
+      where,
+      orderBy: order,
+      take: limit,
+      skip: offset,
+      include: getProductInclude(user?.id)
+    });
+
+    const totalCount = await this.prismaService.product.count({ where });
+
+    const productsIds = products.map((product) => product.id);
+
+    const ratings = await this.getProductsRatings(productsIds);
+
+    try {
+      return {
+        products: products.map((product) => new ProductReturnDto(product, ratings)),
+        totalCount
+      };
+    } catch (e) {
+      throw new BadRequestException('Error while getting products');
+    }
   }
 }

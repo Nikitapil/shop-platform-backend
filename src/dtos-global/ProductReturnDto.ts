@@ -33,10 +33,10 @@ export class ProductReturnDto {
   @ApiProperty({ description: 'in favorites flag', type: Boolean })
   isInFavorites: boolean;
 
-  @ApiProperty({ description: 'Product rating', type: Number })
-  rating: number;
+  @ApiProperty({ description: 'Product rating', type: Number, nullable: true })
+  rating: number | null;
 
-  constructor(product: IProductFromDb, ratings: IRatingFromDb[]) {
+  constructor(product: IProductFromDb, ratings?: IRatingFromDb[]) {
     this.id = product.id;
     this.name = product.name;
     this.description = product.description;
@@ -48,8 +48,8 @@ export class ProductReturnDto {
     this.category = product.category;
     this.isInFavorites = !!product.favoritesProductsOnUser.length;
 
-    const rating = ratings.find((rate) => rate.productId === product.id);
+    const rating = ratings?.find((rate) => rate.productId === product.id);
 
-    this.rating = rating?._avg?.rating || 0;
+    this.rating = rating?._avg?.rating || null;
   }
 }
