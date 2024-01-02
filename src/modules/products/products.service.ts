@@ -120,10 +120,15 @@ export class ProductsService {
 
     const totalCount = await this.prismaService.product.count({ where });
 
+    const productsIds = products.map((product) => product.id);
+
+    const ratings = await this.getProductsRatings(productsIds);
+
     try {
       return {
-        products: products.map((product) => new ProductReturnDto(product)),
-        totalCount
+        products: products.map((product) => new ProductReturnDto(product, ratings)),
+        totalCount,
+        ratings
       };
     } catch (e) {
       throw new BadRequestException('Error while getting products');
@@ -198,6 +203,20 @@ export class ProductsService {
   private async getProductById(id: string) {
     return this.prismaService.product.findUnique({
       where: { id }
+    });
+  }
+
+  private async getProductsRatings(productsIds: string[]) {
+    return this.prismaService.productReview.groupBy({
+      by: 'productId',
+      where: {
+        productId: {
+          in: productsIds
+        }
+      },
+      _avg: {
+        rating: true
+      }
     });
   }
 }

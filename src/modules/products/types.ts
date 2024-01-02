@@ -49,3 +49,10 @@ export interface IProductFromDb {
   category: CategoryReturnDto;
   favoritesProductsOnUser: IFavoritesProductsOnUser[];
 }
+
+export interface IRatingFromDb {
+  _avg: {
+    rating: number;
+  };
+  productId: string;
+}

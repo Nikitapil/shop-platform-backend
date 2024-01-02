@@ -1,6 +1,6 @@
 import { CategoryReturnDto } from './CategoryReturnDto';
 import { ApiProperty } from '@nestjs/swagger';
-import { IProductFromDb } from '../modules/products/types';
+import { IProductFromDb, IRatingFromDb } from '../modules/products/types';
 
 export class ProductReturnDto {
   @ApiProperty({ description: 'product id', type: String })
@@ -30,10 +30,13 @@ export class ProductReturnDto {
   @ApiProperty({ description: 'product category', type: CategoryReturnDto })
   category: CategoryReturnDto;
 
-  @ApiProperty({ description: 'in favorites flag' })
+  @ApiProperty({ description: 'in favorites flag', type: Boolean })
   isInFavorites: boolean;
 
-  constructor(product: IProductFromDb) {
+  @ApiProperty({ description: 'Product rating', type: Number })
+  rating: number;
+
+  constructor(product: IProductFromDb, ratings: IRatingFromDb[]) {
     this.id = product.id;
     this.name = product.name;
     this.description = product.description;
@@ -44,5 +47,9 @@ export class ProductReturnDto {
     this.updatedAt = product.updatedAt;
     this.category = product.category;
     this.isInFavorites = !!product.favoritesProductsOnUser.length;
+
+    const rating = ratings.find((rate) => rate.productId === product.id);
+
+    this.rating = rating?._avg?.rating || 0;
   }
 }
