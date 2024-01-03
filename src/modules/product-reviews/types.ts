@@ -1,5 +1,6 @@
 import { CreateReviewDto } from './dto/CreateReviewDto';
 import { IUserFromToken } from '../../domain/users';
+import { GetReviewsQueryDto } from './dto/GetReviewsQueryDto';
 
 export interface ICreateReviewParams {
   dto: CreateReviewDto;
@@ -9,6 +10,11 @@ export interface ICreateReviewParams {
 export interface IDeleteReviewParams {
   id: string;
   user: IUserFromToken;
+}
+
+export interface IGetReviewsParams {
+  dto: GetReviewsQueryDto;
+  user?: IUserFromToken | null;
 }
 
 export interface IProductReviewFromDb {

@@ -5,10 +5,12 @@ import {
   NotFoundException
 } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
-import { ICreateReviewParams, IDeleteReviewParams } from './types';
+import { ICreateReviewParams, IDeleteReviewParams, IGetReviewsParams } from './types';
 import { ProductReviewReturnDto } from '../../dtos-global/ProductReviewReturnDto';
 import { EUserRoles } from '../../domain/users';
 import { SuccessMessageDto } from '../../dtos-global/SuccessMessageDto';
+import { getOffset } from '../../utils/pagination';
+import { reviewInclude } from '../../db-query-options/product-reviews';
 
 @Injectable()
 export class ProductReviewsService {
@@ -43,14 +45,7 @@ export class ProductReviewsService {
         text: dto.text,
         rating: dto.rating
       },
-      include: {
-        user: {
-          select: {
-            id: true,
-            name: true
-          }
-        }
-      }
+      include: reviewInclude
     });
 
     return new ProductReviewReturnDto(review, user);
@@ -75,5 +70,28 @@ export class ProductReviewsService {
     } catch (e) {
       throw new BadRequestException('Error while deleting product review');
     }
+  }
+
+  async getReviews({ dto, user }: IGetReviewsParams) {
+    const offset = getOffset(dto.page, dto.limit);
+    const reviews = await this.prisma.productReview.findMany({
+      where: {
+        productId: dto.productId
+      },
+      include: reviewInclude,
+      take: dto.limit,
+      skip: offset
+    });
+
+    const totalCount = await this.prisma.productReview.count({
+      where: {
+        productId: dto.productId
+      }
+    });
+
+    return {
+      reviews: reviews.map((review) => new ProductReviewReturnDto(review, user)),
+      totalCount
+    };
   }
 }
