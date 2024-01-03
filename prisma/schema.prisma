@@ -165,4 +165,6 @@ model ProductReview {
   createdAt DateTime @default(now())
 
   updatedAt DateTime @updatedAt
+
+  @@unique([productId, userId], name: "unique_key")
 }

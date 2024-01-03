@@ -32,7 +32,7 @@ import { User } from '../../decorators/User.decorator';
 import { ToggleFavoriteReturnDto } from './dto/ToggleFavoriteReturnDto';
 import { ApplyUserGuard } from '../../guards/users/apply-user.guard';
 import { GetProductsReturnDto } from '../../dtos-global/GetProductsReturnDto';
-import {GetFavoriteProductsDto} from "./dto/GetFavoriteProductsDto";
+import { GetFavoriteProductsDto } from './dto/GetFavoriteProductsDto';
 
 @ApiTags('Products')
 @Controller('products')

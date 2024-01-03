@@ -15,6 +15,19 @@ export class ProductReviewsService {
   constructor(private prisma: PrismaService) {}
 
   async createReview({ dto, user }: ICreateReviewParams) {
+    const candidate = await this.prisma.productReview.findUnique({
+      where: {
+        unique_key: {
+          productId: dto.productId,
+          userId: user.id
+        }
+      }
+    });
+
+    if (candidate) {
+      throw new NotAcceptableException('You already create review for this product');
+    }
+
     const product = await this.prisma.product.findUnique({
       where: { id: dto.productId }
     });
