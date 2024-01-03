@@ -7,6 +7,11 @@ export const getProductInclude = (userId = ''): Prisma.ProductInclude => {
       where: {
         userId
       }
+    },
+    reviews: {
+      where: {
+        userId
+      }
     }
   };
 };

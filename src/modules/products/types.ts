@@ -44,6 +44,16 @@ export interface IFavoritesProductsOnUser {
   productId: string;
 }
 
+export interface IProductReview {
+  id: string;
+  rating: number;
+  text: string;
+  userId: string;
+  productId: string;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
 export interface IProductFromDb {
   id: string;
   name: string;
@@ -55,6 +65,7 @@ export interface IProductFromDb {
   updatedAt: Date;
   category: CategoryReturnDto;
   favoritesProductsOnUser: IFavoritesProductsOnUser[];
+  reviews: IProductReview[];
 }
 
 export interface IRatingFromDb {

@@ -162,7 +162,7 @@ export class ProductsService {
       include: getProductInclude(user?.id)
     });
     const ratings = await this.getProductsRatings([product.id]);
-    return new ProductReturnDto(product, ratings);
+    return new ProductReturnDto(product, ratings, user);
   }
 
   async deleteProduct(id: string) {
