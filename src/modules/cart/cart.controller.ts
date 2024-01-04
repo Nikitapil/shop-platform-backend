@@ -13,7 +13,7 @@ import { CartReturnDto } from '../../dtos-global/CartReturnDto';
 export class CartController {
   constructor(private cartService: CartService) {}
   // TODO описать все методы и дто для сваггера
-  @ApiOperation({ summary: 'Add product to cart' })
+  @ApiOperation({ summary: 'Add product to cart', operationId: 'addToCart' })
   @ApiResponse({ status: 200, type: CartReturnDto })
   @UseGuards(JwtGuard)
   @Put('/add')
@@ -24,7 +24,7 @@ export class CartController {
     return this.cartService.addToCart({ dto, user });
   }
 
-  @ApiOperation({ summary: 'remove product from cart' })
+  @ApiOperation({ summary: 'remove product from cart', operationId: 'removeFromCart' })
   @ApiResponse({ status: 200, type: CartReturnDto })
   @UseGuards(JwtGuard)
   @Put('/remove')
@@ -35,7 +35,7 @@ export class CartController {
     return this.cartService.removeFromCart({ dto, user });
   }
 
-  @ApiOperation({ summary: 'Get cart' })
+  @ApiOperation({ summary: 'Get cart', operationId: 'getCart' })
   @ApiResponse({ status: 200, type: CartReturnDto })
   @UseGuards(JwtGuard)
   @Get()

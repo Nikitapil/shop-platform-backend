@@ -13,7 +13,7 @@ import { SuccessMessageDto } from '../../dtos-global/SuccessMessageDto';
 export class CategoriesController {
   constructor(private categoriesService: CategoriesService) {}
 
-  @ApiOperation({ summary: 'Create category' })
+  @ApiOperation({ summary: 'Create category', operationId: 'createCategory' })
   @ApiResponse({ status: 201, type: CategoryReturnDto })
   @Roles([EUserRoles.ADMIN])
   @Post()
@@ -21,7 +21,7 @@ export class CategoriesController {
     return this.categoriesService.createCategory(dto);
   }
 
-  @ApiOperation({ summary: 'Update category' })
+  @ApiOperation({ summary: 'Update category', operationId: 'updateCategory' })
   @ApiResponse({ status: 201, type: CategoryReturnDto })
   @Roles([EUserRoles.ADMIN])
   @Put()
@@ -29,7 +29,7 @@ export class CategoriesController {
     return this.categoriesService.updateCategory(dto);
   }
 
-  @ApiOperation({ summary: 'Delete category' })
+  @ApiOperation({ summary: 'Delete category', operationId: 'deleteCategory' })
   @ApiResponse({ status: 201, type: SuccessMessageDto })
   @Roles([EUserRoles.ADMIN])
   @Delete(':id')
@@ -37,7 +37,7 @@ export class CategoriesController {
     return this.categoriesService.deleteCategory(id);
   }
 
-  @ApiOperation({ summary: 'Get categories' })
+  @ApiOperation({ summary: 'Get categories', operationId: 'getCategories' })
   @ApiResponse({ status: 201, type: [CategoryReturnDto] })
   @Get()
   getCategories(): Promise<CategoryReturnDto[]> {

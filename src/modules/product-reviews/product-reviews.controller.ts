@@ -25,7 +25,7 @@ import { GetProductsReviewsReturnDto } from '../../dtos-global/GetProductsReview
 export class ProductReviewsController {
   constructor(private reviewService: ProductReviewsService) {}
 
-  @ApiOperation({ summary: 'Create product review' })
+  @ApiOperation({ summary: 'Create product review', operationId: 'createReview' })
   @ApiResponse({ status: 201, type: ProductReviewReturnDto })
   @UseGuards(JwtGuard)
   @Post()
@@ -36,7 +36,7 @@ export class ProductReviewsController {
     return this.reviewService.createReview({ dto, user });
   }
 
-  @ApiOperation({ summary: 'Delete product review' })
+  @ApiOperation({ summary: 'Delete product review', operationId: 'deleteReview' })
   @ApiResponse({ status: 200, type: SuccessMessageDto })
   @UseGuards(JwtGuard)
   @Delete(':id')
@@ -47,7 +47,7 @@ export class ProductReviewsController {
     return this.reviewService.deleteReview({ id, user });
   }
 
-  @ApiOperation({ summary: 'Get product reviews' })
+  @ApiOperation({ summary: 'Get product reviews', operationId: 'getReviews' })
   @ApiResponse({ status: 200, type: GetProductsReviewsReturnDto })
   @UseGuards(ApplyUserGuard)
   @Get()

@@ -37,7 +37,7 @@ export class AuthController {
     });
   }
 
-  @ApiOperation({ summary: 'Register user' })
+  @ApiOperation({ summary: 'Register user', operationId: 'register' })
   @ApiResponse({ status: 201, type: AuthResponseDto })
   @Post('/register')
   async register(
@@ -53,7 +53,7 @@ export class AuthController {
     };
   }
 
-  @ApiOperation({ summary: 'Login user' })
+  @ApiOperation({ summary: 'Login user', operationId: 'login' })
   @ApiResponse({ status: 200, type: AuthResponseDto })
   @HttpCode(HttpStatus.OK)
   @Post('/login')
@@ -70,7 +70,7 @@ export class AuthController {
     };
   }
 
-  @ApiOperation({ summary: 'auth refresh data' })
+  @ApiOperation({ summary: 'auth refresh data', operationId: 'refreshAuth' })
   @ApiResponse({ status: 200, type: AuthResponseDto })
   @Get('/refresh')
   async refresh(
@@ -86,7 +86,7 @@ export class AuthController {
     };
   }
 
-  @ApiOperation({ summary: 'auth refresh data' })
+  @ApiOperation({ summary: 'auth logout', operationId: 'logout' })
   @ApiResponse({ status: 200, type: SuccessMessageDto })
   @HttpCode(HttpStatus.OK)
   @Post('/logout')
@@ -98,13 +98,15 @@ export class AuthController {
     return await this.authService.logout(token);
   }
 
+  @ApiOperation({ summary: 'update user data', operationId: 'updateUserData' })
+  @ApiResponse({ status: 200, type: AuthResponseDto })
   @UseGuards(JwtGuard)
   @Put()
   async updateUserData(
     @Body() dto: UpdateUserDataDto,
     @User() userFromToken: IUserFromToken,
     @Res({ passthrough: true }) response: Response
-  ) {
+  ): Promise<AuthResponseDto> {
     const { refreshToken, user, accessToken } = await this.authService.updateUserData({
       dto,
       user: userFromToken

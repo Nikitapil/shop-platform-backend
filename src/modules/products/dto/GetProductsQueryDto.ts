@@ -24,7 +24,8 @@ export class GetProductsQueryDto {
 
   @ApiProperty({
     description: 'price sorting direction',
-    oneOf: [{ type: 'asc' }, { type: 'desc' }]
+    type: String,
+    enum: ['asc', 'desc']
   })
   @IsString()
   @IsOptional()

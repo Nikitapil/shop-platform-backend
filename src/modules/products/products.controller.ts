@@ -39,7 +39,7 @@ import { GetFavoriteProductsDto } from './dto/GetFavoriteProductsDto';
 export class ProductsController {
   constructor(private productsService: ProductsService) {}
 
-  @ApiOperation({ summary: 'Create product' })
+  @ApiOperation({ summary: 'Create product', operationId: 'createProduct' })
   @ApiResponse({ status: 201, type: ProductReturnDto })
   @Post()
   @Roles([EUserRoles.ADMIN])
@@ -53,7 +53,7 @@ export class ProductsController {
     return this.productsService.createProduct({ dto, file, user });
   }
 
-  @ApiOperation({ summary: 'Edit product' })
+  @ApiOperation({ summary: 'Edit product', operationId: 'editProduct' })
   @ApiResponse({ status: 200, type: ProductReturnDto })
   @Put()
   @Roles([EUserRoles.ADMIN])
@@ -67,7 +67,7 @@ export class ProductsController {
     return this.productsService.editProduct({ dto, file, user });
   }
 
-  @ApiOperation({ summary: 'get products' })
+  @ApiOperation({ summary: 'get products', operationId: 'getProducts' })
   @ApiResponse({ status: 200, type: GetProductsReturnDto })
   @UseGuards(ApplyUserGuard)
   @Get()
@@ -78,7 +78,7 @@ export class ProductsController {
     return this.productsService.getProducts({ dto, user });
   }
 
-  @ApiOperation({ summary: 'get favorite products' })
+  @ApiOperation({ summary: 'get favorite products', operationId: 'getFavoriteProducts' })
   @ApiResponse({ status: 200, type: GetProductsReturnDto })
   @UseGuards(JwtGuard)
   @Get('favorites')
@@ -89,7 +89,7 @@ export class ProductsController {
     return this.productsService.getFavoritesProducts({ dto, user });
   }
 
-  @ApiOperation({ summary: 'Get product' })
+  @ApiOperation({ summary: 'Get product', operationId: 'getProduct' })
   @ApiResponse({ status: 200, type: ProductReturnDto })
   @UseGuards(ApplyUserGuard)
   @Get(':id')
@@ -100,7 +100,7 @@ export class ProductsController {
     return this.productsService.getProduct({ id, user });
   }
 
-  @ApiOperation({ summary: 'delete product' })
+  @ApiOperation({ summary: 'delete product', operationId: 'deleteProduct' })
   @ApiResponse({ status: 200, type: SuccessMessageDto })
   @Roles([EUserRoles.ADMIN])
   @Delete(':id')
@@ -108,7 +108,7 @@ export class ProductsController {
     return this.productsService.deleteProduct(id);
   }
 
-  @ApiOperation({ summary: 'toggle favorites' })
+  @ApiOperation({ summary: 'toggle favorites', operationId: 'toggleFavorites' })
   @ApiResponse({ status: 200, type: ToggleFavoriteReturnDto })
   @UseGuards(JwtGuard)
   @Patch('/favorites')

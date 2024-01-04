@@ -10,7 +10,7 @@ export class UserReturnDto {
   @ApiProperty({ description: 'user name', type: String })
   name: string;
 
-  @ApiProperty({ description: 'user role', type: ['ADMIN', 'USER'] })
+  @ApiProperty({ description: 'user role', type: [String], enum: ['ADMIN', 'USER'] })
   @ApiProperty()
   roles: string[];
 

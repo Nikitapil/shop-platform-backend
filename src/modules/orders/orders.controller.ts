@@ -27,7 +27,7 @@ import { OrderReturnDto } from '../../dtos-global/OrderReturnDto';
 export class OrdersController {
   constructor(private ordersService: OrdersService) {}
 
-  @ApiOperation({ summary: 'Create order' })
+  @ApiOperation({ summary: 'Create order', operationId: 'createOrder' })
   @ApiResponse({ status: 201, type: CreateOrderReturnDto })
   @UseGuards(JwtGuard)
   @Post()
@@ -38,7 +38,7 @@ export class OrdersController {
     return this.ordersService.createOrder({ dto, user });
   }
 
-  @ApiOperation({ summary: 'Get orders' })
+  @ApiOperation({ summary: 'Get orders', operationId: 'getOrders' })
   @ApiResponse({ status: 200, type: GetOrdersReturnDto })
   @UseGuards(JwtGuard)
   @Get()
@@ -49,7 +49,7 @@ export class OrdersController {
     return this.ordersService.getOrders({ dto, user });
   }
 
-  @ApiOperation({ summary: 'Get order by id' })
+  @ApiOperation({ summary: 'Get order by id', operationId: 'getOrderById' })
   @ApiResponse({ status: 200, type: OrderReturnDto })
   @UseGuards(JwtGuard)
   @Get(':id')
@@ -60,7 +60,7 @@ export class OrdersController {
     return this.ordersService.getSingleOrder({ orderId, user });
   }
 
-  @ApiOperation({ summary: 'Update order status' })
+  @ApiOperation({ summary: 'Update order status', operationId: 'updateOrderStatus' })
   @ApiResponse({ status: 200, type: SuccessMessageDto })
   @Roles([EUserRoles.ADMIN])
   @Put()
