@@ -40,7 +40,7 @@ import { ApplyUserGuard } from '../../guards/users/apply-user.guard';
 import { GetProductsReturnDto } from '../../dtos-global/GetProductsReturnDto';
 import { GetFavoriteProductsDto } from './dto/GetFavoriteProductsDto';
 import { CreateProductBody } from './dto/CreateProductBody';
-import {UpdateProductBody} from "./dto/UpdateProductBody";
+import { UpdateProductBody } from './dto/UpdateProductBody';
 
 @ApiTags('Products')
 @Controller('products')
