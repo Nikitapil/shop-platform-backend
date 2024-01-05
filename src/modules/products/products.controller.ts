@@ -19,7 +19,13 @@ import {
   getFileInterceptorOptions,
   getFileParsePipeWithTypeValidation
 } from '../../utils/files';
-import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import {
+  ApiBody,
+  ApiConsumes,
+  ApiOperation,
+  ApiResponse,
+  ApiTags
+} from '@nestjs/swagger';
 import { CreateProductDto } from './dto/CreateProductDto';
 import { ProductsService } from './products.service';
 import { ProductReturnDto } from '../../dtos-global/ProductReturnDto';
@@ -33,6 +39,8 @@ import { ToggleFavoriteReturnDto } from './dto/ToggleFavoriteReturnDto';
 import { ApplyUserGuard } from '../../guards/users/apply-user.guard';
 import { GetProductsReturnDto } from '../../dtos-global/GetProductsReturnDto';
 import { GetFavoriteProductsDto } from './dto/GetFavoriteProductsDto';
+import { CreateProductBody } from './dto/CreateProductBody';
+import {UpdateProductBody} from "./dto/UpdateProductBody";
 
 @ApiTags('Products')
 @Controller('products')
@@ -41,6 +49,11 @@ export class ProductsController {
 
   @ApiOperation({ summary: 'Create product', operationId: 'createProduct' })
   @ApiResponse({ status: 201, type: ProductReturnDto })
+  @ApiConsumes('multipart/form-data')
+  @ApiBody({
+    description: 'Create product body',
+    type: CreateProductBody
+  })
   @Post()
   @Roles([EUserRoles.ADMIN])
   @UseInterceptors(FileInterceptor('image', { ...getFileInterceptorOptions('products') }))
@@ -55,6 +68,11 @@ export class ProductsController {
 
   @ApiOperation({ summary: 'Edit product', operationId: 'editProduct' })
   @ApiResponse({ status: 200, type: ProductReturnDto })
+  @ApiConsumes('multipart/form-data')
+  @ApiBody({
+    description: 'Update product body',
+    type: UpdateProductBody
+  })
   @Put()
   @Roles([EUserRoles.ADMIN])
   @UseInterceptors(FileInterceptor('image', { ...getFileInterceptorOptions('products') }))
