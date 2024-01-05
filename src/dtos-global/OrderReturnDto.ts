@@ -1,5 +1,5 @@
 import { ProductInOrderReturnDto } from './ProductInOrderReturnDto';
-import { ApiProperty } from '@nestjs/swagger';
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { IOrderFromDb } from '../modules/orders/types';
 import { ProductReturnDto } from './ProductReturnDto';
 
@@ -16,7 +16,7 @@ export class OrderReturnDto {
   @ApiProperty({ description: 'order phone', type: String })
   phone: string;
 
-  @ApiProperty({ description: 'order comment', type: String, nullable: true })
+  @ApiPropertyOptional({ description: 'order comment', type: String, nullable: true })
   comment?: string;
 
   @ApiProperty({ description: 'order created date', type: String })

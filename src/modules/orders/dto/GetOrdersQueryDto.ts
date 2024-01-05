@@ -1,4 +1,4 @@
-import { ApiProperty } from '@nestjs/swagger';
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { IsEnum, IsNumber, IsOptional, IsString } from 'class-validator';
 import { Transform } from 'class-transformer';
 import { EOrderStatuses } from '../../../domain/orders';
@@ -18,7 +18,7 @@ export class GetOrdersQueryDto {
   })
   limit: number;
 
-  @ApiProperty({
+  @ApiPropertyOptional({
     description: 'orders by param',
     type: String,
     enum: ['updatedAt', 'createdAt'],
@@ -29,7 +29,7 @@ export class GetOrdersQueryDto {
   @IsOptional()
   order?: 'createdAt' | 'updatedAt';
 
-  @ApiProperty({
+  @ApiPropertyOptional({
     description: 'orders status',
     type: String,
     enum: ['CREATED', 'INPROGRESS', 'CANCELED', 'CLOSED'],

@@ -1,4 +1,4 @@
-import { ApiProperty } from '@nestjs/swagger';
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { IsEnum, IsNumber, IsOptional, IsString } from 'class-validator';
 import { Transform } from 'class-transformer';
 
@@ -17,22 +17,27 @@ export class GetProductsQueryDto {
   })
   limit: number;
 
-  @ApiProperty({ description: 'products categoryId', type: String })
+  @ApiPropertyOptional({
+    description: 'products categoryId',
+    type: String,
+    nullable: true
+  })
   @IsString()
   @IsOptional()
   categoryId?: string;
 
-  @ApiProperty({
+  @ApiPropertyOptional({
     description: 'price sorting direction',
     type: String,
-    enum: ['asc', 'desc']
+    enum: ['asc', 'desc'],
+    nullable: true
   })
   @IsString()
   @IsOptional()
   @IsEnum(['asc', 'desc'])
   priceSorting?: 'asc' | 'desc';
 
-  @ApiProperty({ description: 'search query', type: String })
+  @ApiPropertyOptional({ description: 'search query', type: String, nullable: true })
   @IsString()
   @IsOptional()
   search?: string;

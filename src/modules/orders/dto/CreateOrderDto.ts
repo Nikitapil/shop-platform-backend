@@ -1,4 +1,4 @@
-import { ApiProperty } from '@nestjs/swagger';
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { IsOptional, IsString } from 'class-validator';
 
 export class CreateOrderDto {
@@ -10,7 +10,7 @@ export class CreateOrderDto {
   @IsString()
   phone: string;
 
-  @ApiProperty({ description: 'order comment', type: String, nullable: true })
+  @ApiPropertyOptional({ description: 'order comment', type: String })
   @IsString()
   @IsOptional()
   comment?: string;
