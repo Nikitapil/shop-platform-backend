@@ -1,7 +1,7 @@
 import { CategoryReturnDto } from './CategoryReturnDto';
 import { ApiProperty } from '@nestjs/swagger';
 import { IProductFromDb, IRatingFromDb } from '../modules/products/types';
-import { IUserFromToken } from '../domain/users';
+import {EUserRoles, IUserFromToken} from '../domain/users';
 
 export class ProductReturnDto {
   @ApiProperty({ description: 'product id', type: String })
@@ -40,6 +40,12 @@ export class ProductReturnDto {
   @ApiProperty({ description: 'Can add review flag', type: Boolean })
   canAddReview: boolean;
 
+  @ApiProperty({ description: 'Can edit product flag', type: Boolean })
+  canEdit: boolean;
+
+  @ApiProperty({ description: 'Can delete product flag', type: Boolean })
+  canDelete: boolean;
+
   constructor(product: IProductFromDb, ratings?: IRatingFromDb[], user?: IUserFromToken) {
     this.id = product.id;
     this.name = product.name;
@@ -52,6 +58,8 @@ export class ProductReturnDto {
     this.category = product.category;
     this.isInFavorites = !!product.favoritesProductsOnUser.length;
     this.canAddReview = !product.reviews?.length && !!user;
+    this.canEdit = user.roles.includes(EUserRoles.ADMIN);
+    this.canDelete = user.roles.includes(EUserRoles.ADMIN);
 
     const rating = ratings?.find((rate) => rate.productId === product.id);
 
