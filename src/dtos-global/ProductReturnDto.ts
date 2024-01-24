@@ -58,8 +58,8 @@ export class ProductReturnDto {
     this.category = product.category;
     this.isInFavorites = !!product.favoritesProductsOnUser.length;
     this.canAddReview = !product.reviews?.length && !!user;
-    this.canEdit = user.roles.includes(EUserRoles.ADMIN);
-    this.canDelete = user.roles.includes(EUserRoles.ADMIN);
+    this.canEdit = user?.roles.includes(EUserRoles.ADMIN);
+    this.canDelete = user?.roles.includes(EUserRoles.ADMIN);
 
     const rating = ratings?.find((rate) => rate.productId === product.id);
 
