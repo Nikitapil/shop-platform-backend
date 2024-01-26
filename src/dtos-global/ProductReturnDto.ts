@@ -1,7 +1,7 @@
 import { CategoryReturnDto } from './CategoryReturnDto';
 import { ApiProperty } from '@nestjs/swagger';
 import { IProductFromDb, IRatingFromDb } from '../modules/products/types';
-import {EUserRoles, IUserFromToken} from '../domain/users';
+import { EUserRoles, IUserFromToken } from '../domain/users';
 
 export class ProductReturnDto {
   @ApiProperty({ description: 'product id', type: String })

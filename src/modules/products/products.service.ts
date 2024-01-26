@@ -161,6 +161,9 @@ export class ProductsService {
       where: { id },
       include: getProductInclude(user?.id)
     });
+    if (!product) {
+      throw new NotFoundException('Product not found');
+    }
     const ratings = await this.getProductsRatings([product.id]);
     return new ProductReturnDto(product, ratings, user);
   }
