@@ -15,7 +15,7 @@ import { ProductReviewsModule } from './modules/product-reviews/product-reviews.
     PrismaModule,
     ProductsModule,
     ServeStaticModule.forRoot({
-      rootPath: join(__dirname, 'static')
+      rootPath: join(__dirname, '..', 'static')
     }),
     CategoriesModule,
     CartModule,

@@ -20,7 +20,7 @@ export const getFileInterceptorOptions = (destination: string): MulterOptions =>
   return {
     storage: diskStorage({
       destination: (req, file, callback) => {
-        const filePath = path.resolve(__dirname, '..', 'static', destination);
+        const filePath = path.resolve(__dirname, '..', '..', 'static', destination);
         if (!existsSync(filePath)) {
           mkdirSync(filePath, { recursive: true });
         }
