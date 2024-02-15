@@ -270,7 +270,7 @@ export class ProductsService {
 
     try {
       return {
-        products: products.map((product) => new ProductReturnDto(product, ratings)),
+        products: products.map((product) => new ProductReturnDto(product, ratings, user)),
         totalCount
       };
     } catch (e) {

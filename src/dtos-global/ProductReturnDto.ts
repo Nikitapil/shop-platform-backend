@@ -46,6 +46,9 @@ export class ProductReturnDto {
   @ApiProperty({ description: 'Can delete product flag', type: Boolean })
   canDelete: boolean;
 
+  @ApiProperty({ description: 'Can add to favourites', type: Boolean })
+  canAddToFavourites: boolean;
+
   constructor(product: IProductFromDb, ratings?: IRatingFromDb[], user?: IUserFromToken) {
     this.id = product.id;
     this.name = product.name;
@@ -60,6 +63,7 @@ export class ProductReturnDto {
     this.canAddReview = !product.reviews?.length && !!user;
     this.canEdit = user?.roles.includes(EUserRoles.ADMIN);
     this.canDelete = user?.roles.includes(EUserRoles.ADMIN);
+    this.canAddToFavourites = !!user;
 
     const rating = ratings?.find((rate) => rate.productId === product.id);
 
