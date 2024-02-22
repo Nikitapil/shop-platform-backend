@@ -1,4 +1,4 @@
-import { ApiProperty } from '@nestjs/swagger';
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 
 export class UserReturnDto {
   @ApiProperty({ description: 'user id', type: String })
@@ -11,10 +11,14 @@ export class UserReturnDto {
   name: string;
 
   @ApiProperty({ description: 'user role', type: [String], enum: ['ADMIN', 'USER'] })
-  @ApiProperty()
   roles: string[];
 
   @ApiProperty({ description: 'user cartId', type: String })
-  @ApiProperty()
   cartId: string;
+
+  @ApiPropertyOptional({ description: 'user address', type: String, nullable: true })
+  address?: string;
+
+  @ApiPropertyOptional({ description: 'user phone', type: String, nullable: true })
+  phone?: string;
 }

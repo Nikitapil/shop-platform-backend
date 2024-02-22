@@ -5,5 +5,7 @@ export const safeUserSelect: Prisma.UserSelect = {
   email: true,
   name: true,
   roles: true,
-  cartId: true
+  cartId: true,
+  address: true,
+  phone: true
 };
