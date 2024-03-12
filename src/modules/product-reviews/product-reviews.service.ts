@@ -79,6 +79,9 @@ export class ProductReviewsService {
         productId: dto.productId
       },
       include: reviewInclude,
+      orderBy: {
+        createdAt: 'desc'
+      },
       take: dto.limit,
       skip: offset
     });
