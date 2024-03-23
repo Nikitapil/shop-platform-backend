@@ -2,6 +2,7 @@ import { ProductInOrderReturnDto } from './ProductInOrderReturnDto';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { IOrderFromDb } from '../modules/orders/types';
 import { ProductReturnDto } from './ProductReturnDto';
+import { UserReturnDto } from './UserReturnDto';
 
 export class OrderReturnDto {
   @ApiProperty({ description: 'order id', type: String })
@@ -38,6 +39,9 @@ export class OrderReturnDto {
   @ApiProperty({ description: 'order products', type: [ProductInOrderReturnDto] })
   productsInOrder: ProductInOrderReturnDto[];
 
+  @ApiProperty({ description: 'order user', type: UserReturnDto })
+  user?: UserReturnDto;
+
   @ApiProperty({ description: 'order cancel reason', type: String, nullable: true })
   cancelReason?: string;
 
@@ -52,6 +56,7 @@ export class OrderReturnDto {
     this.price = order.price;
     this.status = order.status;
     this.cancelReason = order.cancelReason || null;
+    this.user = order.user;
     this.productsInOrder = order.productsInOrder.map((productInOrder) => ({
       ...productInOrder,
       product: new ProductReturnDto(productInOrder.product)
