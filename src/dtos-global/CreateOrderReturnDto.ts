@@ -17,8 +17,8 @@ export class CreateOrderReturnDto {
   })
   cart: CartReturnDto;
 
-  constructor(order: IOrderFromDb, cart: ICartFromDb) {
-    this.order = new OrderReturnDto(order);
+  constructor(order: IOrderFromDb, cart: ICartFromDb, user) {
+    this.order = new OrderReturnDto(order, user);
     this.cart = new CartReturnDto(cart);
   }
 }

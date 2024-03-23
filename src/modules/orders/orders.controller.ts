@@ -13,11 +13,10 @@ import { OrdersService } from './orders.service';
 import { JwtGuard } from '../../guards/auth/jwt.guard';
 import { CreateOrderDto } from './dto/CreateOrderDto';
 import { User } from '../../decorators/User.decorator';
-import { EUserRoles, IUserFromToken } from '../../domain/users';
+import { IUserFromToken } from '../../domain/users';
 import { CreateOrderReturnDto } from '../../dtos-global/CreateOrderReturnDto';
 import { GetOrdersQueryDto } from './dto/GetOrdersQueryDto';
 import { GetOrdersReturnDto } from '../../dtos-global/GetOrdersReturnDto';
-import { Roles } from '../../decorators/Roles.decorator';
 import { UpdateOrderStatusDto } from './dto/UpdateOrderStatusDto';
 import { SuccessMessageDto } from '../../dtos-global/SuccessMessageDto';
 import { OrderReturnDto } from '../../dtos-global/OrderReturnDto';
@@ -62,9 +61,12 @@ export class OrdersController {
 
   @ApiOperation({ summary: 'Update order status', operationId: 'updateOrderStatus' })
   @ApiResponse({ status: 200, type: SuccessMessageDto })
-  @Roles([EUserRoles.ADMIN])
+  @UseGuards(JwtGuard)
   @Put()
-  updateOrderStatus(@Body() dto: UpdateOrderStatusDto): Promise<SuccessMessageDto> {
-    return this.ordersService.updateOrderStatus({ dto });
+  updateOrderStatus(
+    @Body() dto: UpdateOrderStatusDto,
+    @User() user: IUserFromToken
+  ): Promise<SuccessMessageDto> {
+    return this.ordersService.updateOrderStatus({ dto, user });
   }
 }

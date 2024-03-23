@@ -6,7 +6,7 @@ export enum EUserRoles {
 export interface IUserFromToken {
   id: string;
   email: string;
-  roles: string[];
+  roles: EUserRoles[];
   cartId: string;
 }
 

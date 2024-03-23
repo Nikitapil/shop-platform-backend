@@ -3,7 +3,7 @@ import { IUserFromToken } from '../../domain/users';
 import { IProductFromDb } from '../products/types';
 import { GetOrdersQueryDto } from './dto/GetOrdersQueryDto';
 import { UpdateOrderStatusDto } from './dto/UpdateOrderStatusDto';
-import {UserReturnDto} from "../../dtos-global/UserReturnDto";
+import { UserReturnDto } from '../../dtos-global/UserReturnDto';
 
 export interface ICreateOrderParams {
   dto: CreateOrderDto;
@@ -17,6 +17,7 @@ export interface IGetOrdersParams {
 
 export interface IUpdateOrderStatusParams {
   dto: UpdateOrderStatusDto;
+  user: IUserFromToken;
 }
 
 export interface IGetSingleOrderParams {

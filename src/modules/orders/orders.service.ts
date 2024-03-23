@@ -71,7 +71,7 @@ export class OrdersService {
         include: getCartInclude(user.id)
       });
 
-      return new CreateOrderReturnDto(order, emptyCart);
+      return new CreateOrderReturnDto(order, emptyCart, user);
     } catch (e) {
       throw new BadRequestException('Error while creating an order');
     }
@@ -104,19 +104,26 @@ export class OrdersService {
         where
       });
 
-      return { orders: orders.map((order) => new OrderReturnDto(order)), totalCount };
+      return {
+        orders: orders.map((order) => new OrderReturnDto(order, user)),
+        totalCount
+      };
     } catch (e) {
       throw new BadRequestException('Error while getting orders');
     }
   }
 
-  async updateOrderStatus({ dto }: IUpdateOrderStatusParams) {
+  async updateOrderStatus({ dto, user }: IUpdateOrderStatusParams) {
     const order = await this.prisma.order.findUnique({
       where: { id: dto.id }
     });
 
     if (!order) {
       throw new NotFoundException('Order not found');
+    }
+
+    if (order.userId !== user.id && !user.roles.includes(EUserRoles.ADMIN)) {
+      throw new NotAcceptableException('Permission denied');
     }
 
     if (dto.status === EOrderStatuses.CANCELED && !dto.cancelReason) {
@@ -157,6 +164,6 @@ export class OrdersService {
       throw new NotAcceptableException('Permission denied');
     }
 
-    return new OrderReturnDto(order);
+    return new OrderReturnDto(order, user);
   }
 }

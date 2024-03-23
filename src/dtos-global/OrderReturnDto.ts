@@ -3,6 +3,7 @@ import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { IOrderFromDb } from '../modules/orders/types';
 import { ProductReturnDto } from './ProductReturnDto';
 import { UserReturnDto } from './UserReturnDto';
+import { EUserRoles, IUserFromToken } from '../domain/users';
 
 export class OrderReturnDto {
   @ApiProperty({ description: 'order id', type: String })
@@ -39,13 +40,19 @@ export class OrderReturnDto {
   @ApiProperty({ description: 'order products', type: [ProductInOrderReturnDto] })
   productsInOrder: ProductInOrderReturnDto[];
 
+  @ApiProperty({ description: 'can change status', type: Boolean })
+  canChangeStatus: boolean;
+
+  @ApiProperty({ description: 'can change status', type: Boolean })
+  canCancel: boolean;
+
   @ApiProperty({ description: 'order user', type: UserReturnDto })
   user?: UserReturnDto;
 
   @ApiProperty({ description: 'order cancel reason', type: String, nullable: true })
   cancelReason?: string;
 
-  constructor(order: IOrderFromDb) {
+  constructor(order: IOrderFromDb, user: IUserFromToken) {
     this.id = order.id;
     this.userId = order.userId;
     this.address = order.address;
@@ -61,5 +68,7 @@ export class OrderReturnDto {
       ...productInOrder,
       product: new ProductReturnDto(productInOrder.product)
     }));
+    this.canChangeStatus = user.roles.includes(EUserRoles.ADMIN);
+    this.canCancel = order.userId === user.id;
   }
 }
