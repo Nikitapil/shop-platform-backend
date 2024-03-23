@@ -1,4 +1,5 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
+import { EUserRoles } from '../domain/users';
 
 export class UserReturnDto {
   @ApiProperty({ description: 'user id', type: String })
