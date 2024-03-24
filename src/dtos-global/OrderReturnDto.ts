@@ -76,24 +76,16 @@ export class OrderReturnDto {
       product: new ProductReturnDto(productInOrder.product)
     }));
     this.canCancel =
-      this.checkIsOwnerOrAdmin(order, user) &&
-      order.status !== EOrderStatuses.CLOSED &&
-      order.status !== EOrderStatuses.CANCELED;
+      this.checkIsOwnerOrAdmin(order, user) && order.status !== EOrderStatuses.CLOSED;
 
     this.canSetInProgress =
-      this.checkIsAdmin(user) &&
-      order.status !== EOrderStatuses.CLOSED &&
-      order.status !== EOrderStatuses.INPROGRESS;
+      this.checkIsAdmin(user) && order.status !== EOrderStatuses.CLOSED;
 
     this.canSetCreated =
-      this.checkIsAdmin(user) &&
-      order.status !== EOrderStatuses.CLOSED &&
-      order.status !== EOrderStatuses.CREATED;
+      this.checkIsAdmin(user) && order.status !== EOrderStatuses.CLOSED;
 
     this.canSetClosed =
-      this.checkIsAdmin(user) &&
-      order.status !== EOrderStatuses.CLOSED &&
-      order.status !== EOrderStatuses.CANCELED;
+      this.checkIsAdmin(user) && order.status !== EOrderStatuses.CANCELED;
   }
 
   // TODO add this method to global methods
