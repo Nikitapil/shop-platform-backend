@@ -4,6 +4,7 @@ import { IOrderFromDb } from '../modules/orders/types';
 import { ProductReturnDto } from './ProductReturnDto';
 import { UserReturnDto } from './UserReturnDto';
 import { EUserRoles, IUserFromToken } from '../domain/users';
+import { EOrderStatuses } from '../domain/orders';
 
 export class OrderReturnDto {
   @ApiProperty({ description: 'order id', type: String })
@@ -40,11 +41,17 @@ export class OrderReturnDto {
   @ApiProperty({ description: 'order products', type: [ProductInOrderReturnDto] })
   productsInOrder: ProductInOrderReturnDto[];
 
-  @ApiProperty({ description: 'can change status', type: Boolean })
-  canChangeStatus: boolean;
-
-  @ApiProperty({ description: 'can change status', type: Boolean })
+  @ApiProperty({ description: 'can cancel', type: Boolean })
   canCancel: boolean;
+
+  @ApiProperty({ description: 'can set order status in progress', type: Boolean })
+  canSetInProgress: boolean;
+
+  @ApiProperty({ description: 'can set order status to created', type: Boolean })
+  canSetCreated: boolean;
+
+  @ApiProperty({ description: 'can set order status to closed', type: Boolean })
+  canSetClosed: boolean;
 
   @ApiProperty({ description: 'order user', type: UserReturnDto })
   user?: UserReturnDto;
@@ -68,7 +75,33 @@ export class OrderReturnDto {
       ...productInOrder,
       product: new ProductReturnDto(productInOrder.product)
     }));
-    this.canChangeStatus = user.roles.includes(EUserRoles.ADMIN);
-    this.canCancel = order.userId === user.id;
+    this.canCancel =
+      this.checkIsOwnerOrAdmin(order, user) &&
+      order.status !== EOrderStatuses.CLOSED &&
+      order.status !== EOrderStatuses.CANCELED;
+
+    this.canSetInProgress =
+      this.checkIsAdmin(user) &&
+      order.status !== EOrderStatuses.CLOSED &&
+      order.status !== EOrderStatuses.INPROGRESS;
+
+    this.canSetCreated =
+      this.checkIsAdmin(user) &&
+      order.status !== EOrderStatuses.CLOSED &&
+      order.status !== EOrderStatuses.CREATED;
+
+    this.canSetClosed =
+      this.checkIsAdmin(user) &&
+      order.status !== EOrderStatuses.CLOSED &&
+      order.status !== EOrderStatuses.CANCELED;
+  }
+
+  // TODO add this method to global methods
+  private checkIsAdmin(user: IUserFromToken) {
+    return user.roles.includes(EUserRoles.ADMIN);
+  }
+
+  private checkIsOwnerOrAdmin(order: IOrderFromDb, user: IUserFromToken) {
+    return order.id === user.id || this.checkIsAdmin(user);
   }
 }
