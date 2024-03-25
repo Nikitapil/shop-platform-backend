@@ -94,6 +94,6 @@ export class OrderReturnDto {
   }
 
   private checkIsOwnerOrAdmin(order: IOrderFromDb, user: IUserFromToken) {
-    return order.id === user.id || this.checkIsAdmin(user);
+    return order.userId === user.id || this.checkIsAdmin(user);
   }
 }
