@@ -5,6 +5,7 @@ import { ProductReturnDto } from './ProductReturnDto';
 import { UserReturnDto } from './UserReturnDto';
 import { EUserRoles, IUserFromToken } from '../domain/users';
 import { EOrderStatuses } from '../domain/orders';
+import {OrderStatusEnum} from "./OrderStatusEnum";
 
 export class OrderReturnDto {
   @ApiProperty({ description: 'order id', type: String })
@@ -34,7 +35,8 @@ export class OrderReturnDto {
   @ApiProperty({
     description: 'order status',
     type: String,
-    enum: ['CREATED', 'INPROGRESS', 'CANCELED', 'CLOSED']
+    enum: OrderStatusEnum,
+    enumName: 'OrderStatusEnum'
   })
   status: string;
 

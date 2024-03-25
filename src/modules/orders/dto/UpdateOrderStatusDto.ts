@@ -1,6 +1,7 @@
 import { EOrderStatuses } from '../../../domain/orders';
 import { IsEnum, IsNotEmpty, IsOptional, IsString } from 'class-validator';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
+import { OrderStatusEnum } from '../../../dtos-global/OrderStatusEnum';
 
 export class UpdateOrderStatusDto {
   @ApiProperty({ description: 'Order id', type: String })
@@ -11,14 +12,15 @@ export class UpdateOrderStatusDto {
   @ApiProperty({
     description: 'New order status',
     type: String,
-    enum: ['CREATED', 'INPROGRESS', 'CANCELED', 'CLOSED']
+    enum: OrderStatusEnum,
+    enumName: 'OrderStatusEnum'
   })
   @IsString()
   @IsEnum(['CREATED', 'INPROGRESS', 'CANCELED', 'CLOSED'])
   status: EOrderStatuses;
 
   @ApiPropertyOptional({
-    description: 'cance reason if status is canceled',
+    description: 'cancel reason if status is canceled',
     type: String,
     nullable: true
   })

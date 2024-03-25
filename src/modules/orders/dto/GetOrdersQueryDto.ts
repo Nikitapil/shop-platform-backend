@@ -2,6 +2,7 @@ import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { IsEnum, IsNumber, IsOptional, IsString } from 'class-validator';
 import { Transform } from 'class-transformer';
 import { EOrderStatuses } from '../../../domain/orders';
+import { OrderStatusEnum } from '../../../dtos-global/OrderStatusEnum';
 
 export class GetOrdersQueryDto {
   @ApiProperty({ description: 'Page number', type: Number })
@@ -32,7 +33,8 @@ export class GetOrdersQueryDto {
   @ApiPropertyOptional({
     description: 'orders status',
     type: String,
-    enum: ['CREATED', 'INPROGRESS', 'CANCELED', 'CLOSED'],
+    enum: OrderStatusEnum,
+    enumName: 'OrderStatusEnum',
     nullable: true
   })
   @IsString()
