@@ -5,7 +5,7 @@ import { ProductReturnDto } from './ProductReturnDto';
 import { UserReturnDto } from './UserReturnDto';
 import { EUserRoles, IUserFromToken } from '../domain/users';
 import { EOrderStatuses } from '../domain/orders';
-import {OrderStatusEnum} from "./OrderStatusEnum";
+import { OrderStatusEnum } from './OrderStatusEnum';
 
 export class OrderReturnDto {
   @ApiProperty({ description: 'order id', type: String })
@@ -87,7 +87,9 @@ export class OrderReturnDto {
       this.checkIsAdmin(user) && order.status !== EOrderStatuses.CLOSED;
 
     this.canSetClosed =
-      this.checkIsAdmin(user) && order.status !== EOrderStatuses.CANCELED;
+      this.checkIsAdmin(user) &&
+      order.status !== EOrderStatuses.CANCELED &&
+      order.status !== EOrderStatuses.CLOSED;
   }
 
   // TODO add this method to global methods
