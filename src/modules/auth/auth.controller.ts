@@ -22,6 +22,7 @@ import { JwtGuard } from '../../guards/auth/jwt.guard';
 import { UpdateUserDataDto } from './dto/UpdateUserDataDto';
 import { User } from '../../decorators/User.decorator';
 import { IUserFromToken } from '../../domain/users';
+import { ChangePasswordDto } from './dto/ChangePasswordDto';
 
 @ApiTags('Auth')
 @Controller('auth')
@@ -108,6 +109,27 @@ export class AuthController {
     @Res({ passthrough: true }) response: Response
   ): Promise<AuthResponseDto> {
     const { refreshToken, user, accessToken } = await this.authService.updateUserData({
+      dto,
+      user: userFromToken
+    });
+
+    this.setRefreshToken(response, refreshToken);
+    return {
+      user,
+      accessToken
+    };
+  }
+
+  @ApiOperation({ summary: 'change password', operationId: 'changePassword' })
+  @ApiResponse({ status: 200, type: AuthResponseDto })
+  @UseGuards(JwtGuard)
+  @Put('/password')
+  async changePassword(
+    @Body() dto: ChangePasswordDto,
+    @User() userFromToken: IUserFromToken,
+    @Res({ passthrough: true }) response: Response
+  ): Promise<AuthResponseDto> {
+    const { refreshToken, user, accessToken } = await this.authService.changePassword({
       dto,
       user: userFromToken
     });

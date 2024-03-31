@@ -16,7 +16,7 @@ import { LoginDto } from './dto/LoginDto';
 import { safeUserSelect } from '../../db-query-options/user-options';
 import { SuccessMessageDto } from '../../dtos-global/SuccessMessageDto';
 import { EUserRoles, IUserFromToken } from '../../domain/users';
-import { IUpdateUserDataParams } from './types';
+import { IChangePasswordParams, IUpdateUserDataParams } from './types';
 
 @Injectable()
 export class AuthService {
@@ -130,6 +130,37 @@ export class AuthService {
       return await this.generateUserDataWithTokens(updatedUser);
     } catch (e) {
       throw new HttpException({ message: e.message || 'update user error' }, 400);
+    }
+  }
+
+  async changePassword({ dto, user }: IChangePasswordParams) {
+    try {
+      const { password } = await this.prisma.user.findUnique({
+        where: { id: user.id },
+        select: {
+          password: true
+        }
+      });
+
+      const isPasswordValid = await bcrypt.compare(dto.oldPassword, password);
+
+      if (!isPasswordValid) {
+        throw new HttpException({ message: 'Wrong password' }, 400);
+      }
+
+      const updatedPassword = await bcrypt.hash(dto.newPassword, 5);
+
+      const updatedUser = await this.prisma.user.update({
+        where: { id: user.id },
+        data: {
+          password: updatedPassword
+        },
+        select: { ...safeUserSelect }
+      });
+
+      return await this.generateUserDataWithTokens(updatedUser);
+    } catch (e) {
+      throw new HttpException({ message: e.message || 'change password error' }, 400);
     }
   }
 
