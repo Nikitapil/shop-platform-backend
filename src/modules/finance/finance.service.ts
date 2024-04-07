@@ -14,7 +14,7 @@ export class FinanceService {
           tax: true
         }
       });
-      console.log('settings', settings);
+
       if (!settings) {
         settings = await this.prismaService.financeSettings.create({
           select: {

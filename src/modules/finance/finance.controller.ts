@@ -11,7 +11,6 @@ export class FinanceController {
   @ApiResponse({ status: 200, type: FinanceSettingsReturnDto })
   @Get('/settings')
   getFinanceSettings(): Promise<FinanceSettingsReturnDto> {
-    console.log('here')
     return this.financeService.getFinanceSettings();
   }
 }
