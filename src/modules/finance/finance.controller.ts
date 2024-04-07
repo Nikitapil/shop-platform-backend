@@ -1,7 +1,8 @@
-import { Controller, Get } from '@nestjs/common';
+import { Body, Controller, Get, Put } from '@nestjs/common';
 import { FinanceService } from './finance.service';
 import { ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { FinanceSettingsReturnDto } from './dto/FinanceSettingsReturnDto';
+import { SetTaxDto } from './dto/SetTaxDto';
 
 @Controller('finance')
 export class FinanceController {
@@ -12,5 +13,12 @@ export class FinanceController {
   @Get('/settings')
   getFinanceSettings(): Promise<FinanceSettingsReturnDto> {
     return this.financeService.getFinanceSettings();
+  }
+
+  @ApiOperation({ summary: 'Set new tax value', operationId: 'setTaxValue' })
+  @ApiResponse({ status: 200, type: FinanceSettingsReturnDto })
+  @Put('/settings/tax')
+  setTax(@Body() dto: SetTaxDto) {
+    return this.financeService.setTax(dto);
   }
 }
