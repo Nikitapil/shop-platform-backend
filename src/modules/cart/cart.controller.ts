@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Put, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Patch, Put, UseGuards } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { JwtGuard } from '../../guards/auth/jwt.guard';
 import { AddToCartDto } from './dto/AddToCartDto';
@@ -41,5 +41,13 @@ export class CartController {
   @Get()
   getCart(@User() user: IUserFromToken): Promise<CartReturnDto> {
     return this.cartService.getCart(user);
+  }
+
+  @ApiOperation({ summary: 'Clear cart', operationId: 'clearCart' })
+  @ApiResponse({ status: 200, type: CartReturnDto })
+  @UseGuards(JwtGuard)
+  @Patch('/clear')
+  clearCart(@User() user: IUserFromToken) {
+    return this.cartService.clearCart(user);
   }
 }

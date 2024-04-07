@@ -121,4 +121,24 @@ export class CartService {
       throw new BadRequestException(e.message || 'Error while loading cart');
     }
   }
+
+  async clearCart(user: IUserFromToken) {
+    try {
+      const cart = await this.prisma.cart.update({
+        where: { id: user.cartId },
+        data: {
+          productInCart: {
+            deleteMany: {
+              cartId: user.cartId
+            }
+          },
+          price: 0
+        },
+        include: getCartInclude(user.id)
+      });
+      return new CartReturnDto(cart);
+    } catch (e) {
+      throw new BadRequestException(e.message || 'Error while loading cart');
+    }
+  }
 }
