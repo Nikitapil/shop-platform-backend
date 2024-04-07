@@ -168,3 +168,8 @@ model ProductReview {
 
   @@unique([productId, userId], name: "unique_key")
 }
+
+model FinanceSettings {
+  id  String @id @default("Finance_Settings")
+  tax Int    @default(5)
+}
