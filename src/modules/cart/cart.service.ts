@@ -5,10 +5,11 @@ import { Prisma } from '@prisma/client';
 import { IUserFromToken } from '../../domain/users';
 import { getCartInclude } from '../../db-query-options/cart-options';
 import { CartReturnDto } from '../../dtos-global/CartReturnDto';
+import { SharedService } from '../shared/shared.service';
 
 @Injectable()
 export class CartService {
-  constructor(private prisma: PrismaService) {}
+  constructor(private prisma: PrismaService, private sharedService: SharedService) {}
 
   async addToCart({ dto, user }: IAddToCartParams) {
     const { cartId } = user;
