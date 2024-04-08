@@ -1,6 +1,6 @@
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
-import { IAddToCartParams, IRemoveFromCartParams } from './types';
+import { IAddToCartParams, ICartFromDb, IRemoveFromCartParams } from './types';
 import { Prisma } from '@prisma/client';
 import { IUserFromToken } from '../../domain/users';
 import { getCartInclude } from '../../db-query-options/cart-options';
@@ -52,7 +52,7 @@ export class CartService {
         },
         include: getCartInclude(user.id)
       });
-      return new CartReturnDto(cart);
+      return await this.createCartReturnDto(cart);
     } catch (e) {
       throw new BadRequestException(e.message || 'Error while adding product to cart');
     }
@@ -105,7 +105,7 @@ export class CartService {
         include: getCartInclude(user.id)
       });
 
-      return new CartReturnDto(cart);
+      return await this.createCartReturnDto(cart);
     } catch (e) {
       throw new BadRequestException(e.message || 'Error while adding product to cart');
     }
@@ -117,7 +117,7 @@ export class CartService {
         where: { id: user.cartId },
         include: getCartInclude(user.id)
       });
-      return new CartReturnDto(cart);
+      return await this.createCartReturnDto(cart);
     } catch (e) {
       throw new BadRequestException(e.message || 'Error while loading cart');
     }
@@ -137,7 +137,16 @@ export class CartService {
         },
         include: getCartInclude(user.id)
       });
-      return new CartReturnDto(cart);
+      return await this.createCartReturnDto(cart);
+    } catch (e) {
+      throw new BadRequestException(e.message || 'Error while loading cart');
+    }
+  }
+
+  private async createCartReturnDto(cart: ICartFromDb) {
+    try {
+      const { tax } = await this.sharedService.getFinanceSettings();
+      return new CartReturnDto(cart, tax);
     } catch (e) {
       throw new BadRequestException(e.message || 'Error while loading cart');
     }

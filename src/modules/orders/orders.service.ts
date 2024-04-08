@@ -20,10 +20,11 @@ import { Prisma } from '@prisma/client';
 import { getOffset } from '../../utils/pagination';
 import { OrderReturnDto } from '../../dtos-global/OrderReturnDto';
 import { SuccessMessageDto } from '../../dtos-global/SuccessMessageDto';
+import { SharedService } from '../shared/shared.service';
 
 @Injectable()
 export class OrdersService {
-  constructor(private prisma: PrismaService) {}
+  constructor(private prisma: PrismaService, private sharedService: SharedService) {}
 
   async createOrder({ dto, user }: ICreateOrderParams) {
     const cart = await this.prisma.cart.findUnique({
@@ -70,8 +71,8 @@ export class OrdersService {
         },
         include: getCartInclude(user.id)
       });
-
-      return new CreateOrderReturnDto(order, emptyCart, user);
+      const { tax } = await this.sharedService.getFinanceSettings();
+      return new CreateOrderReturnDto({ order, user, tax, cart: emptyCart });
     } catch (e) {
       throw new BadRequestException('Error while creating an order');
     }

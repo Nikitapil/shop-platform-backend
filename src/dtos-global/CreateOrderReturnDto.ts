@@ -3,6 +3,14 @@ import { CartReturnDto } from './CartReturnDto';
 import { IOrderFromDb } from '../modules/orders/types';
 import { ICartFromDb } from '../modules/cart/types';
 import { ApiProperty } from '@nestjs/swagger';
+import { IUserFromToken } from '../domain/users';
+
+interface ICreateOrderReturnDtoParams {
+  order: IOrderFromDb;
+  cart: ICartFromDb;
+  user: IUserFromToken;
+  tax: number;
+}
 
 export class CreateOrderReturnDto {
   @ApiProperty({
@@ -17,8 +25,8 @@ export class CreateOrderReturnDto {
   })
   cart: CartReturnDto;
 
-  constructor(order: IOrderFromDb, cart: ICartFromDb, user) {
+  constructor({ order, cart, user, tax }: ICreateOrderReturnDtoParams) {
     this.order = new OrderReturnDto(order, user);
-    this.cart = new CartReturnDto(cart);
+    this.cart = new CartReturnDto(cart, tax);
   }
 }

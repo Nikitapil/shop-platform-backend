@@ -17,13 +17,13 @@ export class CartReturnDto {
   @ApiProperty({ description: 'Sum of tax', type: Number })
   taxSum: number;
 
-  constructor(cart: ICartFromDb) {
+  constructor(cart: ICartFromDb, tax: number) {
     this.id = cart.id;
     this.price = cart.price;
     this.productInCart = cart.productInCart.map((cartProduct) => ({
       ...cartProduct,
       product: new ProductReturnDto(cartProduct.product)
     }));
-    this.taxSum = getTaxSum(cart.price);
+    this.taxSum = getTaxSum(cart.price, tax);
   }
 }

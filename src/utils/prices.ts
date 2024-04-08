@@ -1,3 +1,1 @@
-const TAX = 0.05;
-
-export const getTaxSum = (price: number) => price * TAX;
+export const getTaxSum = (price: number, tax) => price * (tax / 100);
