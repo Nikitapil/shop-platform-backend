@@ -77,6 +77,8 @@ model Product {
   favoritesProductsOnUser FavoritesProductsOnUser[]
   productsInOrder         ProductInOrder[]
   reviews                 ProductReview[]
+  Discount                Discount?                 @relation(fields: [discountId], references: [id], onUpdate: Cascade, onDelete: SetNull)
+  discountId              String?
 }
 
 model Cart {
@@ -172,4 +174,14 @@ model ProductReview {
 model FinanceSettings {
   id  String @id @default("Finance_Settings")
   tax Int    @default(5)
+}
+
+model Discount {
+  id String @id @default(uuid())
+
+  products Product[]
+
+  percentage Int
+
+  name String
 }

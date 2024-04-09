@@ -10,6 +10,7 @@ import { OrdersModule } from './modules/orders/orders.module';
 import { ProductReviewsModule } from './modules/product-reviews/product-reviews.module';
 import { FinanceModule } from './modules/finance/finance.module';
 import { SharedModule } from './modules/shared/shared.module';
+import { DiscountsModule } from './modules/discounts/discounts.module';
 
 @Module({
   imports: [
@@ -24,7 +25,8 @@ import { SharedModule } from './modules/shared/shared.module';
     OrdersModule,
     ProductReviewsModule,
     FinanceModule,
-    SharedModule
+    SharedModule,
+    DiscountsModule
   ]
 })
 export class AppModule {}
