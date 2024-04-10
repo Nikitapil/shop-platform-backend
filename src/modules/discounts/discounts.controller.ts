@@ -28,12 +28,23 @@ export class DiscountsController {
     return this.discountsService.createDiscount({ dto, user });
   }
 
-  @ApiOperation({ summary: 'Get discounts', operationId: 'getDiscount' })
+  @ApiOperation({ summary: 'Get discounts', operationId: 'getDiscounts' })
   @ApiResponse({ status: 200, type: [DiscountReturnDto] })
   @UseGuards(ApplyUserGuard)
   @Get()
   getDiscounts(@User() user?: IUserFromToken): Promise<DiscountReturnDto[]> {
     return this.discountsService.getDiscounts(user);
+  }
+
+  @ApiOperation({ summary: 'Get discount', operationId: 'getSingleDiscount' })
+  @ApiResponse({ status: 200, type: DiscountReturnDto })
+  @UseGuards(ApplyUserGuard)
+  @Get(':id')
+  getSingleDiscount(
+    @Param('id') id: string,
+    @User() user?: IUserFromToken
+  ): Promise<DiscountReturnDto> {
+    return this.discountsService.getSingleDiscount(id, user);
   }
 
   @ApiOperation({ summary: 'Delete discounts', operationId: 'deleteDiscount' })

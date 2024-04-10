@@ -9,6 +9,7 @@ import { IUserFromToken } from '../../domain/users';
 
 import { DiscountReturnDto } from './dto/DiscountReturnDto';
 import { SuccessMessageDto } from '../../dtos-global/SuccessMessageDto';
+import { HttpException } from '@nestjs/common/exceptions/http.exception';
 
 @Injectable()
 export class DiscountsService {
@@ -33,6 +34,24 @@ export class DiscountsService {
       });
       return discounts.map((discount) => new DiscountReturnDto(discount));
     } catch (e) {
+      throw new BadRequestException(e.message || 'Error while updating tax');
+    }
+  }
+
+  async getSingleDiscount(id: string, user?: IUserFromToken) {
+    try {
+      const discount = await this.prismaService.discount.findUnique({
+        where: { id },
+        include: getDiscountsInclude(user?.id)
+      });
+      if (!discount) {
+        throw new NotFoundException('Discount not found');
+      }
+      return new DiscountReturnDto(discount);
+    } catch (e) {
+      if (e instanceof HttpException) {
+        throw e;
+      }
       throw new BadRequestException(e.message || 'Error while updating tax');
     }
   }
