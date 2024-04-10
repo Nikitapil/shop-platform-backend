@@ -65,7 +65,7 @@ export interface IProductFromDb {
   createdAt: Date;
   updatedAt: Date;
   category: CategoryReturnDto;
-  Discount: ProductDiscountReturnDto | null;
+  discount: ProductDiscountReturnDto | null;
   favoritesProductsOnUser: IFavoritesProductsOnUser[];
   reviews: IProductReview[];
 }

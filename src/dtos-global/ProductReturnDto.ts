@@ -50,6 +50,12 @@ export class ProductReturnDto {
   @ApiProperty({ description: 'Can add to favourites', type: Boolean })
   canAddToFavourites: boolean;
 
+  @ApiProperty({ description: 'Can add discount', type: Boolean })
+  canAddDiscount: boolean;
+
+  @ApiProperty({ description: 'Can remove discount', type: Boolean })
+  canRemoveDiscount: boolean;
+
   @ApiProperty({
     description: 'Product discount',
     type: ProductDiscountReturnDto,
@@ -69,10 +75,12 @@ export class ProductReturnDto {
     this.category = product.category;
     this.isInFavorites = !!product.favoritesProductsOnUser.length;
     this.canAddReview = !product.reviews?.length && !!user;
-    this.canEdit = user?.roles.includes(EUserRoles.ADMIN);
-    this.canDelete = user?.roles.includes(EUserRoles.ADMIN);
+    this.canEdit = !!user?.roles.includes(EUserRoles.ADMIN);
+    this.canDelete = !!user?.roles.includes(EUserRoles.ADMIN);
+    this.canAddDiscount = !!user?.roles.includes(EUserRoles.ADMIN);
+    this.canRemoveDiscount = !!user?.roles.includes(EUserRoles.ADMIN);
     this.canAddToFavourites = !!user;
-    this.discount = product.Discount;
+    this.discount = product.discount;
 
     const rating = ratings?.find((rate) => rate.productId === product.id);
 

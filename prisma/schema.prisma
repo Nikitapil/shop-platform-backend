@@ -77,7 +77,7 @@ model Product {
   favoritesProductsOnUser FavoritesProductsOnUser[]
   productsInOrder         ProductInOrder[]
   reviews                 ProductReview[]
-  Discount                Discount?                 @relation(fields: [discountId], references: [id], onUpdate: Cascade, onDelete: SetNull)
+  discount                Discount?                 @relation(fields: [discountId], references: [id], onUpdate: Cascade, onDelete: SetNull)
   discountId              String?
 }
 
