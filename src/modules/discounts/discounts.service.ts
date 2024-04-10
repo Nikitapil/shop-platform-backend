@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 
 import { PrismaService } from '../prisma/prisma.service';
 
@@ -9,7 +9,7 @@ import { IUserFromToken } from '../../domain/users';
 
 import { DiscountReturnDto } from './dto/DiscountReturnDto';
 import { SuccessMessageDto } from '../../dtos-global/SuccessMessageDto';
-import { HttpException } from '@nestjs/common/exceptions/http.exception';
+import { catchError } from '../../utils/errors';
 
 @Injectable()
 export class DiscountsService {
@@ -23,7 +23,7 @@ export class DiscountsService {
       });
       return new DiscountReturnDto(discount);
     } catch (e) {
-      throw new BadRequestException(e.message || 'Error while updating tax');
+      catchError(e, 'Error while creating discount');
     }
   }
 
@@ -34,7 +34,7 @@ export class DiscountsService {
       });
       return discounts.map((discount) => new DiscountReturnDto(discount));
     } catch (e) {
-      throw new BadRequestException(e.message || 'Error while updating tax');
+      catchError(e, 'Error while getting discounts');
     }
   }
 
@@ -49,10 +49,7 @@ export class DiscountsService {
       }
       return new DiscountReturnDto(discount);
     } catch (e) {
-      if (e instanceof HttpException) {
-        throw e;
-      }
-      throw new BadRequestException(e.message || 'Error while updating tax');
+      catchError(e, 'Error while getting discount');
     }
   }
 
@@ -71,7 +68,7 @@ export class DiscountsService {
 
       return new SuccessMessageDto();
     } catch (e) {
-      throw new BadRequestException(e.message || 'Error while updating tax');
+      catchError(e, 'Error while deleting discount');
     }
   }
 }
