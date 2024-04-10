@@ -1,12 +1,17 @@
-import { Body, Controller, Get, Post, UseGuards } from '@nestjs/common';
-import { DiscountsService } from './discounts.service';
-import { Roles } from '../../decorators/Roles.decorator';
-import { EUserRoles, IUserFromToken } from '../../domain/users';
+import { Body, Controller, Delete, Get, Param, Post, UseGuards } from '@nestjs/common';
 import { ApiOperation, ApiResponse } from '@nestjs/swagger';
-import { DiscountReturnDto } from './dto/DiscountReturnDto';
-import { CreateDiscountDto } from './dto/CreateDiscountDto';
+
+import { DiscountsService } from './discounts.service';
+
+import { Roles } from '../../decorators/Roles.decorator';
 import { User } from '../../decorators/User.decorator';
 import { ApplyUserGuard } from '../../guards/users/apply-user.guard';
+
+import { EUserRoles, IUserFromToken } from '../../domain/users';
+
+import { DiscountReturnDto } from './dto/DiscountReturnDto';
+import { CreateDiscountDto } from './dto/CreateDiscountDto';
+import { SuccessMessageDto } from '../../dtos-global/SuccessMessageDto';
 
 @Controller('discounts')
 export class DiscountsController {
@@ -29,5 +34,13 @@ export class DiscountsController {
   @Get()
   getDiscounts(@User() user?: IUserFromToken): Promise<DiscountReturnDto[]> {
     return this.discountsService.getDiscounts(user);
+  }
+
+  @ApiOperation({ summary: 'Delete discounts', operationId: 'deleteDiscount' })
+  @ApiResponse({ status: 200, type: SuccessMessageDto })
+  @Roles([EUserRoles.ADMIN])
+  @Delete(':id')
+  deleteDiscount(@Param('id') id: string): Promise<SuccessMessageDto> {
+    return this.discountsService.deleteDiscount(id);
   }
 }
