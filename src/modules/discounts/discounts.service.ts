@@ -4,7 +4,7 @@ import { PrismaService } from '../prisma/prisma.service';
 
 import { getDiscountsInclude } from '../../db-query-options/discounts-options';
 
-import { ICreateDiscountParams } from './types';
+import { ICreateDiscountParams, IEditDiscountParams } from './types';
 import { IUserFromToken } from '../../domain/users';
 
 import { DiscountReturnDto } from './dto/DiscountReturnDto';
@@ -69,6 +69,31 @@ export class DiscountsService {
       return new SuccessMessageDto();
     } catch (e) {
       catchError(e, 'Error while deleting discount');
+    }
+  }
+
+  async editDiscount({ dto, user }: IEditDiscountParams) {
+    try {
+      const discount = await this.prismaService.discount.findUnique({
+        where: { id: dto.id }
+      });
+
+      if (!discount) {
+        throw new NotFoundException('Discount not found');
+      }
+
+      const updatedDiscount = await this.prismaService.discount.update({
+        where: { id: dto.id },
+        data: {
+          name: dto.name,
+          percentage: dto.percentage
+        },
+        include: getDiscountsInclude(user.id)
+      });
+
+      return new DiscountReturnDto(updatedDiscount);
+    } catch (e) {
+      catchError(e, 'Error while editing discount');
     }
   }
 }

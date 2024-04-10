@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Post, UseGuards } from '@nestjs/common';
+import {Body, Controller, Delete, Get, Param, Post, Put, UseGuards} from '@nestjs/common';
 import { ApiOperation, ApiResponse } from '@nestjs/swagger';
 
 import { DiscountsService } from './discounts.service';
@@ -12,6 +12,7 @@ import { EUserRoles, IUserFromToken } from '../../domain/users';
 import { DiscountReturnDto } from './dto/DiscountReturnDto';
 import { CreateDiscountDto } from './dto/CreateDiscountDto';
 import { SuccessMessageDto } from '../../dtos-global/SuccessMessageDto';
+import {EditDiscountDto} from "./dto/EditDiscountDto";
 
 @Controller('discounts')
 export class DiscountsController {
@@ -53,5 +54,13 @@ export class DiscountsController {
   @Delete(':id')
   deleteDiscount(@Param('id') id: string): Promise<SuccessMessageDto> {
     return this.discountsService.deleteDiscount(id);
+  }
+
+  @ApiOperation({ summary: 'Edit discounts', operationId: 'editDiscount' })
+  @ApiResponse({ status: 200, type: DiscountReturnDto })
+  @Roles([EUserRoles.ADMIN])
+  @Put()
+  editDiscount(@Body() dto: EditDiscountDto, @User() user: IUserFromToken): Promise<DiscountReturnDto> {
+    return this.discountsService.editDiscount({ dto, user });
   }
 }
