@@ -6,6 +6,7 @@ import { GetProductsQueryDto } from './dto/GetProductsQueryDto';
 import { CategoryReturnDto } from '../../dtos-global/CategoryReturnDto';
 import { Prisma } from '@prisma/client';
 import { GetFavoriteProductsDto } from './dto/GetFavoriteProductsDto';
+import { ProductDiscountReturnDto } from './dto/ProductDiscountReturnDto';
 
 export interface ICreateProductParams {
   dto: CreateProductDto;
@@ -64,6 +65,7 @@ export interface IProductFromDb {
   createdAt: Date;
   updatedAt: Date;
   category: CategoryReturnDto;
+  Discount: ProductDiscountReturnDto | null;
   favoritesProductsOnUser: IFavoritesProductsOnUser[];
   reviews: IProductReview[];
 }

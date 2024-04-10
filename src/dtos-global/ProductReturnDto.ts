@@ -2,6 +2,7 @@ import { CategoryReturnDto } from './CategoryReturnDto';
 import { ApiProperty } from '@nestjs/swagger';
 import { IProductFromDb, IRatingFromDb } from '../modules/products/types';
 import { EUserRoles, IUserFromToken } from '../domain/users';
+import { ProductDiscountReturnDto } from '../modules/products/dto/ProductDiscountReturnDto';
 
 export class ProductReturnDto {
   @ApiProperty({ description: 'product id', type: String })
@@ -49,6 +50,13 @@ export class ProductReturnDto {
   @ApiProperty({ description: 'Can add to favourites', type: Boolean })
   canAddToFavourites: boolean;
 
+  @ApiProperty({
+    description: 'Product discount',
+    type: ProductDiscountReturnDto,
+    nullable: true
+  })
+  discount?: ProductDiscountReturnDto | null;
+
   constructor(product: IProductFromDb, ratings?: IRatingFromDb[], user?: IUserFromToken) {
     this.id = product.id;
     this.name = product.name;
@@ -64,6 +72,7 @@ export class ProductReturnDto {
     this.canEdit = user?.roles.includes(EUserRoles.ADMIN);
     this.canDelete = user?.roles.includes(EUserRoles.ADMIN);
     this.canAddToFavourites = !!user;
+    this.discount = product.Discount;
 
     const rating = ratings?.find((rate) => rate.productId === product.id);
 

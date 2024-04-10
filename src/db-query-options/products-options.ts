@@ -12,6 +12,7 @@ export const getProductInclude = (userId = ''): Prisma.ProductInclude => {
       where: {
         userId
       }
-    }
+    },
+    Discount: true
   };
 };
