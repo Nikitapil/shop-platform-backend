@@ -41,6 +41,7 @@ import { GetProductsReturnDto } from '../../dtos-global/GetProductsReturnDto';
 import { GetFavoriteProductsDto } from './dto/GetFavoriteProductsDto';
 import { CreateProductBody } from './dto/CreateProductBody';
 import { UpdateProductBody } from './dto/UpdateProductBody';
+import {EditProductDiscountDto} from "./dto/EditProductDiscountDto";
 
 @ApiTags('Products')
 @Controller('products')
@@ -135,5 +136,16 @@ export class ProductsController {
     @User() user: IUserFromToken
   ): Promise<ToggleFavoriteReturnDto> {
     return this.productsService.toggleFavorite({ dto, user });
+  }
+
+  @ApiOperation({ summary: 'edit product discount', operationId: 'editProductDiscount' })
+  @ApiResponse({ status: 200, type: ProductReturnDto })
+  @Roles([EUserRoles.ADMIN])
+  @Put('/discount')
+  editProductDiscount(
+    @Body() dto: EditProductDiscountDto,
+    @User() user: IUserFromToken
+  ): Promise<ToggleFavoriteReturnDto> {
+    return this.productsService.editProductDiscount({ dto, user });
   }
 }

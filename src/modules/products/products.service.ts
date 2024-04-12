@@ -7,6 +7,7 @@ import {
 import { PrismaService } from '../prisma/prisma.service';
 import {
   ICreateProductParams,
+  IEditProductDiscountParams,
   IGetFavoriteProductsParams,
   IGetManyQuizzesParams,
   IGetProductsParams,
@@ -20,6 +21,7 @@ import { Prisma } from '@prisma/client';
 import { SuccessMessageDto } from '../../dtos-global/SuccessMessageDto';
 import { getProductInclude } from '../../db-query-options/products-options';
 import { ProductReturnDto } from '../../dtos-global/ProductReturnDto';
+import { catchError } from '../../utils/errors';
 
 @Injectable()
 export class ProductsService {
@@ -275,6 +277,34 @@ export class ProductsService {
       };
     } catch (e) {
       throw new BadRequestException('Error while getting products');
+    }
+  }
+
+  async editProductDiscount({ dto, user }: IEditProductDiscountParams) {
+    try {
+      const product = await this.getProductById(dto.productId);
+
+      if (!product) {
+        throw new NotFoundException('Product not found');
+      }
+
+      const discount = await this.prismaService.discount.findUnique({
+        where: { id: dto.discountId }
+      });
+
+      if (!discount) {
+        throw new NotFoundException('Product not found');
+      }
+
+      await this.prismaService.product.update({
+        where: { id: dto.productId },
+        data: {
+          discountId: dto.discountId
+        }
+      });
+      return await this.getProduct({ id: dto.productId, user });
+    } catch (e) {
+      catchError(e, 'Error while getting products');
     }
   }
 }

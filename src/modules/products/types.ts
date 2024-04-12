@@ -7,6 +7,7 @@ import { CategoryReturnDto } from '../../dtos-global/CategoryReturnDto';
 import { Prisma } from '@prisma/client';
 import { GetFavoriteProductsDto } from './dto/GetFavoriteProductsDto';
 import { ProductDiscountReturnDto } from './dto/ProductDiscountReturnDto';
+import {EditProductDiscountDto} from "./dto/EditProductDiscountDto";
 
 export interface ICreateProductParams {
   dto: CreateProductDto;
@@ -82,5 +83,10 @@ export interface IGetManyQuizzesParams {
   limit: number;
   where: Prisma.ProductWhereInput;
   order: Prisma.ProductOrderByWithRelationInput;
+  user?: IUserFromToken;
+}
+
+export interface IEditProductDiscountParams {
+  dto: EditProductDiscountDto;
   user?: IUserFromToken;
 }
