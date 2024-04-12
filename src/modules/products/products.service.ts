@@ -288,12 +288,14 @@ export class ProductsService {
         throw new NotFoundException('Product not found');
       }
 
-      const discount = await this.prismaService.discount.findUnique({
-        where: { id: dto.discountId }
-      });
+      if (dto.discountId) {
+        const discount = await this.prismaService.discount.findUnique({
+          where: { id: dto.discountId }
+        });
 
-      if (!discount) {
-        throw new NotFoundException('Product not found');
+        if (!discount) {
+          throw new NotFoundException('Product not found');
+        }
       }
 
       await this.prismaService.product.update({
