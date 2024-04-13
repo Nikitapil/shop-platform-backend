@@ -6,7 +6,7 @@ export class CreateDiscountDto {
   @IsString()
   name: string;
 
-  @ApiProperty({ description: 'discount name', type: String })
+  @ApiProperty({ description: 'discount name', type: Number })
   @IsNumber()
   percentage: number;
 }

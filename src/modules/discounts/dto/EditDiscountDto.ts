@@ -10,7 +10,7 @@ export class EditDiscountDto {
   @IsString()
   name: string;
 
-  @ApiProperty({ description: 'discount name', type: String })
+  @ApiProperty({ description: 'discount name', type: Number })
   @IsNumber()
   percentage: number;
 }
