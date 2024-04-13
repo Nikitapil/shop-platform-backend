@@ -8,6 +8,7 @@ export interface IDiscountFromDb {
   name: string;
   percentage: number;
   products: IProductFromDb[];
+  _count: { products: number };
 }
 
 export interface ICreateDiscountParams {

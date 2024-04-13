@@ -21,7 +21,7 @@ export class DiscountsService {
         data: dto,
         include: getDiscountsInclude(user.id)
       });
-      return new DiscountReturnDto(discount);
+      return new DiscountReturnDto(discount, user);
     } catch (e) {
       catchError(e, 'Error while creating discount');
     }
@@ -32,7 +32,7 @@ export class DiscountsService {
       const discounts = await this.prismaService.discount.findMany({
         include: getDiscountsInclude(user?.id)
       });
-      return discounts.map((discount) => new DiscountReturnDto(discount));
+      return discounts.map((discount) => new DiscountReturnDto(discount, user));
     } catch (e) {
       catchError(e, 'Error while getting discounts');
     }
@@ -47,7 +47,7 @@ export class DiscountsService {
       if (!discount) {
         throw new NotFoundException('Discount not found');
       }
-      return new DiscountReturnDto(discount);
+      return new DiscountReturnDto(discount, user);
     } catch (e) {
       catchError(e, 'Error while getting discount');
     }
@@ -91,7 +91,7 @@ export class DiscountsService {
         include: getDiscountsInclude(user.id)
       });
 
-      return new DiscountReturnDto(updatedDiscount);
+      return new DiscountReturnDto(updatedDiscount, user);
     } catch (e) {
       catchError(e, 'Error while editing discount');
     }
