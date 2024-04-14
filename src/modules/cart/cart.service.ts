@@ -6,6 +6,9 @@ import { IUserFromToken } from '../../domain/users';
 import { getCartInclude } from '../../db-query-options/cart-options';
 import { CartReturnDto } from '../../dtos-global/CartReturnDto';
 import { SharedService } from '../shared/shared.service';
+import { getProductInclude } from '../../db-query-options/products-options';
+import { getPriceWithDiscount } from '../../utils/prices';
+import { IProductFromDb } from '../products/types';
 
 @Injectable()
 export class CartService {
@@ -16,7 +19,8 @@ export class CartService {
     const { productId } = dto;
 
     const product = await this.prisma.product.findUnique({
-      where: { id: productId }
+      where: { id: productId },
+      include: getProductInclude(user.id)
     });
 
     if (!product) {
@@ -24,6 +28,7 @@ export class CartService {
     }
 
     try {
+      const productPrice = this.getProductPrice(product);
       const cart = await this.prisma.cart.update({
         where: { id: cartId },
         data: {
@@ -47,7 +52,7 @@ export class CartService {
             }
           },
           price: {
-            increment: product.price
+            increment: productPrice
           }
         },
         include: getCartInclude(user.id)
@@ -65,7 +70,9 @@ export class CartService {
     const productInCart = await this.prisma.productInCart.findUnique({
       where: { id: productInCartId },
       include: {
-        product: true
+        product: {
+          include: getProductInclude(user.id)
+        }
       }
     });
 
@@ -93,13 +100,13 @@ export class CartService {
                 }
               }
             };
-
+      const productPrice = this.getProductPrice(productInCart.product);
       const cart = await this.prisma.cart.update({
         where: { id: cartId },
         data: {
           productInCart: productInCartInput,
           price: {
-            decrement: productInCart.product.price
+            decrement: productPrice
           }
         },
         include: getCartInclude(user.id)
@@ -150,5 +157,11 @@ export class CartService {
     } catch (e) {
       throw new BadRequestException(e.message || 'Error while loading cart');
     }
+  }
+
+  private getProductPrice(product: IProductFromDb) {
+    return product.discount
+      ? getPriceWithDiscount(product.price, product.discount.percentage)
+      : product.price;
   }
 }

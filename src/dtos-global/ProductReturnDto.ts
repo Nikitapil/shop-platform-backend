@@ -3,6 +3,7 @@ import { ApiProperty } from '@nestjs/swagger';
 import { IProductFromDb, IRatingFromDb } from '../modules/products/types';
 import { EUserRoles, IUserFromToken } from '../domain/users';
 import { ProductDiscountReturnDto } from '../modules/products/dto/ProductDiscountReturnDto';
+import { getPriceWithDiscount } from '../utils/prices';
 
 export class ProductReturnDto {
   @ApiProperty({ description: 'product id', type: String })
@@ -19,6 +20,9 @@ export class ProductReturnDto {
 
   @ApiProperty({ description: 'product price', type: Number })
   price: number;
+
+  @ApiProperty({ description: 'product price with discount', type: Number })
+  priceWithDiscount: number;
 
   @ApiProperty({ description: 'product category id', type: String })
   categoryId: string;
@@ -51,10 +55,7 @@ export class ProductReturnDto {
   canAddToFavourites: boolean;
 
   @ApiProperty({ description: 'Can add discount', type: Boolean })
-  canAddDiscount: boolean;
-
-  @ApiProperty({ description: 'Can remove discount', type: Boolean })
-  canRemoveDiscount: boolean;
+  canEditProductDiscount: boolean;
 
   @ApiProperty({
     description: 'Product discount',
@@ -69,6 +70,9 @@ export class ProductReturnDto {
     this.description = product.description;
     this.imageUrl = product.imageUrl;
     this.price = product.price;
+    this.priceWithDiscount = product.discount
+      ? getPriceWithDiscount(product.price, product.discount.percentage)
+      : product.price;
     this.categoryId = product.categoryId;
     this.createdAt = product.createdAt;
     this.updatedAt = product.updatedAt;
@@ -77,8 +81,7 @@ export class ProductReturnDto {
     this.canAddReview = !product.reviews?.length && !!user;
     this.canEdit = !!user?.roles.includes(EUserRoles.ADMIN);
     this.canDelete = !!user?.roles.includes(EUserRoles.ADMIN);
-    this.canAddDiscount = !!user?.roles.includes(EUserRoles.ADMIN);
-    this.canRemoveDiscount = !!user?.roles.includes(EUserRoles.ADMIN);
+    this.canEditProductDiscount = !!user?.roles.includes(EUserRoles.ADMIN);
     this.canAddToFavourites = !!user;
     this.discount = product.discount;
 
