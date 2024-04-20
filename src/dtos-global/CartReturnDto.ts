@@ -19,11 +19,14 @@ export class CartReturnDto {
 
   constructor(cart: ICartFromDb, tax: number) {
     this.id = cart.id;
-    this.price = cart.price;
     this.productInCart = cart.productInCart.map((cartProduct) => ({
       ...cartProduct,
       product: new ProductReturnDto(cartProduct.product)
     }));
-    this.taxSum = getTaxSum(cart.price, tax);
+    this.price = this.productInCart.reduce(
+      (acc, item) => acc + item.product.priceWithDiscount,
+      0
+    );
+    this.taxSum = getTaxSum(this.price, tax);
   }
 }
