@@ -10,7 +10,7 @@ export class DiscountReturnDto {
   @ApiProperty({ description: 'discount name', type: String })
   name: string;
 
-  @ApiProperty({ description: 'discount name', type: String })
+  @ApiProperty({ description: 'discount name', type: Number })
   percentage: number;
 
   @ApiProperty({ description: 'products', type: [ProductReturnDto] })
