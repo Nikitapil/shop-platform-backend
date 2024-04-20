@@ -22,6 +22,9 @@ export class DiscountReturnDto {
   @ApiProperty({ description: 'can delete discount', type: Boolean })
   canDelete: boolean;
 
+  @ApiProperty({ description: 'Can edit discount flag', type: Boolean })
+  canEdit: boolean;
+
   constructor(discount: IDiscountFromDb, user?: IUserFromToken) {
     this.id = discount.id;
     this.name = discount.name;
@@ -29,5 +32,6 @@ export class DiscountReturnDto {
     this.products = discount.products.map((product) => new ProductReturnDto(product));
     this.productsCount = discount._count.products;
     this.canDelete = !!user?.roles?.includes(EUserRoles.ADMIN);
+    this.canEdit = !!user?.roles?.includes(EUserRoles.ADMIN);
   }
 }
