@@ -4,9 +4,10 @@ import { ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { FinanceSettingsReturnDto } from './dto/FinanceSettingsReturnDto';
 import { SetTaxDto } from './dto/SetTaxDto';
 import { Roles } from '../../decorators/Roles.decorator';
-import {EUserRoles, IUserFromToken} from '../../domain/users';
+import { EUserRoles, IUserFromToken } from '../../domain/users';
 import { ApplyUserGuard } from '../../guards/users/apply-user.guard';
-import {User} from "../../decorators/User.decorator";
+import { User } from '../../decorators/User.decorator';
+import {SetAvailableCurrenciesDto} from "./dto/SetAvailableCurrenciesDto";
 
 @Controller('finance')
 export class FinanceController {
@@ -24,7 +25,24 @@ export class FinanceController {
   @ApiResponse({ status: 200, type: FinanceSettingsReturnDto })
   @Roles([EUserRoles.ADMIN])
   @Put('/settings/tax')
-  setTax(@Body() dto: SetTaxDto, @User() user: IUserFromToken): Promise<FinanceSettingsReturnDto> {
+  setTax(
+    @Body() dto: SetTaxDto,
+    @User() user: IUserFromToken
+  ): Promise<FinanceSettingsReturnDto> {
     return this.financeService.setTax(dto, user);
+  }
+
+  @ApiOperation({
+    summary: 'Set available currencies',
+    operationId: 'setAvailableCurrencies'
+  })
+  @ApiResponse({ status: 200, type: FinanceSettingsReturnDto })
+  @Roles([EUserRoles.ADMIN])
+  @Put('/settings/currencies')
+  setAvailableCurrencies(
+    @Body() dto: SetAvailableCurrenciesDto,
+    @User() user: IUserFromToken
+  ): Promise<FinanceSettingsReturnDto> {
+    return this.financeService.setAvailableCurrencies(dto, user);
   }
 }
