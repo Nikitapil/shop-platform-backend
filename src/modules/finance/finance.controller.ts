@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Put, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Patch, Put, UseGuards } from '@nestjs/common';
 import { FinanceService } from './finance.service';
 import { ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { FinanceSettingsReturnDto } from './dto/FinanceSettingsReturnDto';
@@ -7,7 +7,7 @@ import { Roles } from '../../decorators/Roles.decorator';
 import { EUserRoles, IUserFromToken } from '../../domain/users';
 import { ApplyUserGuard } from '../../guards/users/apply-user.guard';
 import { User } from '../../decorators/User.decorator';
-import {SetAvailableCurrenciesDto} from "./dto/SetAvailableCurrenciesDto";
+import { SetAvailableCurrenciesDto } from './dto/SetAvailableCurrenciesDto';
 
 @Controller('finance')
 export class FinanceController {
@@ -44,5 +44,16 @@ export class FinanceController {
     @User() user: IUserFromToken
   ): Promise<FinanceSettingsReturnDto> {
     return this.financeService.setAvailableCurrencies(dto, user);
+  }
+
+  @ApiOperation({
+    summary: 'Update exchange rates',
+    operationId: 'updateExchangeRates'
+  })
+  @ApiResponse({ status: 200, type: FinanceSettingsReturnDto })
+  @Roles([EUserRoles.ADMIN])
+  @Patch('/settings/rates')
+  updateExchangeRates(@User() user: IUserFromToken): Promise<FinanceSettingsReturnDto> {
+    return this.financeService.updateExchangeRates(user);
   }
 }

@@ -51,15 +51,7 @@ export class FinanceService {
         !settings.exchangeRates ||
         getDiffInHours(new Date(), settings.updatedAt) >= 24
       ) {
-        const rates = await this.getExchangeRates();
-
-        settings = await this.prismaService.financeSettings.update({
-          where: { id: FINANCE_SETTINGS_ID },
-          data: {
-            exchangeRates: rates
-          },
-          select: financeSelectSettings
-        });
+        return await this.updateExchangeRates(user);
       }
 
       return new FinanceSettingsReturnDto(settings, user);
@@ -113,6 +105,25 @@ export class FinanceService {
       return new FinanceSettingsReturnDto(settings, user);
     } catch (e: any) {
       catchError(e, 'Error while updating available currencies');
+    }
+  }
+
+  async updateExchangeRates(user?: IUserFromToken) {
+    try {
+      const rates = await this.getExchangeRates();
+      const settings = await this.prismaService.financeSettings.update({
+        where: { id: FINANCE_SETTINGS_ID },
+        data: {
+          exchangeRates: rates
+        },
+        select: financeSelectSettings
+      });
+      if (!settings) {
+        throw new NotFoundException('Settings not found.');
+      }
+      return new FinanceSettingsReturnDto(settings, user);
+    } catch (e: any) {
+      catchError(e, 'Error while updating exchange rates');
     }
   }
 }
