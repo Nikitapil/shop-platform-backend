@@ -176,6 +176,10 @@ model FinanceSettings {
   tax Int    @default(5)
 
   availableCurrencies String[] @default(["USD"])
+
+  updatedAt DateTime @default(now()) @updatedAt
+
+  exchangeRates Json?
 }
 
 model Discount {
