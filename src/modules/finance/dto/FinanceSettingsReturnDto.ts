@@ -1,5 +1,6 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { IFinanceSettingsFromDb } from '../types';
+import { EUserRoles, IUserFromToken } from '../../../domain/users';
 
 export class FinanceSettingsReturnDto {
   @ApiProperty({ description: 'Tax setting', type: Number })
@@ -17,10 +18,12 @@ export class FinanceSettingsReturnDto {
   @ApiPropertyOptional({ description: 'All currencies that available to use' })
   allCurrencies?: string[];
 
-  constructor(settingsFromDb: IFinanceSettingsFromDb) {
+  constructor(settingsFromDb: IFinanceSettingsFromDb, user?: IUserFromToken) {
     this.tax = settingsFromDb.tax;
     this.availableCurrencies = settingsFromDb.availableCurrencies;
-    this.allCurrencies = Object.keys(settingsFromDb.exchangeRates);
+    if (user?.roles?.includes(EUserRoles.ADMIN)) {
+      this.allCurrencies = Object.keys(settingsFromDb.exchangeRates);
+    }
 
     this.exchangeRates = settingsFromDb.availableCurrencies.reduce((acc, currency) => {
       const rate = settingsFromDb.exchangeRates[currency];

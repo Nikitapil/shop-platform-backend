@@ -5,7 +5,8 @@ import { SetTaxDto } from './dto/SetTaxDto';
 import { financeSelectSettings } from './db-options/FinanceSelectSettings';
 import { HttpService } from '@nestjs/axios';
 import { getDiffInHours } from '../../utils/dates';
-import {FinanceSettingsReturnDto} from "./dto/FinanceSettingsReturnDto";
+import { FinanceSettingsReturnDto } from './dto/FinanceSettingsReturnDto';
+import { IUserFromToken } from '../../domain/users';
 
 @Injectable()
 export class FinanceService {
@@ -27,7 +28,7 @@ export class FinanceService {
     }
   }
 
-  async getFinanceSettings() {
+  async getFinanceSettings(user?: IUserFromToken) {
     try {
       let settings = await this.prismaService.financeSettings.findUnique({
         where: { id: FINANCE_SETTINGS_ID },
@@ -59,13 +60,13 @@ export class FinanceService {
         });
       }
 
-      return new FinanceSettingsReturnDto(settings);
+      return new FinanceSettingsReturnDto(settings, user);
     } catch (e: any) {
       throw new BadRequestException(e.message || 'Error getting finance settings');
     }
   }
 
-  async setTax(dto: SetTaxDto) {
+  async setTax(dto: SetTaxDto, user?: IUserFromToken) {
     try {
       const settings = await this.prismaService.financeSettings.update({
         where: { id: FINANCE_SETTINGS_ID },
@@ -75,7 +76,7 @@ export class FinanceService {
       if (!settings) {
         throw new NotFoundException('Settings not found.');
       }
-      return settings;
+      return new FinanceSettingsReturnDto(settings, user);
     } catch (e: any) {
       throw new BadRequestException(e.message || 'Error while updating tax');
     }
