@@ -47,7 +47,7 @@ export class ProductsService {
         include: getProductInclude(user.id)
       });
       return new ProductReturnDto(product);
-    } catch (e) {
+    } catch (e: any) {
       throw new BadRequestException(e.message || 'Error while creating product');
     }
   }
@@ -84,7 +84,7 @@ export class ProductsService {
       });
 
       return new ProductReturnDto(product);
-    } catch (e) {
+    } catch (e: any) {
       throw new BadRequestException(e.message || 'Error while editing product');
     }
   }
@@ -183,7 +183,7 @@ export class ProductsService {
 
       deleteFile(product.imageUrl);
       return new SuccessMessageDto();
-    } catch (e) {
+    } catch (e: any) {
       if (e instanceof HttpException) {
         throw e;
       }
@@ -216,7 +216,7 @@ export class ProductsService {
         });
         return { isInFavorites: false };
       }
-    } catch (e) {
+    } catch (e: any) {
       throw new BadRequestException(e.message || 'Error while switching favorites');
     }
   }

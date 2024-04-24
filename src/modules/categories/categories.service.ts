@@ -36,7 +36,7 @@ export class CategoriesService {
       return await this.prismaService.productCategory.create({
         data: dto
       });
-    } catch (e) {
+    } catch (e: any) {
       if (e instanceof HttpException) {
         throw e;
       }
@@ -66,7 +66,7 @@ export class CategoriesService {
         where: { id: dto.id },
         data: { name: dto.name }
       });
-    } catch (e) {
+    } catch (e: any) {
       if (e instanceof HttpException) {
         throw e;
       }
@@ -85,7 +85,7 @@ export class CategoriesService {
         where: { id: id }
       });
       return new SuccessMessageDto();
-    } catch (e) {
+    } catch (e: any) {
       if (e instanceof HttpException) {
         throw e;
       }
@@ -96,7 +96,7 @@ export class CategoriesService {
   async getCategories() {
     try {
       return await this.prismaService.productCategory.findMany();
-    } catch (e) {
+    } catch (e: any) {
       throw new BadRequestException(e.message || 'Error while fetching categories');
     }
   }

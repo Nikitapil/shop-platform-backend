@@ -58,7 +58,7 @@ export class CartService {
         include: getCartInclude(user.id)
       });
       return await this.createCartReturnDto(cart);
-    } catch (e) {
+    } catch (e: any) {
       throw new BadRequestException(e.message || 'Error while adding product to cart');
     }
   }
@@ -113,7 +113,7 @@ export class CartService {
       });
 
       return await this.createCartReturnDto(cart);
-    } catch (e) {
+    } catch (e: any) {
       throw new BadRequestException(e.message || 'Error while adding product to cart');
     }
   }
@@ -125,7 +125,7 @@ export class CartService {
         include: getCartInclude(user.id)
       });
       return await this.createCartReturnDto(cart);
-    } catch (e) {
+    } catch (e: any) {
       throw new BadRequestException(e.message || 'Error while loading cart');
     }
   }
@@ -145,7 +145,7 @@ export class CartService {
         include: getCartInclude(user.id)
       });
       return await this.createCartReturnDto(cart);
-    } catch (e) {
+    } catch (e: any) {
       throw new BadRequestException(e.message || 'Error while loading cart');
     }
   }
@@ -154,7 +154,7 @@ export class CartService {
     try {
       const { tax } = await this.sharedService.getFinanceSettings();
       return new CartReturnDto(cart, tax);
-    } catch (e) {
+    } catch (e: any) {
       throw new BadRequestException(e.message || 'Error while loading cart');
     }
   }

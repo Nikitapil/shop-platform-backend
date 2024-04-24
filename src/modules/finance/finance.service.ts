@@ -22,7 +22,7 @@ export class FinanceService {
       }
 
       return settings;
-    } catch (e) {
+    } catch (e: any) {
       throw new BadRequestException(e.message || 'Error getting finance settings');
     }
   }
@@ -38,7 +38,7 @@ export class FinanceService {
         throw new NotFoundException('Settings not found.');
       }
       return settings;
-    } catch (e) {
+    } catch (e: any) {
       throw new BadRequestException(e.message || 'Error while updating tax');
     }
   }

@@ -47,7 +47,7 @@ export class AuthService {
         }
       });
       return await this.generateUserDataWithTokens(newUser);
-    } catch (e) {
+    } catch (e: any) {
       throw new HttpException({ message: e.message || 'Registration error' }, 400);
     }
   }
@@ -112,7 +112,7 @@ export class AuthService {
         where: { token }
       });
       return new SuccessMessageDto();
-    } catch (e) {
+    } catch (e: any) {
       throw new HttpException({ message: e.message || 'logout error' }, 400);
     }
   }
@@ -128,7 +128,7 @@ export class AuthService {
       });
 
       return await this.generateUserDataWithTokens(updatedUser);
-    } catch (e) {
+    } catch (e: any) {
       throw new HttpException({ message: e.message || 'update user error' }, 400);
     }
   }
@@ -159,7 +159,7 @@ export class AuthService {
       });
 
       return await this.generateUserDataWithTokens(updatedUser);
-    } catch (e) {
+    } catch (e: any) {
       throw new HttpException({ message: e.message || 'change password error' }, 400);
     }
   }
@@ -195,7 +195,7 @@ export class AuthService {
         }
       });
       return refreshToken;
-    } catch (e) {
+    } catch (e: any) {
       throw new HttpException(
         { message: e.message || 'Error while creating token' },
         400
