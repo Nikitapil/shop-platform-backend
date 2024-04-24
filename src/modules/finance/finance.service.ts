@@ -20,6 +20,7 @@ export class FinanceService {
           select: financeSelectSettings
         });
       }
+
       return settings;
     } catch (e) {
       throw new BadRequestException(e.message || 'Error getting finance settings');

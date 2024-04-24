@@ -1,3 +1,4 @@
 export const financeSelectSettings = {
-  tax: true
+  tax: true,
+  availableCurrencies: true
 };
