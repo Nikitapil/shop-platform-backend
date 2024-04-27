@@ -21,6 +21,7 @@ import { getOffset } from '../../utils/pagination';
 import { OrderReturnDto } from '../../dtos-global/OrderReturnDto';
 import { SuccessMessageDto } from '../../dtos-global/SuccessMessageDto';
 import { SharedService } from '../shared/shared.service';
+import { CartReturnDto } from '../../dtos-global/CartReturnDto';
 
 @Injectable()
 export class OrdersService {
@@ -45,6 +46,9 @@ export class OrdersService {
         productId: productInCart.product.id,
         count: productInCart.count
       }));
+
+      const { tax } = await this.sharedService.getFinanceSettings();
+      const cartDto = new CartReturnDto(cart, tax);
       const order = await this.prisma.order.create({
         data: {
           userId: user.id,
@@ -56,7 +60,7 @@ export class OrdersService {
               data: productsIds
             }
           },
-          price: cart.price,
+          price: cartDto.price,
           status: EOrderStatuses.CREATED
         },
         include: getOrderInclude(user.id)
@@ -71,7 +75,7 @@ export class OrdersService {
         },
         include: getCartInclude(user.id)
       });
-      const { tax } = await this.sharedService.getFinanceSettings();
+
       return new CreateOrderReturnDto({ order, user, tax, cart: emptyCart });
     } catch (e) {
       throw new BadRequestException('Error while creating an order');
