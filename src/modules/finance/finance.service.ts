@@ -9,6 +9,8 @@ import { FinanceSettingsReturnDto } from './dto/FinanceSettingsReturnDto';
 import { IUserFromToken } from '../../domain/users';
 import { SetAvailableCurrenciesDto } from './dto/SetAvailableCurrenciesDto';
 import { catchError } from '../../utils/errors';
+import { SetDeliveryPriceDto } from './dto/SetDeliveryPriceDto';
+import { EditFinanceSettingsDto } from './dto/EditFinanceSettingsDto';
 
 @Injectable()
 export class FinanceService {
@@ -28,6 +30,18 @@ export class FinanceService {
         USD: 1
       };
     }
+  }
+
+  private async editFinanceSettings(dto: EditFinanceSettingsDto, user?: IUserFromToken) {
+    const settings = await this.prismaService.financeSettings.update({
+      where: { id: FINANCE_SETTINGS_ID },
+      data: dto,
+      select: financeSelectSettings
+    });
+    if (!settings) {
+      throw new NotFoundException('Settings not found.');
+    }
+    return new FinanceSettingsReturnDto(settings, user);
   }
 
   async getFinanceSettings(user?: IUserFromToken) {
@@ -62,15 +76,7 @@ export class FinanceService {
 
   async setTax(dto: SetTaxDto, user?: IUserFromToken) {
     try {
-      const settings = await this.prismaService.financeSettings.update({
-        where: { id: FINANCE_SETTINGS_ID },
-        data: dto,
-        select: financeSelectSettings
-      });
-      if (!settings) {
-        throw new NotFoundException('Settings not found.');
-      }
-      return new FinanceSettingsReturnDto(settings, user);
+      return await this.editFinanceSettings(dto, user);
     } catch (e: any) {
       catchError(e, 'Error while updating tax');
     }
@@ -94,15 +100,7 @@ export class FinanceService {
         );
       }
 
-      const settings = await this.prismaService.financeSettings.update({
-        where: { id: FINANCE_SETTINGS_ID },
-        data: dto,
-        select: financeSelectSettings
-      });
-      if (!settings) {
-        throw new NotFoundException('Settings not found.');
-      }
-      return new FinanceSettingsReturnDto(settings, user);
+      return await this.editFinanceSettings(dto, user);
     } catch (e: any) {
       catchError(e, 'Error while updating available currencies');
     }
@@ -111,17 +109,7 @@ export class FinanceService {
   async updateExchangeRates(user?: IUserFromToken) {
     try {
       const rates = await this.getExchangeRates();
-      const settings = await this.prismaService.financeSettings.update({
-        where: { id: FINANCE_SETTINGS_ID },
-        data: {
-          exchangeRates: rates
-        },
-        select: financeSelectSettings
-      });
-      if (!settings) {
-        throw new NotFoundException('Settings not found.');
-      }
-      return new FinanceSettingsReturnDto(settings, user);
+      return this.editFinanceSettings({ exchangeRates: rates }, user);
     } catch (e: any) {
       catchError(e, 'Error while updating exchange rates');
     }

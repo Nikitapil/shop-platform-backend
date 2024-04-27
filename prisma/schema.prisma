@@ -183,6 +183,10 @@ model FinanceSettings {
 
   updatedAt DateTime @default(now()) @updatedAt
 
+  deliveryCost Int @default(0)
+
+  orderPriceWithFreeDelivery Int @default(0)
+
   /// [TExchangeRates]
   exchangeRates Json?
 }
