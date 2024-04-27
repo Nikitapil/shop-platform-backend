@@ -18,6 +18,9 @@ export class CartReturnDto {
   @ApiProperty({ description: 'Sum of tax', type: Number })
   taxSum: number;
 
+  @ApiProperty({ description: 'Delivery cost', type: Number })
+  deliveryCost: number;
+
   constructor(cart: ICartFromDb, financeSettings: IFinanceSettingsFromDb) {
     this.id = cart.id;
     this.productInCart = cart.productInCart.map((cartProduct) => ({
@@ -32,6 +35,7 @@ export class CartReturnDto {
       totalProductPrice >= financeSettings.orderPriceWithFreeDelivery
         ? 0
         : financeSettings.deliveryCost;
+    this.deliveryCost = deliveryCost;
     this.price = totalProductPrice + deliveryCost;
     this.taxSum = getTaxSum(this.price, financeSettings.tax);
   }
