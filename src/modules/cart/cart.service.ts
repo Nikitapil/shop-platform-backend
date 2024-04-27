@@ -152,8 +152,8 @@ export class CartService {
 
   private async createCartReturnDto(cart: ICartFromDb) {
     try {
-      const { tax } = await this.sharedService.getFinanceSettings();
-      return new CartReturnDto(cart, tax);
+      const financeSettings = await this.sharedService.getFinanceSettings();
+      return new CartReturnDto(cart, financeSettings);
     } catch (e: any) {
       throw new BadRequestException(e.message || 'Error while loading cart');
     }

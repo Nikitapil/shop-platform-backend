@@ -4,12 +4,13 @@ import { IOrderFromDb } from '../modules/orders/types';
 import { ICartFromDb } from '../modules/cart/types';
 import { ApiProperty } from '@nestjs/swagger';
 import { IUserFromToken } from '../domain/users';
+import { IFinanceSettingsFromDb } from '../modules/finance/types';
 
 interface ICreateOrderReturnDtoParams {
   order: IOrderFromDb;
   cart: ICartFromDb;
   user: IUserFromToken;
-  tax: number;
+  financeSettings: IFinanceSettingsFromDb;
 }
 
 export class CreateOrderReturnDto {
@@ -25,8 +26,8 @@ export class CreateOrderReturnDto {
   })
   cart: CartReturnDto;
 
-  constructor({ order, cart, user, tax }: ICreateOrderReturnDtoParams) {
+  constructor({ order, cart, user, financeSettings }: ICreateOrderReturnDtoParams) {
     this.order = new OrderReturnDto(order, user);
-    this.cart = new CartReturnDto(cart, tax);
+    this.cart = new CartReturnDto(cart, financeSettings);
   }
 }

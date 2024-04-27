@@ -47,8 +47,8 @@ export class OrdersService {
         count: productInCart.count
       }));
 
-      const { tax } = await this.sharedService.getFinanceSettings();
-      const cartDto = new CartReturnDto(cart, tax);
+      const financeSettings = await this.sharedService.getFinanceSettings();
+      const cartDto = new CartReturnDto(cart, financeSettings);
       const order = await this.prisma.order.create({
         data: {
           userId: user.id,
@@ -76,7 +76,7 @@ export class OrdersService {
         include: getCartInclude(user.id)
       });
 
-      return new CreateOrderReturnDto({ order, user, tax, cart: emptyCart });
+      return new CreateOrderReturnDto({ order, user, financeSettings, cart: emptyCart });
     } catch (e) {
       throw new BadRequestException('Error while creating an order');
     }
