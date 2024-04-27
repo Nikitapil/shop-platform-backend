@@ -11,6 +11,7 @@ import { SetAvailableCurrenciesDto } from './dto/SetAvailableCurrenciesDto';
 import { catchError } from '../../utils/errors';
 import { SetDeliveryCostDto } from './dto/SetDeliveryPriceDto';
 import { EditFinanceSettingsDto } from './dto/EditFinanceSettingsDto';
+import { OrderPriceWithFreeDeliveryDto } from './dto/OrderPriceWithFreeDeliveryDto';
 
 @Injectable()
 export class FinanceService {
@@ -120,6 +121,17 @@ export class FinanceService {
       return await this.editFinanceSettings(dto, user);
     } catch (e: any) {
       catchError(e, 'Error while updating delivery cost');
+    }
+  }
+
+  async setOrderPriceWithFreeDelivery(
+    dto: OrderPriceWithFreeDeliveryDto,
+    user?: IUserFromToken
+  ) {
+    try {
+      return await this.editFinanceSettings(dto, user);
+    } catch (e: any) {
+      catchError(e, 'Error while updating order price with free delivery');
     }
   }
 }

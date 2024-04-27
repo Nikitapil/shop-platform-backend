@@ -1,8 +1,8 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsNumber } from 'class-validator';
 
-export class SetDeliveryCostDto {
+export class OrderPriceWithFreeDeliveryDto {
   @ApiProperty({ description: 'delivery price', type: Number })
   @IsNumber()
-  deliveryCost: number;
+  orderPriceWithFreeDelivery: number;
 }

@@ -3,5 +3,6 @@ export const financeSelectSettings = {
   availableCurrencies: true,
   updatedAt: true,
   exchangeRates: true,
-  deliveryCost: true
+  deliveryCost: true,
+  orderPriceWithFreeDelivery: true
 };

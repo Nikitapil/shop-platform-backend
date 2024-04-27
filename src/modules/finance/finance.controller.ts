@@ -9,6 +9,7 @@ import { ApplyUserGuard } from '../../guards/users/apply-user.guard';
 import { User } from '../../decorators/User.decorator';
 import { SetAvailableCurrenciesDto } from './dto/SetAvailableCurrenciesDto';
 import { SetDeliveryCostDto } from './dto/SetDeliveryPriceDto';
+import {OrderPriceWithFreeDeliveryDto} from "./dto/OrderPriceWithFreeDeliveryDto";
 
 @Controller('finance')
 export class FinanceController {
@@ -45,6 +46,20 @@ export class FinanceController {
     @User() user: IUserFromToken
   ): Promise<FinanceSettingsReturnDto> {
     return this.financeService.setDeliveryCost(dto, user);
+  }
+
+  @ApiOperation({
+    summary: 'Set order price with free delivery cost',
+    operationId: 'setOrderPriceWithFreeDeliveryCost'
+  })
+  @ApiResponse({ status: 200, type: FinanceSettingsReturnDto })
+  @Roles([EUserRoles.ADMIN])
+  @Put('/settings/order_free_delivery_cost')
+  setOrderPriceWithFreeDeliveryCost(
+    @Body() dto: OrderPriceWithFreeDeliveryDto,
+    @User() user: IUserFromToken
+  ): Promise<FinanceSettingsReturnDto> {
+    return this.financeService.setOrderPriceWithFreeDelivery(dto, user);
   }
 
   @ApiOperation({
