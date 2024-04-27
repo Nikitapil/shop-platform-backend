@@ -6,6 +6,9 @@ export class FinanceSettingsReturnDto {
   @ApiProperty({ description: 'Tax setting', type: Number })
   tax: number;
 
+  @ApiProperty({ description: 'Delivery cost', type: Number })
+  deliveryCost: number;
+
   @ApiProperty({ description: 'App available currencies', type: [String] })
   availableCurrencies: string[];
 
@@ -20,6 +23,7 @@ export class FinanceSettingsReturnDto {
 
   constructor(settingsFromDb: IFinanceSettingsFromDb, user?: IUserFromToken) {
     this.tax = settingsFromDb.tax;
+    this.deliveryCost = settingsFromDb.deliveryCost;
     this.availableCurrencies = settingsFromDb.availableCurrencies;
     if (user?.roles?.includes(EUserRoles.ADMIN)) {
       this.allCurrencies = Object.keys(settingsFromDb.exchangeRates);

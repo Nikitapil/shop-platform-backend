@@ -9,7 +9,7 @@ import { FinanceSettingsReturnDto } from './dto/FinanceSettingsReturnDto';
 import { IUserFromToken } from '../../domain/users';
 import { SetAvailableCurrenciesDto } from './dto/SetAvailableCurrenciesDto';
 import { catchError } from '../../utils/errors';
-import { SetDeliveryPriceDto } from './dto/SetDeliveryPriceDto';
+import { SetDeliveryCostDto } from './dto/SetDeliveryPriceDto';
 import { EditFinanceSettingsDto } from './dto/EditFinanceSettingsDto';
 
 @Injectable()
@@ -112,6 +112,14 @@ export class FinanceService {
       return this.editFinanceSettings({ exchangeRates: rates }, user);
     } catch (e: any) {
       catchError(e, 'Error while updating exchange rates');
+    }
+  }
+
+  async setDeliveryCost(dto: SetDeliveryCostDto, user?: IUserFromToken) {
+    try {
+      return await this.editFinanceSettings(dto, user);
+    } catch (e: any) {
+      catchError(e, 'Error while updating delivery cost');
     }
   }
 }

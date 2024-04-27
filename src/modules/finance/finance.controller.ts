@@ -8,6 +8,7 @@ import { EUserRoles, IUserFromToken } from '../../domain/users';
 import { ApplyUserGuard } from '../../guards/users/apply-user.guard';
 import { User } from '../../decorators/User.decorator';
 import { SetAvailableCurrenciesDto } from './dto/SetAvailableCurrenciesDto';
+import { SetDeliveryCostDto } from './dto/SetDeliveryPriceDto';
 
 @Controller('finance')
 export class FinanceController {
@@ -30,6 +31,20 @@ export class FinanceController {
     @User() user: IUserFromToken
   ): Promise<FinanceSettingsReturnDto> {
     return this.financeService.setTax(dto, user);
+  }
+
+  @ApiOperation({
+    summary: 'Set new delivery cost value',
+    operationId: 'setDeliveryCost'
+  })
+  @ApiResponse({ status: 200, type: FinanceSettingsReturnDto })
+  @Roles([EUserRoles.ADMIN])
+  @Put('/settings/delivery_cost')
+  setDeliveryCost(
+    @Body() dto: SetDeliveryCostDto,
+    @User() user: IUserFromToken
+  ): Promise<FinanceSettingsReturnDto> {
+    return this.financeService.setDeliveryCost(dto, user);
   }
 
   @ApiOperation({
