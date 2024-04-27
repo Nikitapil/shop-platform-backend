@@ -24,7 +24,7 @@ export class CartReturnDto {
       product: new ProductReturnDto(cartProduct.product)
     }));
     this.price = this.productInCart.reduce(
-      (acc, item) => acc + item.product.priceWithDiscount,
+      (acc, item) => acc + item.product.priceWithDiscount * item.count,
       0
     );
     this.taxSum = getTaxSum(this.price, tax);
