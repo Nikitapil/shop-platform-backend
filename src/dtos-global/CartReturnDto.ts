@@ -32,7 +32,8 @@ export class CartReturnDto {
       0
     );
     const deliveryCost =
-      totalProductPrice >= financeSettings.orderPriceWithFreeDelivery
+      totalProductPrice >= financeSettings.orderPriceWithFreeDelivery ||
+      !this.productInCart.length
         ? 0
         : financeSettings.deliveryCost;
     this.deliveryCost = deliveryCost;
