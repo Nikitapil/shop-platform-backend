@@ -92,7 +92,6 @@ export class OrderReturnDto {
       order.status !== EOrderStatuses.CLOSED;
   }
 
-  // TODO add this method to global methods
   private checkIsAdmin(user: IUserFromToken) {
     return user.roles.includes(EUserRoles.ADMIN);
   }
