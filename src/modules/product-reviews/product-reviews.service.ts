@@ -10,7 +10,7 @@ import { ProductReviewReturnDto } from '../../dtos-global/ProductReviewReturnDto
 import { EUserRoles } from '../../domain/users';
 import { SuccessMessageDto } from '../../dtos-global/SuccessMessageDto';
 import { getOffset } from '../../utils/pagination';
-import { reviewInclude } from '../../db-query-options/product-reviews';
+import { reviewInclude } from './product-reviews-db-options';
 
 @Injectable()
 export class ProductReviewsService {

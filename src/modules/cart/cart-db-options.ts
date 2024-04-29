@@ -1,4 +1,4 @@
-import { getProductInclude } from '../../db-query-options/products-options';
+import { getProductInclude } from '../products/products-db-options';
 
 export const getCartInclude = (userId: string) => {
   return {

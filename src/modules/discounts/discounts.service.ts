@@ -2,7 +2,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 
 import { PrismaService } from '../prisma/prisma.service';
 
-import { getDiscountsInclude } from '../../db-query-options/discounts-options';
+import { getDiscountsInclude } from './discounts-db-options';
 
 import { ICreateDiscountParams, IEditDiscountParams } from './types';
 import { IUserFromToken } from '../../domain/users';

@@ -13,7 +13,7 @@ import { UserReturnDto } from '../../dtos-global/UserReturnDto';
 import * as process from 'process';
 import { ACCESS_TOKEN_EXPIRE_TIME, REFRESH_TOKEN_EXPIRE_TIME } from './constants';
 import { LoginDto } from './dto/LoginDto';
-import { safeUserSelect } from '../../db-query-options/user-options';
+import { safeUserSelect } from './user-db-options';
 import { SuccessMessageDto } from '../../dtos-global/SuccessMessageDto';
 import { EUserRoles, IUserFromToken } from '../../domain/users';
 import { IChangePasswordParams, IUpdateUserDataParams } from './types';

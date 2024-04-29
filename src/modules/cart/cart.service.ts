@@ -6,7 +6,7 @@ import { IUserFromToken } from '../../domain/users';
 import { getCartInclude } from './cart-db-options';
 import { CartReturnDto } from '../../dtos-global/CartReturnDto';
 import { SharedService } from '../shared/shared.service';
-import { getProductInclude } from '../../db-query-options/products-options';
+import { getProductInclude } from '../products/products-db-options';
 import { getPriceWithDiscount } from '../../utils/prices';
 import { IProductFromDb } from '../products/types';
 

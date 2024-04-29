@@ -19,7 +19,7 @@ import { createFileLink, deleteFile } from '../../utils/files';
 import { getOffset } from '../../utils/pagination';
 import { Prisma } from '@prisma/client';
 import { SuccessMessageDto } from '../../dtos-global/SuccessMessageDto';
-import { getProductInclude } from '../../db-query-options/products-options';
+import { getProductInclude } from './products-db-options';
 import { ProductReturnDto } from '../../dtos-global/ProductReturnDto';
 import { catchError } from '../../utils/errors';
 
