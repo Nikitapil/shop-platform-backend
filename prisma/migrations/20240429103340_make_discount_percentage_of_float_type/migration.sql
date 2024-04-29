@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE "Discount" ALTER COLUMN "percentage" SET DATA TYPE DOUBLE PRECISION;

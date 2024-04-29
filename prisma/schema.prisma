@@ -79,10 +79,13 @@ model Product {
   productInCart ProductInCart[]
 
   favoritesProductsOnUser FavoritesProductsOnUser[]
-  productsInOrder         ProductInOrder[]
-  reviews                 ProductReview[]
-  discount                Discount?                 @relation(fields: [discountId], references: [id], onUpdate: Cascade, onDelete: SetNull)
-  discountId              String?
+
+  productsInOrder ProductInOrder[]
+
+  reviews ProductReview[]
+
+  discount   Discount? @relation(fields: [discountId], references: [id], onUpdate: Cascade, onDelete: SetNull)
+  discountId String?
 }
 
 model Cart {
@@ -90,7 +93,8 @@ model Cart {
 
   user User?
 
-  price         Float           @default(0)
+  price Float @default(0)
+
   productInCart ProductInCart[]
 }
 
@@ -177,15 +181,15 @@ model ProductReview {
 
 model FinanceSettings {
   id  String @id @default("Finance_Settings")
-  tax Int    @default(5)
+  tax Float  @default(5)
 
   availableCurrencies String[] @default(["USD"])
 
   updatedAt DateTime @default(now()) @updatedAt
 
-  deliveryCost Int @default(0)
+  deliveryCost Float @default(0)
 
-  orderPriceWithFreeDelivery Int @default(0)
+  orderPriceWithFreeDelivery Float @default(0)
 
   /// [TExchangeRates]
   exchangeRates Json?
@@ -196,7 +200,7 @@ model Discount {
 
   products Product[]
 
-  percentage Int
+  percentage Float
 
   name String
 }
