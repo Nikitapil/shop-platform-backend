@@ -11,7 +11,7 @@ import {
   IUpdateOrderStatusParams
 } from './types';
 import { PrismaService } from '../prisma/prisma.service';
-import { getCartInclude } from '../../db-query-options/cart-options';
+import { getCartInclude } from '../cart/cart-db-options';
 import { EOrderStatuses } from '../../domain/orders';
 import { getOrderInclude } from '../../db-query-options/orders-options';
 import { CreateOrderReturnDto } from '../../dtos-global/CreateOrderReturnDto';
