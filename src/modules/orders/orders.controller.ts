@@ -19,7 +19,7 @@ import { GetOrdersQueryDto } from './dto/GetOrdersQueryDto';
 import { GetOrdersReturnDto } from './dto/GetOrdersReturnDto';
 import { UpdateOrderStatusDto } from './dto/UpdateOrderStatusDto';
 import { SuccessMessageDto } from '../../dtos-global/SuccessMessageDto';
-import { OrderReturnDto } from '../../dtos-global/OrderReturnDto';
+import { OrderReturnDto } from './dto/OrderReturnDto';
 
 @ApiTags('Orders')
 @Controller('orders')

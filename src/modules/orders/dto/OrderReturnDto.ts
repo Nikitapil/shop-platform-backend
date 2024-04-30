@@ -1,11 +1,13 @@
-import { ProductInOrderReturnDto } from './ProductInOrderReturnDto';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
-import { IOrderFromDb } from '../modules/orders/types';
-import { ProductReturnDto } from './ProductReturnDto';
-import { UserReturnDto } from './UserReturnDto';
-import { EUserRoles, IUserFromToken } from '../domain/users.domain';
-import { EOrderStatuses } from '../modules/orders/orders.constants';
-import { OrderStatusEnum } from './OrderStatusEnum';
+
+import { IOrderFromDb } from '../types';
+import { EUserRoles, IUserFromToken } from '../../../domain/users.domain';
+import { OrderStatusEnum } from '../../../dtos-global/OrderStatusEnum';
+import { EOrderStatuses } from '../orders.constants';
+
+import { UserReturnDto } from '../../../dtos-global/UserReturnDto';
+import { ProductReturnDto } from '../../../dtos-global/ProductReturnDto';
+import { ProductInOrderReturnDto } from '../../../dtos-global/ProductInOrderReturnDto';
 
 export class OrderReturnDto {
   @ApiProperty({ description: 'order id', type: String })
@@ -73,23 +75,23 @@ export class OrderReturnDto {
     this.status = order.status;
     this.cancelReason = order.cancelReason || null;
     this.user = order.user;
+
     this.productsInOrder = order.productsInOrder.map((productInOrder) => ({
       ...productInOrder,
       product: new ProductReturnDto(productInOrder.product)
     }));
+
     this.canCancel =
-      this.checkIsOwnerOrAdmin(order, user) && order.status !== EOrderStatuses.CLOSED;
+      this.checkIsOwnerOrAdmin(order, user) && this.orderIsNotClosed(order);
 
-    this.canSetInProgress =
-      this.checkIsAdmin(user) && order.status !== EOrderStatuses.CLOSED;
+    this.canSetInProgress = this.checkIsAdmin(user) && this.orderIsNotClosed(order);
 
-    this.canSetCreated =
-      this.checkIsAdmin(user) && order.status !== EOrderStatuses.CLOSED;
+    this.canSetCreated = this.checkIsAdmin(user) && this.orderIsNotClosed(order);
 
     this.canSetClosed =
       this.checkIsAdmin(user) &&
-      order.status !== EOrderStatuses.CANCELED &&
-      order.status !== EOrderStatuses.CLOSED;
+      this.orderIsNotClosed(order) &&
+      order.status !== EOrderStatuses.CANCELED;
   }
 
   private checkIsAdmin(user: IUserFromToken) {
@@ -98,5 +100,9 @@ export class OrderReturnDto {
 
   private checkIsOwnerOrAdmin(order: IOrderFromDb, user: IUserFromToken) {
     return order.userId === user.id || this.checkIsAdmin(user);
+  }
+
+  private orderIsNotClosed(order: IOrderFromDb) {
+    return order.status !== EOrderStatuses.CLOSED;
   }
 }

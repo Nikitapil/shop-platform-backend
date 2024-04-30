@@ -1,4 +1,4 @@
-import { OrderReturnDto } from '../../../dtos-global/OrderReturnDto';
+import { OrderReturnDto } from './OrderReturnDto';
 import { CartReturnDto } from '../../cart/dto/CartReturnDto';
 import { IOrderFromDb } from '../types';
 import { ICartFromDb } from '../../cart/types';
