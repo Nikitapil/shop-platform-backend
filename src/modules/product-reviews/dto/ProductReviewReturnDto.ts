@@ -1,6 +1,7 @@
-import { IProductReviewFromDb } from '../modules/product-reviews/types';
-import { EUserRoles, IUserFromToken } from '../domain/users.domain';
 import { ApiProperty } from '@nestjs/swagger';
+
+import { IProductReviewFromDb } from '../types';
+import { EUserRoles, IUserFromToken } from '../../../domain/users.domain';
 
 export class ProductReviewReturnDto {
   @ApiProperty({ description: 'review id', type: String })

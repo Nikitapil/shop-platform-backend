@@ -6,7 +6,7 @@ import {
 } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { ICreateReviewParams, IDeleteReviewParams, IGetReviewsParams } from './types';
-import { ProductReviewReturnDto } from '../../dtos-global/ProductReviewReturnDto';
+import { ProductReviewReturnDto } from './dto/ProductReviewReturnDto';
 import { EUserRoles } from '../../domain/users.domain';
 import { SuccessMessageDto } from '../../dtos-global/SuccessMessageDto';
 import { getOffset } from '../../utils/pagination';

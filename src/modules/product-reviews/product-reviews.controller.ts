@@ -14,7 +14,7 @@ import { User } from '../../decorators/User.decorator';
 import { IUserFromToken } from '../../domain/users.domain';
 import { ProductReviewsService } from './product-reviews.service';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { ProductReviewReturnDto } from '../../dtos-global/ProductReviewReturnDto';
+import { ProductReviewReturnDto } from './dto/ProductReviewReturnDto';
 import { SuccessMessageDto } from '../../dtos-global/SuccessMessageDto';
 import { ApplyUserGuard } from '../../guards/users/apply-user.guard';
 import { GetReviewsQueryDto } from './dto/GetReviewsQueryDto';
