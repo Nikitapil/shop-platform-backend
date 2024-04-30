@@ -4,7 +4,7 @@ import { IAddToCartParams, ICartFromDb, IRemoveFromCartParams } from './types';
 import { Prisma } from '@prisma/client';
 import { IUserFromToken } from '../../domain/users.domain';
 import { getCartInclude } from './cart-db-options';
-import { CartReturnDto } from '../../dtos-global/CartReturnDto';
+import { CartReturnDto } from './dto/CartReturnDto';
 import { SharedService } from '../shared/shared.service';
 import { getProductInclude } from '../products/products-db-options';
 import { getPriceWithDiscount } from '../../utils/prices';

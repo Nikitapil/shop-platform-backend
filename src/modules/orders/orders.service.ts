@@ -21,7 +21,7 @@ import { getOffset } from '../../utils/pagination';
 import { OrderReturnDto } from '../../dtos-global/OrderReturnDto';
 import { SuccessMessageDto } from '../../dtos-global/SuccessMessageDto';
 import { SharedService } from '../shared/shared.service';
-import { CartReturnDto } from '../../dtos-global/CartReturnDto';
+import { CartReturnDto } from '../cart/dto/CartReturnDto';
 
 @Injectable()
 export class OrdersService {

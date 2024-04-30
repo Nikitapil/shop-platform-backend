@@ -6,7 +6,7 @@ import { User } from '../../decorators/User.decorator';
 import { IUserFromToken } from '../../domain/users.domain';
 import { CartService } from './cart.service';
 import { RemoveFromCartDto } from './dto/RemoveFromCartDto';
-import { CartReturnDto } from '../../dtos-global/CartReturnDto';
+import { CartReturnDto } from './dto/CartReturnDto';
 
 @ApiTags('Cart')
 @Controller('cart')

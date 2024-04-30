@@ -1,9 +1,12 @@
-import { ProductInCartReturnDto } from './ProductInCartReturnDto';
 import { ApiProperty } from '@nestjs/swagger';
-import { ICartFromDb } from '../modules/cart/types';
-import { ProductReturnDto } from './ProductReturnDto';
-import { getTaxSum } from '../utils/prices';
-import { IFinanceSettingsFromDb } from '../modules/finance/types';
+
+import { getTaxSum } from '../../../utils/prices';
+
+import { ICartFromDb } from '../types';
+import { IFinanceSettingsFromDb } from '../../finance/types';
+
+import { ProductInCartReturnDto } from '../../../dtos-global/ProductInCartReturnDto';
+import { ProductReturnDto } from '../../../dtos-global/ProductReturnDto';
 
 export class CartReturnDto {
   @ApiProperty({ description: 'cart id', type: String })
@@ -23,19 +26,23 @@ export class CartReturnDto {
 
   constructor(cart: ICartFromDb, financeSettings: IFinanceSettingsFromDb) {
     this.id = cart.id;
+
     this.productInCart = cart.productInCart.map((cartProduct) => ({
       ...cartProduct,
       product: new ProductReturnDto(cartProduct.product)
     }));
+
     const totalProductPrice = this.productInCart.reduce(
       (acc, item) => acc + item.product.priceWithDiscount * item.count,
       0
     );
+
     const deliveryCost =
       totalProductPrice >= financeSettings.orderPriceWithFreeDelivery ||
       !this.productInCart.length
         ? 0
         : financeSettings.deliveryCost;
+
     this.deliveryCost = deliveryCost;
     this.price = totalProductPrice + deliveryCost;
     this.taxSum = getTaxSum(this.price, financeSettings.tax);

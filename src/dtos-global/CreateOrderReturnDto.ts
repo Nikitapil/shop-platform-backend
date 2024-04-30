@@ -1,5 +1,5 @@
 import { OrderReturnDto } from './OrderReturnDto';
-import { CartReturnDto } from './CartReturnDto';
+import { CartReturnDto } from '../modules/cart/dto/CartReturnDto';
 import { IOrderFromDb } from '../modules/orders/types';
 import { ICartFromDb } from '../modules/cart/types';
 import { ApiProperty } from '@nestjs/swagger';
