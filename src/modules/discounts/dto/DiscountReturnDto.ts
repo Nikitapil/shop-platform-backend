@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { ProductReturnDto } from '../../../dtos-global/ProductReturnDto';
+import { ProductReturnDto } from '../../products/dto/ProductReturnDto';
 import { IDiscountFromDb } from '../types';
 import { EUserRoles, IUserFromToken } from '../../../domain/users.domain';
 

@@ -28,7 +28,7 @@ import {
 } from '@nestjs/swagger';
 import { CreateProductDto } from './dto/CreateProductDto';
 import { ProductsService } from './products.service';
-import { ProductReturnDto } from '../../dtos-global/ProductReturnDto';
+import { ProductReturnDto } from './dto/ProductReturnDto';
 import { GetProductsQueryDto } from './dto/GetProductsQueryDto';
 import { UpdateProductDto } from './dto/UpdateProductDto';
 import { SuccessMessageDto } from '../../dtos-global/SuccessMessageDto';

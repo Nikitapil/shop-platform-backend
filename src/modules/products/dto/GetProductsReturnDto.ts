@@ -1,4 +1,4 @@
-import { ProductReturnDto } from '../../../dtos-global/ProductReturnDto';
+import { ProductReturnDto } from './ProductReturnDto';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class GetProductsReturnDto {

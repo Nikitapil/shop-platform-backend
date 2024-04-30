@@ -1,9 +1,12 @@
-import { CategoryReturnDto } from '../modules/categories/dto/CategoryReturnDto';
 import { ApiProperty } from '@nestjs/swagger';
-import { IProductFromDb, IRatingFromDb } from '../modules/products/types';
-import { EUserRoles, IUserFromToken } from '../domain/users.domain';
-import { ProductDiscountReturnDto } from '../modules/products/dto/ProductDiscountReturnDto';
-import { getPriceWithDiscount } from '../utils/prices';
+
+import { getPriceWithDiscount } from '../../../utils/prices';
+
+import { IProductFromDb, IRatingFromDb } from '../types';
+import { EUserRoles, IUserFromToken } from '../../../domain/users.domain';
+
+import { ProductDiscountReturnDto } from './ProductDiscountReturnDto';
+import { CategoryReturnDto } from '../../categories/dto/CategoryReturnDto';
 
 export class ProductReturnDto {
   @ApiProperty({ description: 'product id', type: String })
@@ -70,18 +73,23 @@ export class ProductReturnDto {
     this.description = product.description;
     this.imageUrl = product.imageUrl;
     this.price = product.price;
-    this.priceWithDiscount = product.discount
-      ? getPriceWithDiscount(product.price, product.discount.percentage)
-      : product.price;
     this.categoryId = product.categoryId;
     this.createdAt = product.createdAt;
     this.updatedAt = product.updatedAt;
     this.category = product.category;
     this.isInFavorites = !!product.favoritesProductsOnUser.length;
+
+    this.priceWithDiscount = product.discount
+      ? getPriceWithDiscount(product.price, product.discount.percentage)
+      : product.price;
+
     this.canAddReview = !product.reviews?.length && !!user;
-    this.canEdit = !!user?.roles.includes(EUserRoles.ADMIN);
-    this.canDelete = !!user?.roles.includes(EUserRoles.ADMIN);
-    this.canEditProductDiscount = !!user?.roles.includes(EUserRoles.ADMIN);
+
+    const isAdmin = !!user?.roles.includes(EUserRoles.ADMIN);
+
+    this.canEdit = isAdmin;
+    this.canDelete = isAdmin;
+    this.canEditProductDiscount = isAdmin;
     this.canAddToFavourites = !!user;
     this.discount = product.discount;
 

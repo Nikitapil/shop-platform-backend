@@ -20,7 +20,7 @@ import { getOffset } from '../../utils/pagination';
 import { Prisma } from '@prisma/client';
 import { SuccessMessageDto } from '../../dtos-global/SuccessMessageDto';
 import { getProductInclude } from './products-db-options';
-import { ProductReturnDto } from '../../dtos-global/ProductReturnDto';
+import { ProductReturnDto } from './dto/ProductReturnDto';
 import { catchError } from '../../utils/errors';
 
 @Injectable()

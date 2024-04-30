@@ -5,7 +5,7 @@ import { EUserRoles, IUserFromToken } from '../../../domain/users.domain';
 import { OrderStatusEnum } from './OrderStatusEnum';
 
 import { UserReturnDto } from '../../../dtos-global/UserReturnDto';
-import { ProductReturnDto } from '../../../dtos-global/ProductReturnDto';
+import { ProductReturnDto } from '../../products/dto/ProductReturnDto';
 import { ProductInOrderReturnDto } from './ProductInOrderReturnDto';
 
 export class OrderReturnDto {

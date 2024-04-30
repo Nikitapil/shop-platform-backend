@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { ProductReturnDto } from '../../../dtos-global/ProductReturnDto';
+import { ProductReturnDto } from '../../products/dto/ProductReturnDto';
 
 export class ProductInOrderReturnDto {
   @ApiProperty({ description: 'product in order id', type: String })

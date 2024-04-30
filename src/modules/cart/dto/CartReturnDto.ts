@@ -6,7 +6,7 @@ import { ICartFromDb } from '../types';
 import { IFinanceSettingsFromDb } from '../../finance/types';
 
 import { ProductInCartReturnDto } from './ProductInCartReturnDto';
-import { ProductReturnDto } from '../../../dtos-global/ProductReturnDto';
+import { ProductReturnDto } from '../../products/dto/ProductReturnDto';
 
 export class CartReturnDto {
   @ApiProperty({ description: 'cart id', type: String })
