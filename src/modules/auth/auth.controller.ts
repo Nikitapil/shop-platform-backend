@@ -9,20 +9,27 @@ import {
   Res,
   UseGuards
 } from '@nestjs/common';
-import { RegisterDto } from './dto/RegisterDto';
+
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+
 import { AuthService } from './auth.service';
-import { Response } from 'express';
-import { COOKIE_EXPIRE_TIME, REFRESH_TOKEN_NAME } from './constants';
-import { AuthResponseDto } from './dto/AuthResponseDto';
-import { LoginDto } from './dto/LoginDto';
+
 import { Cookies } from '../../decorators/Cookies';
-import { SuccessMessageDto } from '../../dtos-global/SuccessMessageDto';
-import { JwtGuard } from '../../guards/auth/jwt.guard';
-import { UpdateUserDataDto } from './dto/UpdateUserDataDto';
 import { User } from '../../decorators/User.decorator';
+
+import { JwtGuard } from '../../guards/auth/jwt.guard';
+
+import { Response } from 'express';
 import { IUserFromToken } from '../../domain/users.domain';
+
+import { COOKIE_EXPIRE_TIME, REFRESH_TOKEN_NAME } from './constants';
+
+import { UpdateUserDataDto } from './dto/UpdateUserDataDto';
+import { LoginDto } from './dto/LoginDto';
+import { AuthResponseDto } from './dto/AuthResponseDto';
+import { RegisterDto } from './dto/RegisterDto';
 import { ChangePasswordDto } from './dto/ChangePasswordDto';
+import { SuccessMessageDto } from '../../dtos-global/SuccessMessageDto';
 
 @ApiTags('Auth')
 @Controller('auth')
