@@ -5,7 +5,7 @@ import { getTaxSum } from '../../../utils/prices';
 import { ICartFromDb } from '../types';
 import { IFinanceSettingsFromDb } from '../../finance/types';
 
-import { ProductInCartReturnDto } from '../../../dtos-global/ProductInCartReturnDto';
+import { ProductInCartReturnDto } from './ProductInCartReturnDto';
 import { ProductReturnDto } from '../../../dtos-global/ProductReturnDto';
 
 export class CartReturnDto {
