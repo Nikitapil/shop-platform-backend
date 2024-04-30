@@ -12,7 +12,6 @@ import {
 } from './types';
 import { PrismaService } from '../prisma/prisma.service';
 import { getCartInclude } from '../cart/cart-db-options';
-import { EOrderStatuses } from './orders.constants';
 import { getOrderInclude } from './orders-db-options';
 import { CreateOrderReturnDto } from './dto/CreateOrderReturnDto';
 import { EUserRoles } from '../../domain/users.domain';
@@ -22,7 +21,7 @@ import { OrderReturnDto } from './dto/OrderReturnDto';
 import { SuccessMessageDto } from '../../dtos-global/SuccessMessageDto';
 import { SharedService } from '../shared/shared.service';
 import { CartReturnDto } from '../cart/dto/CartReturnDto';
-import { OrderStatusEnum } from '../../dtos-global/OrderStatusEnum';
+import { OrderStatusEnum } from './dto/OrderStatusEnum';
 
 @Injectable()
 export class OrdersService {
@@ -132,11 +131,11 @@ export class OrdersService {
       throw new NotAcceptableException('Permission denied');
     }
 
-    if (dto.status === EOrderStatuses.CANCELED && !dto.cancelReason) {
+    if (dto.status === OrderStatusEnum.CANCELED && !dto.cancelReason) {
       throw new BadRequestException('cancel reason is required if status is canceled');
     }
 
-    if (dto.status !== EOrderStatuses.CANCELED && dto.cancelReason) {
+    if (dto.status !== OrderStatusEnum.CANCELED && dto.cancelReason) {
       throw new BadRequestException(
         'cancel reason is not allowed when status is not canceled'
       );

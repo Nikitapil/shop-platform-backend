@@ -2,8 +2,7 @@ import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 
 import { IOrderFromDb } from '../types';
 import { EUserRoles, IUserFromToken } from '../../../domain/users.domain';
-import { OrderStatusEnum } from '../../../dtos-global/OrderStatusEnum';
-import { EOrderStatuses } from '../orders.constants';
+import { OrderStatusEnum } from './OrderStatusEnum';
 
 import { UserReturnDto } from '../../../dtos-global/UserReturnDto';
 import { ProductReturnDto } from '../../../dtos-global/ProductReturnDto';
@@ -91,7 +90,7 @@ export class OrderReturnDto {
     this.canSetClosed =
       this.checkIsAdmin(user) &&
       this.orderIsNotClosed(order) &&
-      order.status !== EOrderStatuses.CANCELED;
+      order.status !== OrderStatusEnum.CANCELED;
   }
 
   private checkIsAdmin(user: IUserFromToken) {
@@ -103,6 +102,6 @@ export class OrderReturnDto {
   }
 
   private orderIsNotClosed(order: IOrderFromDb) {
-    return order.status !== EOrderStatuses.CLOSED;
+    return order.status !== OrderStatusEnum.CLOSED;
   }
 }

@@ -1,8 +1,7 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { IsEnum, IsNumber, IsOptional, IsString } from 'class-validator';
 import { Transform } from 'class-transformer';
-import { EOrderStatuses } from '../orders.constants';
-import { OrderStatusEnum } from '../../../dtos-global/OrderStatusEnum';
+import { OrderStatusEnum } from './OrderStatusEnum';
 
 export class GetOrdersQueryDto {
   @ApiProperty({ description: 'Page number', type: Number })
@@ -40,5 +39,5 @@ export class GetOrdersQueryDto {
   @IsString()
   @IsEnum(['CREATED', 'INPROGRESS', 'CANCELED', 'CLOSED'])
   @IsOptional()
-  status?: EOrderStatuses;
+  status?: OrderStatusEnum;
 }

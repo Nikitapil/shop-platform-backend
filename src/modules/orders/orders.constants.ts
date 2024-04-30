@@ -1,6 +1,0 @@
-export enum EOrderStatuses {
-  CREATED = 'CREATED',
-  INPROGRESS = 'INPROGRESS',
-  CANCELED = 'CANCELED',
-  CLOSED = 'CLOSED'
-}
