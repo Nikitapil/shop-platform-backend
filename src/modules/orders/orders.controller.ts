@@ -16,7 +16,7 @@ import { User } from '../../decorators/User.decorator';
 import { IUserFromToken } from '../../domain/users.domain';
 import { CreateOrderReturnDto } from './dto/CreateOrderReturnDto';
 import { GetOrdersQueryDto } from './dto/GetOrdersQueryDto';
-import { GetOrdersReturnDto } from '../../dtos-global/GetOrdersReturnDto';
+import { GetOrdersReturnDto } from './dto/GetOrdersReturnDto';
 import { UpdateOrderStatusDto } from './dto/UpdateOrderStatusDto';
 import { SuccessMessageDto } from '../../dtos-global/SuccessMessageDto';
 import { OrderReturnDto } from '../../dtos-global/OrderReturnDto';

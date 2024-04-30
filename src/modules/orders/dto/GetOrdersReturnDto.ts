@@ -1,4 +1,4 @@
-import { OrderReturnDto } from './OrderReturnDto';
+import { OrderReturnDto } from '../../../dtos-global/OrderReturnDto';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class GetOrdersReturnDto {
