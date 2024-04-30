@@ -4,7 +4,7 @@ import { IOrderFromDb } from '../types';
 import { EUserRoles, IUserFromToken } from '../../../domain/users.domain';
 import { OrderStatusEnum } from './OrderStatusEnum';
 
-import { UserReturnDto } from '../../../dtos-global/UserReturnDto';
+import { UserReturnDto } from '../../auth/dto/UserReturnDto';
 import { ProductReturnDto } from '../../products/dto/ProductReturnDto';
 import { ProductInOrderReturnDto } from './ProductInOrderReturnDto';
 

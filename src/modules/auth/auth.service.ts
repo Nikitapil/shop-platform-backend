@@ -9,7 +9,7 @@ import { PrismaService } from '../prisma/prisma.service';
 import { RegisterDto } from './dto/RegisterDto';
 import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
-import { UserReturnDto } from '../../dtos-global/UserReturnDto';
+import { UserReturnDto } from './dto/UserReturnDto';
 import * as process from 'process';
 import { ACCESS_TOKEN_EXPIRE_TIME, REFRESH_TOKEN_EXPIRE_TIME } from './constants';
 import { LoginDto } from './dto/LoginDto';
