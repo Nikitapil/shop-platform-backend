@@ -6,7 +6,7 @@ import { financeSelectSettings } from './db-options/FinanceSelectSettings';
 import { HttpService } from '@nestjs/axios';
 import { getDiffInHours } from '../../utils/dates';
 import { FinanceSettingsReturnDto } from './dto/FinanceSettingsReturnDto';
-import { IUserFromToken } from '../../domain/users';
+import { IUserFromToken } from '../../domain/users.domain';
 import { SetAvailableCurrenciesDto } from './dto/SetAvailableCurrenciesDto';
 import { catchError } from '../../utils/errors';
 import { SetDeliveryCostDto } from './dto/SetDeliveryPriceDto';

@@ -21,7 +21,7 @@ import { SuccessMessageDto } from '../../dtos-global/SuccessMessageDto';
 import { JwtGuard } from '../../guards/auth/jwt.guard';
 import { UpdateUserDataDto } from './dto/UpdateUserDataDto';
 import { User } from '../../decorators/User.decorator';
-import { IUserFromToken } from '../../domain/users';
+import { IUserFromToken } from '../../domain/users.domain';
 import { ChangePasswordDto } from './dto/ChangePasswordDto';
 
 @ApiTags('Auth')

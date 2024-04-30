@@ -3,7 +3,7 @@ import { CartReturnDto } from './CartReturnDto';
 import { IOrderFromDb } from '../modules/orders/types';
 import { ICartFromDb } from '../modules/cart/types';
 import { ApiProperty } from '@nestjs/swagger';
-import { IUserFromToken } from '../domain/users';
+import { IUserFromToken } from '../domain/users.domain';
 import { IFinanceSettingsFromDb } from '../modules/finance/types';
 
 interface ICreateOrderReturnDtoParams {

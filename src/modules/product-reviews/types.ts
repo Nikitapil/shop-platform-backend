@@ -1,5 +1,5 @@
 import { CreateReviewDto } from './dto/CreateReviewDto';
-import { IUserFromToken } from '../../domain/users';
+import { IUserFromToken } from '../../domain/users.domain';
 import { GetReviewsQueryDto } from './dto/GetReviewsQueryDto';
 
 export interface ICreateReviewParams {

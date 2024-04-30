@@ -3,7 +3,7 @@ import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { JwtGuard } from '../../guards/auth/jwt.guard';
 import { AddToCartDto } from './dto/AddToCartDto';
 import { User } from '../../decorators/User.decorator';
-import { IUserFromToken } from '../../domain/users';
+import { IUserFromToken } from '../../domain/users.domain';
 import { CartService } from './cart.service';
 import { RemoveFromCartDto } from './dto/RemoveFromCartDto';
 import { CartReturnDto } from '../../dtos-global/CartReturnDto';

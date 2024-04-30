@@ -13,7 +13,7 @@ import {
   UseInterceptors
 } from '@nestjs/common';
 import { Roles } from '../../decorators/Roles.decorator';
-import { EUserRoles, IUserFromToken } from '../../domain/users';
+import { EUserRoles, IUserFromToken } from '../../domain/users.domain';
 import { FileInterceptor } from '@nestjs/platform-express';
 import {
   getFileInterceptorOptions,

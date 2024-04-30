@@ -16,7 +16,7 @@ import { Roles } from '../../decorators/Roles.decorator';
 import { User } from '../../decorators/User.decorator';
 import { ApplyUserGuard } from '../../guards/users/apply-user.guard';
 
-import { EUserRoles, IUserFromToken } from '../../domain/users';
+import { EUserRoles, IUserFromToken } from '../../domain/users.domain';
 
 import { DiscountReturnDto } from './dto/DiscountReturnDto';
 import { CreateDiscountDto } from './dto/CreateDiscountDto';

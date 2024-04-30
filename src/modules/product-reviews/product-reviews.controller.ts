@@ -11,7 +11,7 @@ import {
 import { JwtGuard } from '../../guards/auth/jwt.guard';
 import { CreateReviewDto } from './dto/CreateReviewDto';
 import { User } from '../../decorators/User.decorator';
-import { IUserFromToken } from '../../domain/users';
+import { IUserFromToken } from '../../domain/users.domain';
 import { ProductReviewsService } from './product-reviews.service';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { ProductReviewReturnDto } from '../../dtos-global/ProductReviewReturnDto';

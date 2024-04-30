@@ -13,7 +13,7 @@ import { OrdersService } from './orders.service';
 import { JwtGuard } from '../../guards/auth/jwt.guard';
 import { CreateOrderDto } from './dto/CreateOrderDto';
 import { User } from '../../decorators/User.decorator';
-import { IUserFromToken } from '../../domain/users';
+import { IUserFromToken } from '../../domain/users.domain';
 import { CreateOrderReturnDto } from '../../dtos-global/CreateOrderReturnDto';
 import { GetOrdersQueryDto } from './dto/GetOrdersQueryDto';
 import { GetOrdersReturnDto } from '../../dtos-global/GetOrdersReturnDto';

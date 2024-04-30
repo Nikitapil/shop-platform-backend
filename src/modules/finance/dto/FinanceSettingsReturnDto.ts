@@ -1,6 +1,6 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { IFinanceSettingsFromDb } from '../types';
-import { EUserRoles, IUserFromToken } from '../../../domain/users';
+import { EUserRoles, IUserFromToken } from '../../../domain/users.domain';
 
 export class FinanceSettingsReturnDto {
   @ApiProperty({ description: 'Tax setting', type: Number })

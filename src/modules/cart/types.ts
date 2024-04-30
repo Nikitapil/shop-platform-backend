@@ -1,5 +1,5 @@
 import { AddToCartDto } from './dto/AddToCartDto';
-import { IUserParam } from '../../domain/users';
+import { IUserParam } from '../../domain/users.domain';
 import { RemoveFromCartDto } from './dto/RemoveFromCartDto';
 import { IProductFromDb } from '../products/types';
 

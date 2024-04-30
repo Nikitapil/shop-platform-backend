@@ -1,7 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { ProductReturnDto } from '../../../dtos-global/ProductReturnDto';
 import { IDiscountFromDb } from '../types';
-import { EUserRoles, IUserFromToken } from '../../../domain/users';
+import { EUserRoles, IUserFromToken } from '../../../domain/users.domain';
 
 export class DiscountReturnDto {
   @ApiProperty({ description: 'discount id', type: String })

@@ -1,5 +1,5 @@
 import { IProductReviewFromDb } from '../modules/product-reviews/types';
-import { EUserRoles, IUserFromToken } from '../domain/users';
+import { EUserRoles, IUserFromToken } from '../domain/users.domain';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class ProductReviewReturnDto {

@@ -1,7 +1,7 @@
 import { CreateProductDto } from './dto/CreateProductDto';
 import { UpdateProductDto } from './dto/UpdateProductDto';
 import { ToggleFavoritesDto } from './dto/ToggleFavoritesDto';
-import { IUserFromToken, IUserParam } from '../../domain/users';
+import { IUserFromToken, IUserParam } from '../../domain/users.domain';
 import { GetProductsQueryDto } from './dto/GetProductsQueryDto';
 import { CategoryReturnDto } from '../../dtos-global/CategoryReturnDto';
 import { Prisma } from '@prisma/client';

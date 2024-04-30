@@ -4,7 +4,7 @@ import { ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { FinanceSettingsReturnDto } from './dto/FinanceSettingsReturnDto';
 import { SetTaxDto } from './dto/SetTaxDto';
 import { Roles } from '../../decorators/Roles.decorator';
-import { EUserRoles, IUserFromToken } from '../../domain/users';
+import { EUserRoles, IUserFromToken } from '../../domain/users.domain';
 import { ApplyUserGuard } from '../../guards/users/apply-user.guard';
 import { User } from '../../decorators/User.decorator';
 import { SetAvailableCurrenciesDto } from './dto/SetAvailableCurrenciesDto';

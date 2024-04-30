@@ -5,7 +5,7 @@ import { PrismaService } from '../prisma/prisma.service';
 import { getDiscountsInclude } from './discounts-db-options';
 
 import { ICreateDiscountParams, IEditDiscountParams } from './types';
-import { IUserFromToken } from '../../domain/users';
+import { IUserFromToken } from '../../domain/users.domain';
 
 import { DiscountReturnDto } from './dto/DiscountReturnDto';
 import { SuccessMessageDto } from '../../dtos-global/SuccessMessageDto';

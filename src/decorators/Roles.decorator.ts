@@ -1,5 +1,5 @@
 import { applyDecorators, SetMetadata, UseGuards } from '@nestjs/common';
-import { EUserRoles } from '../domain/users';
+import { EUserRoles } from '../domain/users.domain';
 import { RolesGuard } from '../guards/users/role.guard';
 import { JwtGuard } from '../guards/auth/jwt.guard';
 

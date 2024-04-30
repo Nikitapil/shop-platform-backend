@@ -1,7 +1,7 @@
 import { Body, Controller, Delete, Get, Param, Post, Put } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { Roles } from '../../decorators/Roles.decorator';
-import { EUserRoles } from '../../domain/users';
+import { EUserRoles } from '../../domain/users.domain';
 import { CreateCategoryDto } from './dto/CreateCategoryDto';
 import { CategoriesService } from './categories.service';
 import { CategoryReturnDto } from '../../dtos-global/CategoryReturnDto';

@@ -1,6 +1,6 @@
 import { IProductFromDb } from '../products/types';
 import { CreateDiscountDto } from './dto/CreateDiscountDto';
-import { IUserFromToken } from '../../domain/users';
+import { IUserFromToken } from '../../domain/users.domain';
 import { EditDiscountDto } from './dto/EditDiscountDto';
 
 export interface IDiscountFromDb {

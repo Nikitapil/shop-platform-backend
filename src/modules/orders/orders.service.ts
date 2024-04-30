@@ -15,7 +15,7 @@ import { getCartInclude } from '../cart/cart-db-options';
 import { EOrderStatuses } from './orders.constants';
 import { getOrderInclude } from './orders-db-options';
 import { CreateOrderReturnDto } from '../../dtos-global/CreateOrderReturnDto';
-import { EUserRoles } from '../../domain/users';
+import { EUserRoles } from '../../domain/users.domain';
 import { Prisma } from '@prisma/client';
 import { getOffset } from '../../utils/pagination';
 import { OrderReturnDto } from '../../dtos-global/OrderReturnDto';

@@ -3,7 +3,7 @@ import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { IOrderFromDb } from '../modules/orders/types';
 import { ProductReturnDto } from './ProductReturnDto';
 import { UserReturnDto } from './UserReturnDto';
-import { EUserRoles, IUserFromToken } from '../domain/users';
+import { EUserRoles, IUserFromToken } from '../domain/users.domain';
 import { EOrderStatuses } from '../modules/orders/orders.constants';
 import { OrderStatusEnum } from './OrderStatusEnum';
 

@@ -15,7 +15,7 @@ import { ACCESS_TOKEN_EXPIRE_TIME, REFRESH_TOKEN_EXPIRE_TIME } from './constants
 import { LoginDto } from './dto/LoginDto';
 import { safeUserSelect } from './user-db-options';
 import { SuccessMessageDto } from '../../dtos-global/SuccessMessageDto';
-import { EUserRoles, IUserFromToken } from '../../domain/users';
+import { EUserRoles, IUserFromToken } from '../../domain/users.domain';
 import { IChangePasswordParams, IUpdateUserDataParams } from './types';
 
 @Injectable()

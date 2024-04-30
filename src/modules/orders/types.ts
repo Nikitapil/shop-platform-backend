@@ -1,5 +1,5 @@
 import { CreateOrderDto } from './dto/CreateOrderDto';
-import { IUserFromToken } from '../../domain/users';
+import { IUserFromToken } from '../../domain/users.domain';
 import { IProductFromDb } from '../products/types';
 import { GetOrdersQueryDto } from './dto/GetOrdersQueryDto';
 import { UpdateOrderStatusDto } from './dto/UpdateOrderStatusDto';
