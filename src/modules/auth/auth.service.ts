@@ -5,18 +5,25 @@ import {
   NotFoundException,
   UnauthorizedException
 } from '@nestjs/common';
-import { PrismaService } from '../prisma/prisma.service';
-import { RegisterDto } from './dto/RegisterDto';
+
+import { catchError } from '../../utils/errors';
+
 import * as bcrypt from 'bcrypt';
-import { JwtService } from '@nestjs/jwt';
-import { UserReturnDto } from './dto/UserReturnDto';
 import * as process from 'process';
-import { ACCESS_TOKEN_EXPIRE_TIME, REFRESH_TOKEN_EXPIRE_TIME } from './constants';
-import { LoginDto } from './dto/LoginDto';
-import { safeUserSelect } from './user-db-options';
-import { SuccessMessageDto } from '../../dtos-global/SuccessMessageDto';
+
+import { PrismaService } from '../prisma/prisma.service';
+import { JwtService } from '@nestjs/jwt';
+
 import { EUserRoles, IUserFromToken } from '../../domain/users.domain';
 import { IChangePasswordParams, IUpdateUserDataParams } from './types';
+
+import { ACCESS_TOKEN_EXPIRE_TIME, REFRESH_TOKEN_EXPIRE_TIME } from './constants';
+import { safeUserSelect } from './user-db-options';
+
+import { SuccessMessageDto } from '../../dtos-global/SuccessMessageDto';
+import { RegisterDto } from './dto/RegisterDto';
+import { UserReturnDto } from './dto/UserReturnDto';
+import { LoginDto } from './dto/LoginDto';
 
 @Injectable()
 export class AuthService {
@@ -102,7 +109,7 @@ export class AuthService {
 
       return await this.generateUserDataWithTokens(userFromDb);
     } catch (e) {
-      throw new UnauthorizedException('Unauthorized');
+      catchError(e, 'Unauthorized');
     }
   }
 
@@ -160,7 +167,7 @@ export class AuthService {
 
       return await this.generateUserDataWithTokens(updatedUser);
     } catch (e: any) {
-      throw new HttpException({ message: e.message || 'change password error' }, 400);
+      catchError(e, 'Change password error');
     }
   }
 
