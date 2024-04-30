@@ -18,7 +18,7 @@ import { ProductReviewReturnDto } from '../../dtos-global/ProductReviewReturnDto
 import { SuccessMessageDto } from '../../dtos-global/SuccessMessageDto';
 import { ApplyUserGuard } from '../../guards/users/apply-user.guard';
 import { GetReviewsQueryDto } from './dto/GetReviewsQueryDto';
-import { GetProductsReviewsReturnDto } from '../../dtos-global/GetProductsReviewsReturnDto';
+import { GetProductsReviewsReturnDto } from './dto/GetProductsReviewsReturnDto';
 
 @ApiTags('Product reviews')
 @Controller('product-reviews')
