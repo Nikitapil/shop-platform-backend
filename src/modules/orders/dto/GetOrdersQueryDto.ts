@@ -1,7 +1,7 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { IsEnum, IsNumber, IsOptional, IsString } from 'class-validator';
 import { Transform } from 'class-transformer';
-import { EOrderStatuses } from '../../../domain/orders';
+import { EOrderStatuses } from '../orders.constants';
 import { OrderStatusEnum } from '../../../dtos-global/OrderStatusEnum';
 
 export class GetOrdersQueryDto {

@@ -4,7 +4,7 @@ import { IOrderFromDb } from '../modules/orders/types';
 import { ProductReturnDto } from './ProductReturnDto';
 import { UserReturnDto } from './UserReturnDto';
 import { EUserRoles, IUserFromToken } from '../domain/users';
-import { EOrderStatuses } from '../domain/orders';
+import { EOrderStatuses } from '../modules/orders/orders.constants';
 import { OrderStatusEnum } from './OrderStatusEnum';
 
 export class OrderReturnDto {

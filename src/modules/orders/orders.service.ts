@@ -12,7 +12,7 @@ import {
 } from './types';
 import { PrismaService } from '../prisma/prisma.service';
 import { getCartInclude } from '../cart/cart-db-options';
-import { EOrderStatuses } from '../../domain/orders';
+import { EOrderStatuses } from './orders.constants';
 import { getOrderInclude } from './orders-db-options';
 import { CreateOrderReturnDto } from '../../dtos-global/CreateOrderReturnDto';
 import { EUserRoles } from '../../domain/users';

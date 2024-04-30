@@ -1,4 +1,4 @@
-import { EOrderStatuses } from '../../../domain/orders';
+import { EOrderStatuses } from '../orders.constants';
 import { IsEnum, IsNotEmpty, IsOptional, IsString } from 'class-validator';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { OrderStatusEnum } from '../../../dtos-global/OrderStatusEnum';
