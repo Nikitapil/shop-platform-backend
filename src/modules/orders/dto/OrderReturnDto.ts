@@ -6,7 +6,7 @@ import { OrderStatusEnum } from './OrderStatusEnum';
 
 import { UserReturnDto } from '../../../dtos-global/UserReturnDto';
 import { ProductReturnDto } from '../../../dtos-global/ProductReturnDto';
-import { ProductInOrderReturnDto } from '../../../dtos-global/ProductInOrderReturnDto';
+import { ProductInOrderReturnDto } from './ProductInOrderReturnDto';
 
 export class OrderReturnDto {
   @ApiProperty({ description: 'order id', type: String })
