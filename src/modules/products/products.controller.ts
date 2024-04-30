@@ -37,7 +37,7 @@ import { ToggleFavoritesDto } from './dto/ToggleFavoritesDto';
 import { User } from '../../decorators/User.decorator';
 import { ToggleFavoriteReturnDto } from './dto/ToggleFavoriteReturnDto';
 import { ApplyUserGuard } from '../../guards/users/apply-user.guard';
-import { GetProductsReturnDto } from '../../dtos-global/GetProductsReturnDto';
+import { GetProductsReturnDto } from './dto/GetProductsReturnDto';
 import { GetFavoriteProductsDto } from './dto/GetFavoriteProductsDto';
 import { CreateProductBody } from './dto/CreateProductBody';
 import { UpdateProductBody } from './dto/UpdateProductBody';
