@@ -1,5 +1,6 @@
-import { UserReturnDto } from './UserReturnDto';
 import { ApiProperty } from '@nestjs/swagger';
+
+import { UserReturnDto } from './UserReturnDto';
 
 export class AuthResponseDto {
   @ApiProperty({ type: UserReturnDto })
