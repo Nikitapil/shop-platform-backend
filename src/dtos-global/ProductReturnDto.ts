@@ -1,4 +1,4 @@
-import { CategoryReturnDto } from './CategoryReturnDto';
+import { CategoryReturnDto } from '../modules/categories/dto/CategoryReturnDto';
 import { ApiProperty } from '@nestjs/swagger';
 import { IProductFromDb, IRatingFromDb } from '../modules/products/types';
 import { EUserRoles, IUserFromToken } from '../domain/users.domain';

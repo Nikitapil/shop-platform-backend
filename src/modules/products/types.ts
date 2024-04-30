@@ -3,7 +3,7 @@ import { UpdateProductDto } from './dto/UpdateProductDto';
 import { ToggleFavoritesDto } from './dto/ToggleFavoritesDto';
 import { IUserFromToken, IUserParam } from '../../domain/users.domain';
 import { GetProductsQueryDto } from './dto/GetProductsQueryDto';
-import { CategoryReturnDto } from '../../dtos-global/CategoryReturnDto';
+import { CategoryReturnDto } from '../categories/dto/CategoryReturnDto';
 import { Prisma } from '@prisma/client';
 import { GetFavoriteProductsDto } from './dto/GetFavoriteProductsDto';
 import { ProductDiscountReturnDto } from './dto/ProductDiscountReturnDto';

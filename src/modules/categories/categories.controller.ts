@@ -4,7 +4,7 @@ import { Roles } from '../../decorators/Roles.decorator';
 import { EUserRoles } from '../../domain/users.domain';
 import { CreateCategoryDto } from './dto/CreateCategoryDto';
 import { CategoriesService } from './categories.service';
-import { CategoryReturnDto } from '../../dtos-global/CategoryReturnDto';
+import { CategoryReturnDto } from './dto/CategoryReturnDto';
 import { UpdateCategoryDto } from './dto/UpdateCategoryDto';
 import { SuccessMessageDto } from '../../dtos-global/SuccessMessageDto';
 
