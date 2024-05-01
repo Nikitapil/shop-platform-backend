@@ -1,10 +1,16 @@
 import { Body, Controller, Get, Patch, Put, UseGuards } from '@nestjs/common';
+
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+
 import { JwtGuard } from '../../guards/auth/jwt.guard';
-import { AddToCartDto } from './dto/AddToCartDto';
+
 import { User } from '../../decorators/User.decorator';
+
 import { IUserFromToken } from '../../domain/users.domain';
+
 import { CartService } from './cart.service';
+
+import { AddToCartDto } from './dto/AddToCartDto';
 import { RemoveFromCartDto } from './dto/RemoveFromCartDto';
 import { CartReturnDto } from './dto/CartReturnDto';
 
