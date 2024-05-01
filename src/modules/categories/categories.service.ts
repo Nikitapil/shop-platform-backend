@@ -1,10 +1,9 @@
-import {
-  BadRequestException,
-  HttpException,
-  Injectable,
-  NotFoundException
-} from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
+
+import { catchError } from '../../utils/errors';
+
 import { PrismaService } from '../prisma/prisma.service';
+
 import { CreateCategoryDto } from './dto/CreateCategoryDto';
 import { UpdateCategoryDto } from './dto/UpdateCategoryDto';
 import { SuccessMessageDto } from '../../dtos-global/SuccessMessageDto';
@@ -37,10 +36,7 @@ export class CategoriesService {
         data: dto
       });
     } catch (e: any) {
-      if (e instanceof HttpException) {
-        throw e;
-      }
-      throw new BadRequestException(e.message || 'Error while creating category');
+      catchError(e, 'Error while creating category');
     }
   }
 
@@ -59,7 +55,7 @@ export class CategoriesService {
       const candidate = await this.getCategoryByName(dto.name);
 
       if (candidate) {
-        throw new BadRequestException('Category already exist');
+        throw new BadRequestException(`Category ${dto.name} already exist`);
       }
 
       return await this.prismaService.productCategory.update({
@@ -67,10 +63,7 @@ export class CategoriesService {
         data: { name: dto.name }
       });
     } catch (e: any) {
-      if (e instanceof HttpException) {
-        throw e;
-      }
-      throw new BadRequestException(e.message || 'Error while updating category');
+      catchError(e, 'Error while updating category');
     }
   }
 
@@ -86,10 +79,7 @@ export class CategoriesService {
       });
       return new SuccessMessageDto();
     } catch (e: any) {
-      if (e instanceof HttpException) {
-        throw e;
-      }
-      throw new BadRequestException(e.message || 'Error while deleting category');
+      catchError(e, 'Error while deleting category');
     }
   }
 
