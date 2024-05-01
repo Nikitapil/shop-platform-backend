@@ -1,9 +1,14 @@
 import { Body, Controller, Delete, Get, Param, Post, Put } from '@nestjs/common';
+
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+
 import { Roles } from '../../decorators/Roles.decorator';
+
 import { EUserRoles } from '../../domain/users.domain';
-import { CreateCategoryDto } from './dto/CreateCategoryDto';
+
 import { CategoriesService } from './categories.service';
+
+import { CreateCategoryDto } from './dto/CreateCategoryDto';
 import { CategoryReturnDto } from './dto/CategoryReturnDto';
 import { UpdateCategoryDto } from './dto/UpdateCategoryDto';
 import { SuccessMessageDto } from '../../dtos-global/SuccessMessageDto';
@@ -22,7 +27,7 @@ export class CategoriesController {
   }
 
   @ApiOperation({ summary: 'Update category', operationId: 'updateCategory' })
-  @ApiResponse({ status: 201, type: CategoryReturnDto })
+  @ApiResponse({ status: 200, type: CategoryReturnDto })
   @Roles([EUserRoles.ADMIN])
   @Put()
   updateCategory(@Body() dto: UpdateCategoryDto): Promise<CategoryReturnDto> {
@@ -30,7 +35,7 @@ export class CategoriesController {
   }
 
   @ApiOperation({ summary: 'Delete category', operationId: 'deleteCategory' })
-  @ApiResponse({ status: 201, type: SuccessMessageDto })
+  @ApiResponse({ status: 200, type: SuccessMessageDto })
   @Roles([EUserRoles.ADMIN])
   @Delete(':id')
   deleteCategory(@Param('id') id: string): Promise<SuccessMessageDto> {
@@ -38,7 +43,7 @@ export class CategoriesController {
   }
 
   @ApiOperation({ summary: 'Get categories', operationId: 'getCategories' })
-  @ApiResponse({ status: 201, type: [CategoryReturnDto] })
+  @ApiResponse({ status: 200, type: [CategoryReturnDto] })
   @Get()
   getCategories(): Promise<CategoryReturnDto[]> {
     return this.categoriesService.getCategories();
