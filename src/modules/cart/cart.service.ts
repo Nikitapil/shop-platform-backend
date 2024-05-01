@@ -1,14 +1,16 @@
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
+
 import { PrismaService } from '../prisma/prisma.service';
-import { IAddToCartParams, ICartFromDb, IRemoveFromCartParams } from './types';
-import { Prisma } from '@prisma/client';
-import { IUserFromToken } from '../../domain/users.domain';
-import { getCartInclude } from './cart-db-options';
-import { CartReturnDto } from './dto/CartReturnDto';
 import { SharedService } from '../shared/shared.service';
+
+import { IAddToCartParams, ICartFromDb, IRemoveFromCartParams } from './types';
+import { IUserFromToken } from '../../domain/users.domain';
+import { Prisma } from '@prisma/client';
+
+import { getCartInclude } from './cart-db-options';
 import { getProductInclude } from '../products/products-db-options';
-import { getPriceWithDiscount } from '../../utils/prices';
-import { IProductFromDb } from '../products/types';
+
+import { CartReturnDto } from './dto/CartReturnDto';
 
 @Injectable()
 export class CartService {
@@ -28,7 +30,6 @@ export class CartService {
     }
 
     try {
-      const productPrice = this.getProductPrice(product);
       const cart = await this.prisma.cart.update({
         where: { id: cartId },
         data: {
@@ -50,9 +51,6 @@ export class CartService {
                 }
               }
             }
-          },
-          price: {
-            increment: productPrice
           }
         },
         include: getCartInclude(user.id)
@@ -100,14 +98,11 @@ export class CartService {
                 }
               }
             };
-      const productPrice = this.getProductPrice(productInCart.product);
+
       const cart = await this.prisma.cart.update({
         where: { id: cartId },
         data: {
-          productInCart: productInCartInput,
-          price: {
-            decrement: productPrice
-          }
+          productInCart: productInCartInput
         },
         include: getCartInclude(user.id)
       });
@@ -139,8 +134,7 @@ export class CartService {
             deleteMany: {
               cartId: user.cartId
             }
-          },
-          price: 0
+          }
         },
         include: getCartInclude(user.id)
       });
@@ -157,11 +151,5 @@ export class CartService {
     } catch (e: any) {
       throw new BadRequestException(e.message || 'Error while loading cart');
     }
-  }
-
-  private getProductPrice(product: IProductFromDb) {
-    return product.discount
-      ? getPriceWithDiscount(product.price, product.discount.percentage)
-      : product.price;
   }
 }

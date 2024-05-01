@@ -93,8 +93,6 @@ model Cart {
 
   user User?
 
-  price Float @default(0)
-
   productInCart ProductInCart[]
 }
 

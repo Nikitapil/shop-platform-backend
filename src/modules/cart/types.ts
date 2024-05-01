@@ -21,6 +21,5 @@ interface IProductInCart {
 
 export interface ICartFromDb {
   id: string;
-  price: number;
   productInCart: IProductInCart[];
 }

@@ -70,8 +70,7 @@ export class OrdersService {
         data: {
           productInCart: {
             deleteMany: {}
-          },
-          price: 0
+          }
         },
         include: getCartInclude(user.id)
       });
