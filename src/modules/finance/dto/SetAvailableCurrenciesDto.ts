@@ -1,8 +1,9 @@
 import { ApiProperty } from '@nestjs/swagger';
+
 import { ArrayMinSize, IsArray, IsString } from 'class-validator';
 
 export class SetAvailableCurrenciesDto {
-  @ApiProperty({ description: 'tax value', type: [String] })
+  @ApiProperty({ description: 'Available currencies array', type: [String] })
   @IsArray()
   @IsString({ each: true })
   @ArrayMinSize(1)
