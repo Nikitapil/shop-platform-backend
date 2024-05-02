@@ -56,7 +56,7 @@ export class DiscountsController {
     @Param('id') id: string,
     @User() user?: IUserFromToken
   ): Promise<DiscountReturnDto> {
-    return this.discountsService.getSingleDiscount(id, user);
+    return this.discountsService.getSingleDiscount({ id, user });
   }
 
   @ApiOperation({ summary: 'Delete discounts', operationId: 'deleteDiscount' })

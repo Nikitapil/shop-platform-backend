@@ -1,6 +1,6 @@
 import { IProductFromDb } from '../products/types';
 import { CreateDiscountDto } from './dto/CreateDiscountDto';
-import { IUserFromToken } from '../../domain/users.domain';
+import { IUserFromToken, IUserParam } from '../../domain/users.domain';
 import { EditDiscountDto } from './dto/EditDiscountDto';
 
 export interface IDiscountFromDb {
@@ -19,4 +19,8 @@ export interface ICreateDiscountParams {
 export interface IEditDiscountParams {
   dto: EditDiscountDto;
   user: IUserFromToken;
+}
+
+export interface IGetSingleDiscountParams extends IUserParam {
+  id: string;
 }

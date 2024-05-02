@@ -3,13 +3,17 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 
 import { getDiscountsInclude } from './discounts-db-options';
+import { catchError } from '../../utils/errors';
 
-import { ICreateDiscountParams, IEditDiscountParams } from './types';
+import {
+  ICreateDiscountParams,
+  IEditDiscountParams,
+  IGetSingleDiscountParams
+} from './types';
 import { IUserFromToken } from '../../domain/users.domain';
 
 import { DiscountReturnDto } from './dto/DiscountReturnDto';
 import { SuccessMessageDto } from '../../dtos-global/SuccessMessageDto';
-import { catchError } from '../../utils/errors';
 
 @Injectable()
 export class DiscountsService {
@@ -38,7 +42,7 @@ export class DiscountsService {
     }
   }
 
-  async getSingleDiscount(id: string, user?: IUserFromToken) {
+  async getSingleDiscount({ id, user }: IGetSingleDiscountParams) {
     try {
       const discount = await this.prismaService.discount.findUnique({
         where: { id },
@@ -58,6 +62,7 @@ export class DiscountsService {
       const discount = await this.prismaService.discount.findUnique({
         where: { id: discountId }
       });
+
       if (!discount) {
         throw new NotFoundException('Discount not found');
       }
