@@ -8,12 +8,14 @@ import {
   Put,
   UseGuards
 } from '@nestjs/common';
+
 import { ApiOperation, ApiResponse } from '@nestjs/swagger';
 
 import { DiscountsService } from './discounts.service';
 
 import { Roles } from '../../decorators/Roles.decorator';
 import { User } from '../../decorators/User.decorator';
+
 import { ApplyUserGuard } from '../../guards/users/apply-user.guard';
 
 import { EUserRoles, IUserFromToken } from '../../domain/users.domain';
@@ -46,7 +48,7 @@ export class DiscountsController {
     return this.discountsService.getDiscounts(user);
   }
 
-  @ApiOperation({ summary: 'Get discount', operationId: 'getSingleDiscount' })
+  @ApiOperation({ summary: 'Get single discount', operationId: 'getSingleDiscount' })
   @ApiResponse({ status: 200, type: DiscountReturnDto })
   @UseGuards(ApplyUserGuard)
   @Get(':id')
