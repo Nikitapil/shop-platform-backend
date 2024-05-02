@@ -1,7 +1,9 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { ProductReturnDto } from '../../products/dto/ProductReturnDto';
+
 import { IDiscountFromDb } from '../types';
 import { EUserRoles, IUserFromToken } from '../../../domain/users.domain';
+
+import { ProductReturnDto } from '../../products/dto/ProductReturnDto';
 
 export class DiscountReturnDto {
   @ApiProperty({ description: 'discount id', type: String })
@@ -10,7 +12,7 @@ export class DiscountReturnDto {
   @ApiProperty({ description: 'discount name', type: String })
   name: string;
 
-  @ApiProperty({ description: 'discount name', type: Number })
+  @ApiProperty({ description: 'discount percentage', type: Number })
   percentage: number;
 
   @ApiProperty({ description: 'products', type: [ProductReturnDto] })
@@ -31,7 +33,10 @@ export class DiscountReturnDto {
     this.percentage = discount.percentage;
     this.products = discount.products.map((product) => new ProductReturnDto(product));
     this.productsCount = discount._count.products;
-    this.canDelete = !!user?.roles?.includes(EUserRoles.ADMIN);
-    this.canEdit = !!user?.roles?.includes(EUserRoles.ADMIN);
+
+    const isAdmin = !!user?.roles?.includes(EUserRoles.ADMIN);
+
+    this.canDelete = isAdmin;
+    this.canEdit = isAdmin;
   }
 }
