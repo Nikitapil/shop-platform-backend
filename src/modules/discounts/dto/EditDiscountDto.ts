@@ -1,8 +1,9 @@
 import { ApiProperty } from '@nestjs/swagger';
+
 import { IsNumber, IsString } from 'class-validator';
 
 export class EditDiscountDto {
-  @ApiProperty({ description: 'discount name', type: String })
+  @ApiProperty({ description: 'discount id', type: String })
   @IsString()
   id: string;
 
@@ -10,7 +11,7 @@ export class EditDiscountDto {
   @IsString()
   name: string;
 
-  @ApiProperty({ description: 'discount name', type: Number })
+  @ApiProperty({ description: 'discount percentage', type: Number })
   @IsNumber()
   percentage: number;
 }
