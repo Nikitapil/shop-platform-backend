@@ -2,7 +2,7 @@ import { Injectable, NotAcceptableException, NotFoundException } from '@nestjs/c
 import { PrismaService } from '../prisma/prisma.service';
 import { FINANCE_SETTINGS_ID } from './constants';
 import { SetTaxDto } from './dto/SetTaxDto';
-import { financeSelectSettings } from './db-options/FinanceSelectSettings';
+import { financeSelectSettings } from './finance-db-options';
 import { HttpService } from '@nestjs/axios';
 import { getDiffInHours } from '../../utils/dates';
 import { FinanceSettingsReturnDto } from './dto/FinanceSettingsReturnDto';
