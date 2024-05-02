@@ -8,7 +8,7 @@ import { EUserRoles, IUserFromToken } from '../../domain/users.domain';
 import { ApplyUserGuard } from '../../guards/users/apply-user.guard';
 import { User } from '../../decorators/User.decorator';
 import { SetAvailableCurrenciesDto } from './dto/SetAvailableCurrenciesDto';
-import { SetDeliveryCostDto } from './dto/SetDeliveryPriceDto';
+import { SetDeliveryCostDto } from './dto/SetDeliveryCostDto';
 import { SetOrderPriceWithFreeDeliveryDto } from './dto/SetOrderPriceWithFreeDeliveryDto';
 
 @Controller('finance')

@@ -9,7 +9,7 @@ import { FinanceSettingsReturnDto } from './dto/FinanceSettingsReturnDto';
 import { IUserFromToken } from '../../domain/users.domain';
 import { SetAvailableCurrenciesDto } from './dto/SetAvailableCurrenciesDto';
 import { catchError } from '../../utils/errors';
-import { SetDeliveryCostDto } from './dto/SetDeliveryPriceDto';
+import { SetDeliveryCostDto } from './dto/SetDeliveryCostDto';
 import { EditFinanceSettingsDto } from './dto/EditFinanceSettingsDto';
 import { SetOrderPriceWithFreeDeliveryDto } from './dto/SetOrderPriceWithFreeDeliveryDto';
 
