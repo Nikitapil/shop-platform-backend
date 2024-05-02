@@ -11,7 +11,7 @@ import { SetAvailableCurrenciesDto } from './dto/SetAvailableCurrenciesDto';
 import { catchError } from '../../utils/errors';
 import { SetDeliveryCostDto } from './dto/SetDeliveryPriceDto';
 import { EditFinanceSettingsDto } from './dto/EditFinanceSettingsDto';
-import { OrderPriceWithFreeDeliveryDto } from './dto/OrderPriceWithFreeDeliveryDto';
+import { SetOrderPriceWithFreeDeliveryDto } from './dto/SetOrderPriceWithFreeDeliveryDto';
 
 @Injectable()
 export class FinanceService {
@@ -125,7 +125,7 @@ export class FinanceService {
   }
 
   async setOrderPriceWithFreeDelivery(
-    dto: OrderPriceWithFreeDeliveryDto,
+    dto: SetOrderPriceWithFreeDeliveryDto,
     user?: IUserFromToken
   ) {
     try {
