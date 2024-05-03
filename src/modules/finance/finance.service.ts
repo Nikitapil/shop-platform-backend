@@ -1,17 +1,29 @@
 import { Injectable, NotAcceptableException, NotFoundException } from '@nestjs/common';
+
 import { PrismaService } from '../prisma/prisma.service';
-import { FINANCE_SETTINGS_ID } from './constants';
-import { SetTaxDto } from './dto/SetTaxDto';
-import { financeSelectSettings } from './finance-db-options';
 import { HttpService } from '@nestjs/axios';
+
+import {
+  DEFAULT_EXCHANGE_RATES,
+  FINANCE_SETTINGS_ID,
+  UPDATE_EXCHANGE_RATES_IN_HOURS
+} from './constants';
+
+import { financeSelectSettings } from './finance-db-options';
+
 import { getDiffInHours } from '../../utils/dates';
-import { FinanceSettingsReturnDto } from './dto/FinanceSettingsReturnDto';
-import { IUserFromToken } from '../../domain/users.domain';
-import { SetAvailableCurrenciesDto } from './dto/SetAvailableCurrenciesDto';
 import { catchError } from '../../utils/errors';
-import { SetDeliveryCostDto } from './dto/SetDeliveryCostDto';
-import { EditFinanceSettingsDto } from './dto/EditFinanceSettingsDto';
-import { SetOrderPriceWithFreeDeliveryDto } from './dto/SetOrderPriceWithFreeDeliveryDto';
+
+import { IUserFromToken } from '../../domain/users.domain';
+import {
+  IEditFinanceSettingsParams,
+  ISetAvailableCurrenciesParams,
+  ISetDeliveryCostParams,
+  ISetOrderPriceWithFreeDeliveryParams,
+  ISetTaxParams
+} from './types';
+
+import { FinanceSettingsReturnDto } from './dto/FinanceSettingsReturnDto';
 
 @Injectable()
 export class FinanceService {
@@ -27,13 +39,11 @@ export class FinanceService {
       } = await this.httpService.axiosRef.get('https://open.er-api.com/v6/latest/USD');
       return rates;
     } catch (e) {
-      return {
-        USD: 1
-      };
+      return DEFAULT_EXCHANGE_RATES;
     }
   }
 
-  private async editFinanceSettings(dto: EditFinanceSettingsDto, user?: IUserFromToken) {
+  private async editFinanceSettings({ dto, user }: IEditFinanceSettingsParams) {
     const settings = await this.prismaService.financeSettings.update({
       where: { id: FINANCE_SETTINGS_ID },
       data: dto,
@@ -64,7 +74,7 @@ export class FinanceService {
 
       if (
         !settings.exchangeRates ||
-        getDiffInHours(new Date(), settings.updatedAt) >= 24
+        getDiffInHours(new Date(), settings.updatedAt) >= UPDATE_EXCHANGE_RATES_IN_HOURS
       ) {
         return await this.updateExchangeRates(user);
       }
@@ -75,15 +85,15 @@ export class FinanceService {
     }
   }
 
-  async setTax(dto: SetTaxDto, user?: IUserFromToken) {
+  async setTax({ dto, user }: ISetTaxParams) {
     try {
-      return await this.editFinanceSettings(dto, user);
+      return await this.editFinanceSettings({ dto, user });
     } catch (e: any) {
       catchError(e, 'Error while updating tax');
     }
   }
 
-  async setAvailableCurrencies(dto: SetAvailableCurrenciesDto, user?: IUserFromToken) {
+  async setAvailableCurrencies({ dto, user }: ISetAvailableCurrenciesParams) {
     try {
       const financeSetting = await this.getFinanceSettings(user);
 
@@ -101,7 +111,7 @@ export class FinanceService {
         );
       }
 
-      return await this.editFinanceSettings(dto, user);
+      return await this.editFinanceSettings({ dto, user });
     } catch (e: any) {
       catchError(e, 'Error while updating available currencies');
     }
@@ -110,26 +120,31 @@ export class FinanceService {
   async updateExchangeRates(user?: IUserFromToken) {
     try {
       const rates = await this.getExchangeRates();
-      return this.editFinanceSettings({ exchangeRates: rates }, user);
+      return this.editFinanceSettings({
+        dto: {
+          exchangeRates: rates
+        },
+        user
+      });
     } catch (e: any) {
       catchError(e, 'Error while updating exchange rates');
     }
   }
 
-  async setDeliveryCost(dto: SetDeliveryCostDto, user?: IUserFromToken) {
+  async setDeliveryCost({ dto, user }: ISetDeliveryCostParams) {
     try {
-      return await this.editFinanceSettings(dto, user);
+      return await this.editFinanceSettings({ dto, user });
     } catch (e: any) {
       catchError(e, 'Error while updating delivery cost');
     }
   }
 
-  async setOrderPriceWithFreeDelivery(
-    dto: SetOrderPriceWithFreeDeliveryDto,
-    user?: IUserFromToken
-  ) {
+  async setOrderPriceWithFreeDelivery({
+    dto,
+    user
+  }: ISetOrderPriceWithFreeDeliveryParams) {
     try {
-      return await this.editFinanceSettings(dto, user);
+      return await this.editFinanceSettings({ dto, user });
     } catch (e: any) {
       catchError(e, 'Error while updating order price with free delivery');
     }

@@ -36,7 +36,7 @@ export class FinanceController {
     @Body() dto: SetTaxDto,
     @User() user: IUserFromToken
   ): Promise<FinanceSettingsReturnDto> {
-    return this.financeService.setTax(dto, user);
+    return this.financeService.setTax({ dto, user });
   }
 
   @ApiOperation({
@@ -50,7 +50,7 @@ export class FinanceController {
     @Body() dto: SetDeliveryCostDto,
     @User() user: IUserFromToken
   ): Promise<FinanceSettingsReturnDto> {
-    return this.financeService.setDeliveryCost(dto, user);
+    return this.financeService.setDeliveryCost({ dto, user });
   }
 
   @ApiOperation({
@@ -64,7 +64,7 @@ export class FinanceController {
     @Body() dto: SetOrderPriceWithFreeDeliveryDto,
     @User() user: IUserFromToken
   ): Promise<FinanceSettingsReturnDto> {
-    return this.financeService.setOrderPriceWithFreeDelivery(dto, user);
+    return this.financeService.setOrderPriceWithFreeDelivery({ dto, user });
   }
 
   @ApiOperation({
@@ -78,7 +78,7 @@ export class FinanceController {
     @Body() dto: SetAvailableCurrenciesDto,
     @User() user: IUserFromToken
   ): Promise<FinanceSettingsReturnDto> {
-    return this.financeService.setAvailableCurrencies(dto, user);
+    return this.financeService.setAvailableCurrencies({ dto, user });
   }
 
   @ApiOperation({
