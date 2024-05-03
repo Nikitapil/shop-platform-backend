@@ -1,13 +1,18 @@
 import { Body, Controller, Get, Patch, Put, UseGuards } from '@nestjs/common';
-import { FinanceService } from './finance.service';
 import { ApiOperation, ApiResponse } from '@nestjs/swagger';
-import { FinanceSettingsReturnDto } from './dto/FinanceSettingsReturnDto';
-import { SetTaxDto } from './dto/SetTaxDto';
+
+import { FinanceService } from './finance.service';
+
 import { Roles } from '../../decorators/Roles.decorator';
-import { EUserRoles, IUserFromToken } from '../../domain/users.domain';
-import { ApplyUserGuard } from '../../guards/users/apply-user.guard';
 import { User } from '../../decorators/User.decorator';
+
+import { ApplyUserGuard } from '../../guards/users/apply-user.guard';
+
+import { EUserRoles, IUserFromToken } from '../../domain/users.domain';
+
+import { SetTaxDto } from './dto/SetTaxDto';
 import { SetAvailableCurrenciesDto } from './dto/SetAvailableCurrenciesDto';
+import { FinanceSettingsReturnDto } from './dto/FinanceSettingsReturnDto';
 import { SetDeliveryCostDto } from './dto/SetDeliveryCostDto';
 import { SetOrderPriceWithFreeDeliveryDto } from './dto/SetOrderPriceWithFreeDeliveryDto';
 
