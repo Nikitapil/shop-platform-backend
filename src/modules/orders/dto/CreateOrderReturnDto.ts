@@ -1,10 +1,12 @@
-import { OrderReturnDto } from './OrderReturnDto';
-import { CartReturnDto } from '../../cart/dto/CartReturnDto';
-import { IOrderFromDb } from '../types';
-import { ICartFromDb } from '../../cart/types';
 import { ApiProperty } from '@nestjs/swagger';
+
+import { ICartFromDb } from '../../cart/types';
+import { IOrderFromDb } from '../types';
 import { IUserFromToken } from '../../../domain/users.domain';
 import { IFinanceSettingsFromDb } from '../../finance/types';
+
+import { OrderReturnDto } from './OrderReturnDto';
+import { CartReturnDto } from '../../cart/dto/CartReturnDto';
 
 interface ICreateOrderReturnDtoParams {
   order: IOrderFromDb;
