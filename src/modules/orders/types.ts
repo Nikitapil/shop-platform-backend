@@ -1,9 +1,10 @@
-import { CreateOrderDto } from './dto/CreateOrderDto';
 import { IUserFromToken } from '../../domain/users.domain';
 import { IProductFromDb } from '../products/types';
+
 import { GetOrdersQueryDto } from './dto/GetOrdersQueryDto';
 import { UpdateOrderStatusDto } from './dto/UpdateOrderStatusDto';
 import { UserReturnDto } from '../auth/dto/UserReturnDto';
+import { CreateOrderDto } from './dto/CreateOrderDto';
 
 export interface ICreateOrderParams {
   dto: CreateOrderDto;
