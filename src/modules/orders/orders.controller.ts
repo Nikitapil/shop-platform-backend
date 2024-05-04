@@ -9,11 +9,16 @@ import {
   UseGuards
 } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+
 import { OrdersService } from './orders.service';
+
 import { JwtGuard } from '../../guards/auth/jwt.guard';
-import { CreateOrderDto } from './dto/CreateOrderDto';
+
 import { User } from '../../decorators/User.decorator';
+
 import { IUserFromToken } from '../../domain/users.domain';
+
+import { CreateOrderDto } from './dto/CreateOrderDto';
 import { CreateOrderReturnDto } from './dto/CreateOrderReturnDto';
 import { GetOrdersQueryDto } from './dto/GetOrdersQueryDto';
 import { GetOrdersReturnDto } from './dto/GetOrdersReturnDto';
