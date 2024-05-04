@@ -4,24 +4,29 @@ import {
   NotAcceptableException,
   NotFoundException
 } from '@nestjs/common';
+
 import {
   ICreateOrderParams,
   IGetOrdersParams,
   IGetSingleOrderParams,
   IUpdateOrderStatusParams
 } from './types';
+import { Prisma } from '@prisma/client';
+
+import { EUserRoles } from '../../domain/users.domain';
+import { OrderStatusEnum } from './dto/OrderStatusEnum';
+
 import { PrismaService } from '../prisma/prisma.service';
+import { SharedService } from '../shared/shared.service';
+
 import { getCartInclude } from '../cart/cart-db-options';
 import { getOrderInclude } from './orders-db-options';
-import { CreateOrderReturnDto } from './dto/CreateOrderReturnDto';
-import { EUserRoles } from '../../domain/users.domain';
-import { Prisma } from '@prisma/client';
 import { getOffset } from '../../utils/pagination';
+
 import { OrderReturnDto } from './dto/OrderReturnDto';
 import { SuccessMessageDto } from '../../dtos-global/SuccessMessageDto';
-import { SharedService } from '../shared/shared.service';
 import { CartReturnDto } from '../cart/dto/CartReturnDto';
-import { OrderStatusEnum } from './dto/OrderStatusEnum';
+import { CreateOrderReturnDto } from './dto/CreateOrderReturnDto';
 
 @Injectable()
 export class OrdersService {
@@ -42,13 +47,14 @@ export class OrdersService {
     }
 
     try {
-      const productsIds = cart.productInCart.map((productInCart) => ({
+      const orderProducts = cart.productInCart.map((productInCart) => ({
         productId: productInCart.product.id,
         count: productInCart.count
       }));
 
       const financeSettings = await this.sharedService.getFinanceSettings();
       const cartDto = new CartReturnDto(cart, financeSettings);
+
       const order = await this.prisma.order.create({
         data: {
           userId: user.id,
@@ -57,7 +63,7 @@ export class OrdersService {
           comment: dto.comment,
           productsInOrder: {
             createMany: {
-              data: productsIds
+              data: orderProducts
             }
           },
           price: cartDto.price,
@@ -65,6 +71,7 @@ export class OrdersService {
         },
         include: getOrderInclude(user.id)
       });
+
       const emptyCart = await this.prisma.cart.update({
         where: { id: user.cartId },
         data: {
@@ -119,14 +126,31 @@ export class OrdersService {
 
   async updateOrderStatus({ dto, user }: IUpdateOrderStatusParams) {
     const order = await this.prisma.order.findUnique({
-      where: { id: dto.id }
+      where: { id: dto.id },
+      include: getOrderInclude(user.id)
     });
 
     if (!order) {
       throw new NotFoundException('Order not found');
     }
 
-    if (order.userId !== user.id && !user.roles.includes(EUserRoles.ADMIN)) {
+    const mappedOrder = new OrderReturnDto(order, user);
+
+    const isCancelStatusPermissionError =
+      dto.status === OrderStatusEnum.CANCELED && !mappedOrder.canCancel;
+    const isInprogressStatusPermissionError =
+      dto.status === OrderStatusEnum.INPROGRESS && !mappedOrder.canSetInProgress;
+    const isCreatedStatusPermissionError =
+      dto.status === OrderStatusEnum.CREATED && !mappedOrder.canSetCreated;
+    const isClosedStatusPermissionError =
+      dto.status === OrderStatusEnum.CLOSED && !mappedOrder.canSetClosed;
+
+    if (
+      isCancelStatusPermissionError ||
+      isInprogressStatusPermissionError ||
+      isCreatedStatusPermissionError ||
+      isClosedStatusPermissionError
+    ) {
       throw new NotAcceptableException('Permission denied');
     }
 
