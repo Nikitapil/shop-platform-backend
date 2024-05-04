@@ -1,5 +1,8 @@
-import { IsEnum, IsNotEmpty, IsOptional, IsString } from 'class-validator';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
+import { IsEnum, IsNotEmpty, IsOptional, IsString } from 'class-validator';
+
+import { OrdersStatusesValues } from '../constants';
+
 import { OrderStatusEnum } from './OrderStatusEnum';
 
 export class UpdateOrderStatusDto {
@@ -15,7 +18,7 @@ export class UpdateOrderStatusDto {
     enumName: 'OrderStatusEnum'
   })
   @IsString()
-  @IsEnum(['CREATED', 'INPROGRESS', 'CANCELED', 'CLOSED'])
+  @IsEnum(OrdersStatusesValues)
   status: OrderStatusEnum;
 
   @ApiPropertyOptional({
