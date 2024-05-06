@@ -4,13 +4,18 @@ import {
   NotAcceptableException,
   NotFoundException
 } from '@nestjs/common';
+
 import { PrismaService } from '../prisma/prisma.service';
+
 import { ICreateReviewParams, IDeleteReviewParams, IGetReviewsParams } from './types';
-import { ProductReviewReturnDto } from './dto/ProductReviewReturnDto';
 import { EUserRoles } from '../../domain/users.domain';
-import { SuccessMessageDto } from '../../dtos-global/SuccessMessageDto';
+
 import { getOffset } from '../../utils/pagination';
+
 import { reviewInclude } from './product-reviews-db-options';
+
+import { SuccessMessageDto } from '../../dtos-global/SuccessMessageDto';
+import { ProductReviewReturnDto } from './dto/ProductReviewReturnDto';
 
 @Injectable()
 export class ProductReviewsService {
@@ -55,11 +60,13 @@ export class ProductReviewsService {
     const review = await this.prisma.productReview.findUnique({
       where: { id }
     });
+
     if (!review) {
       throw new NotFoundException('Product review not found');
     }
 
     const canDelete = user.id === review.userId || user.roles.includes(EUserRoles.ADMIN);
+
     if (!canDelete) {
       throw new NotAcceptableException('Permission denied');
     }
