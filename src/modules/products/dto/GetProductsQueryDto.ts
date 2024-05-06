@@ -1,20 +1,20 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
+
 import { IsEnum, IsNumber, IsOptional, IsString } from 'class-validator';
 import { Transform } from 'class-transformer';
+
+import { transformValueToNumber } from '../../../utils/dto-transformers';
+import { SORTING_PARAMS, SortingEnum } from '../../../domain/common';
 
 export class GetProductsQueryDto {
   @ApiProperty({ description: 'Page number', type: Number })
   @IsNumber()
-  @Transform(({ value }) => {
-    return Number(value);
-  })
+  @Transform(transformValueToNumber)
   page: number;
 
   @ApiProperty({ description: 'Limit number', type: Number })
   @IsNumber()
-  @Transform(({ value }) => {
-    return Number(value);
-  })
+  @Transform(transformValueToNumber)
   limit: number;
 
   @ApiPropertyOptional({
@@ -29,12 +29,12 @@ export class GetProductsQueryDto {
   @ApiPropertyOptional({
     description: 'price sorting direction',
     type: String,
-    enum: ['asc', 'desc'],
+    enum: SortingEnum,
     nullable: true
   })
   @IsString()
   @IsOptional()
-  @IsEnum(['asc', 'desc'])
+  @IsEnum(SORTING_PARAMS)
   priceSorting?: 'asc' | 'desc';
 
   @ApiPropertyOptional({ description: 'search query', type: String, nullable: true })
