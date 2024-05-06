@@ -8,16 +8,21 @@ import {
   Query,
   UseGuards
 } from '@nestjs/common';
-import { JwtGuard } from '../../guards/auth/jwt.guard';
-import { CreateReviewDto } from './dto/CreateReviewDto';
-import { User } from '../../decorators/User.decorator';
-import { IUserFromToken } from '../../domain/users.domain';
-import { ProductReviewsService } from './product-reviews.service';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+
+import { JwtGuard } from '../../guards/auth/jwt.guard';
+import { ApplyUserGuard } from '../../guards/users/apply-user.guard';
+
+import { User } from '../../decorators/User.decorator';
+
+import { IUserFromToken } from '../../domain/users.domain';
+
+import { ProductReviewsService } from './product-reviews.service';
+
 import { ProductReviewReturnDto } from './dto/ProductReviewReturnDto';
 import { SuccessMessageDto } from '../../dtos-global/SuccessMessageDto';
-import { ApplyUserGuard } from '../../guards/users/apply-user.guard';
 import { GetReviewsQueryDto } from './dto/GetReviewsQueryDto';
+import { CreateReviewDto } from './dto/CreateReviewDto';
 import { GetProductsReviewsReturnDto } from './dto/GetProductsReviewsReturnDto';
 
 @ApiTags('Product reviews')
