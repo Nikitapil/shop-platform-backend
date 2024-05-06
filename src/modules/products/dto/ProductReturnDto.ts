@@ -77,6 +77,7 @@ export class ProductReturnDto {
     this.createdAt = product.createdAt;
     this.updatedAt = product.updatedAt;
     this.category = product.category;
+    this.discount = product.discount;
     this.isInFavorites = !!product.favoritesProductsOnUser.length;
 
     this.priceWithDiscount = product.discount
@@ -91,7 +92,6 @@ export class ProductReturnDto {
     this.canDelete = isAdmin;
     this.canEditProductDiscount = isAdmin;
     this.canAddToFavourites = !!user;
-    this.discount = product.discount;
 
     const rating = ratings?.find((rate) => rate.productId === product.id);
 

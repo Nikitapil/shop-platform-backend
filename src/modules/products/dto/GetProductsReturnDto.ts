@@ -1,5 +1,6 @@
-import { ProductReturnDto } from './ProductReturnDto';
 import { ApiProperty } from '@nestjs/swagger';
+
+import { ProductReturnDto } from './ProductReturnDto';
 
 export class GetProductsReturnDto {
   @ApiProperty({ description: 'products list', type: [ProductReturnDto] })
