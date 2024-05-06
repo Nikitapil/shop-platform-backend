@@ -1,6 +1,8 @@
 import { ApiProperty } from '@nestjs/swagger';
+
 import { IsNumber, IsString } from 'class-validator';
 import { Transform } from 'class-transformer';
+import { transformValueToNumber } from '../../../utils/dto-transformers';
 
 export class UpdateProductDto {
   @ApiProperty({ description: 'Product id', type: String })
@@ -21,8 +23,6 @@ export class UpdateProductDto {
 
   @ApiProperty({ description: 'Product price', type: Number })
   @IsNumber()
-  @Transform(({ value }) => {
-    return Number(value);
-  })
+  @Transform(transformValueToNumber)
   price: number;
 }
