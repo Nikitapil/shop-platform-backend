@@ -12,13 +12,7 @@ import {
   UseGuards,
   UseInterceptors
 } from '@nestjs/common';
-import { Roles } from '../../decorators/Roles.decorator';
-import { EUserRoles, IUserFromToken } from '../../domain/users.domain';
 import { FileInterceptor } from '@nestjs/platform-express';
-import {
-  getFileInterceptorOptions,
-  getFileParsePipeWithTypeValidation
-} from '../../utils/files';
 import {
   ApiBody,
   ApiConsumes,
@@ -26,22 +20,34 @@ import {
   ApiResponse,
   ApiTags
 } from '@nestjs/swagger';
-import { CreateProductDto } from './dto/CreateProductDto';
-import { ProductsService } from './products.service';
-import { ProductReturnDto } from './dto/ProductReturnDto';
-import { GetProductsQueryDto } from './dto/GetProductsQueryDto';
-import { UpdateProductDto } from './dto/UpdateProductDto';
-import { SuccessMessageDto } from '../../dtos-global/SuccessMessageDto';
-import { JwtGuard } from '../../guards/auth/jwt.guard';
-import { ToggleFavoritesDto } from './dto/ToggleFavoritesDto';
+
+import { Roles } from '../../decorators/Roles.decorator';
 import { User } from '../../decorators/User.decorator';
-import { ToggleFavoriteReturnDto } from './dto/ToggleFavoriteReturnDto';
+
+import { JwtGuard } from '../../guards/auth/jwt.guard';
 import { ApplyUserGuard } from '../../guards/users/apply-user.guard';
+
+import {
+  getFileInterceptorOptions,
+  getFileParsePipeWithTypeValidation
+} from '../../utils/files';
+
+import { EUserRoles, IUserFromToken } from '../../domain/users.domain';
+
+import { ProductsService } from './products.service';
+
+import { ToggleFavoritesDto } from './dto/ToggleFavoritesDto';
+import { ToggleFavoriteReturnDto } from './dto/ToggleFavoriteReturnDto';
+import { SuccessMessageDto } from '../../dtos-global/SuccessMessageDto';
+import { UpdateProductDto } from './dto/UpdateProductDto';
+import { GetProductsQueryDto } from './dto/GetProductsQueryDto';
 import { GetProductsReturnDto } from './dto/GetProductsReturnDto';
 import { GetFavoriteProductsDto } from './dto/GetFavoriteProductsDto';
+import { ProductReturnDto } from './dto/ProductReturnDto';
+import { EditProductDiscountDto } from './dto/EditProductDiscountDto';
+import { CreateProductDto } from './dto/CreateProductDto';
 import { CreateProductBody } from './dto/CreateProductBody';
 import { UpdateProductBody } from './dto/UpdateProductBody';
-import {EditProductDiscountDto} from "./dto/EditProductDiscountDto";
 
 @ApiTags('Products')
 @Controller('products')
@@ -55,9 +61,9 @@ export class ProductsController {
     description: 'Create product body',
     type: CreateProductBody
   })
-  @Post()
   @Roles([EUserRoles.ADMIN])
   @UseInterceptors(FileInterceptor('image', { ...getFileInterceptorOptions('products') }))
+  @Post()
   create(
     @UploadedFile(getFileParsePipeWithTypeValidation('image/*'))
     file: Express.Multer.File,
@@ -74,9 +80,9 @@ export class ProductsController {
     description: 'Update product body',
     type: UpdateProductBody
   })
-  @Put()
   @Roles([EUserRoles.ADMIN])
   @UseInterceptors(FileInterceptor('image', { ...getFileInterceptorOptions('products') }))
+  @Put()
   edit(
     @UploadedFile(getFileParsePipeWithTypeValidation('image/*'))
     file: Express.Multer.File,
