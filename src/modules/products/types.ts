@@ -78,7 +78,7 @@ export interface IRatingFromDb {
   productId: string;
 }
 
-export interface IGetManyQuizzesParams {
+export interface IGetManyProductsParams {
   page: number;
   limit: number;
   where: Prisma.ProductWhereInput;

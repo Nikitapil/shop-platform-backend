@@ -1,31 +1,98 @@
-import {
-  BadRequestException,
-  HttpException,
-  Injectable,
-  NotFoundException
-} from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
+
+import { createFileLink, deleteFile } from '../../utils/files';
+import { getOffset } from '../../utils/pagination';
+import { getProductInclude } from './products-db-options';
+import { catchError } from '../../utils/errors';
+
 import { PrismaService } from '../prisma/prisma.service';
+
 import {
   ICreateProductParams,
   IEditProductDiscountParams,
   IGetFavoriteProductsParams,
-  IGetManyQuizzesParams,
+  IGetManyProductsParams,
   IGetProductsParams,
   IGetSingleProductParams,
   IToggleFavoritesParams,
   IUpdateProductParams
 } from './types';
-import { createFileLink, deleteFile } from '../../utils/files';
-import { getOffset } from '../../utils/pagination';
 import { Prisma } from '@prisma/client';
-import { SuccessMessageDto } from '../../dtos-global/SuccessMessageDto';
-import { getProductInclude } from './products-db-options';
+import { SortingEnum } from '../../domain/common';
+
 import { ProductReturnDto } from './dto/ProductReturnDto';
-import { catchError } from '../../utils/errors';
+import { SuccessMessageDto } from '../../dtos-global/SuccessMessageDto';
 
 @Injectable()
 export class ProductsService {
   constructor(private prismaService: PrismaService) {}
+
+  private async getCategoryById(id: string) {
+    return this.prismaService.productCategory.findUnique({
+      where: { id }
+    });
+  }
+
+  private async checkIsCategoryExist(categoryId: string) {
+    const category = await this.getCategoryById(categoryId);
+
+    if (!category) {
+      throw new BadRequestException('Invalid categoryId');
+    }
+  }
+
+  private async getProductById(id: string) {
+    return this.prismaService.product.findUnique({
+      where: { id }
+    });
+  }
+
+  private async getProductsRatings(productsIds: string[]) {
+    return this.prismaService.productReview.groupBy({
+      by: 'productId',
+      where: {
+        productId: {
+          in: productsIds
+        }
+      },
+      _avg: {
+        rating: true
+      }
+    });
+  }
+
+  private async getManyProducts({
+    page,
+    limit,
+    where,
+    user,
+    order
+  }: IGetManyProductsParams) {
+    const offset = getOffset(page, limit);
+
+    const products = await this.prismaService.product.findMany({
+      where,
+      orderBy: order,
+      take: limit,
+      skip: offset,
+      include: getProductInclude(user?.id)
+    });
+
+    const totalCount = await this.prismaService.product.count({ where });
+
+    const productsIds = products.map((product) => product.id);
+
+    const ratings = await this.getProductsRatings(productsIds);
+
+    try {
+      return {
+        products: products.map((product) => new ProductReturnDto(product, ratings, user)),
+        totalCount
+      };
+    } catch (e) {
+      throw new BadRequestException('Error while getting products');
+    }
+  }
 
   async createProduct({ file, dto, user }: ICreateProductParams) {
     if (!file) {
@@ -35,10 +102,8 @@ export class ProductsService {
     const imageUrl = createFileLink('/products', file.filename);
 
     try {
-      const category = await this.getCategoryById(dto.categoryId);
-      if (!category) {
-        throw new BadRequestException('Invalid categoryId');
-      }
+      await this.checkIsCategoryExist(dto.categoryId);
+
       const product = await this.prismaService.product.create({
         data: {
           ...dto,
@@ -46,9 +111,10 @@ export class ProductsService {
         },
         include: getProductInclude(user.id)
       });
+
       return new ProductReturnDto(product);
     } catch (e: any) {
-      throw new BadRequestException(e.message || 'Error while creating product');
+      catchError(e, 'Error while creating product');
     }
   }
 
@@ -70,10 +136,8 @@ export class ProductsService {
     const imageUrl = createFileLink('/products', file.filename);
 
     try {
-      const category = await this.getCategoryById(dto.categoryId);
-      if (!category) {
-        throw new BadRequestException('Invalid categoryId');
-      }
+      await this.checkIsCategoryExist(dto.categoryId);
+
       const product = await this.prismaService.product.update({
         where: { id },
         data: {
@@ -85,7 +149,7 @@ export class ProductsService {
 
       return new ProductReturnDto(product);
     } catch (e: any) {
-      throw new BadRequestException(e.message || 'Error while editing product');
+      catchError(e, 'Error while editing product');
     }
   }
 
@@ -93,7 +157,7 @@ export class ProductsService {
     const { page, limit, priceSorting, search, categoryId } = dto;
 
     let order: Prisma.ProductOrderByWithRelationInput = {
-      name: 'asc'
+      name: SortingEnum.ASC
     };
 
     if (priceSorting) {
@@ -132,7 +196,7 @@ export class ProductsService {
     const { page, limit } = dto;
 
     const order: Prisma.ProductOrderByWithRelationInput = {
-      name: 'asc'
+      name: SortingEnum.ASC
     };
 
     const where: Prisma.ProductWhereInput = {
@@ -163,9 +227,11 @@ export class ProductsService {
       where: { id },
       include: getProductInclude(user?.id)
     });
+
     if (!product) {
       throw new NotFoundException('Product not found');
     }
+
     const ratings = await this.getProductsRatings([product.id]);
     return new ProductReturnDto(product, ratings, user);
   }
@@ -173,6 +239,7 @@ export class ProductsService {
   async deleteProduct(id: string) {
     try {
       const product = await this.getProductById(id);
+
       if (!product) {
         throw new NotFoundException('Product not found');
       }
@@ -182,12 +249,10 @@ export class ProductsService {
       });
 
       deleteFile(product.imageUrl);
+
       return new SuccessMessageDto();
     } catch (e: any) {
-      if (e instanceof HttpException) {
-        throw e;
-      }
-      throw new BadRequestException(e.message || 'Error while deleting product');
+      catchError(e, 'Error while deleting product');
     }
   }
 
@@ -197,6 +262,11 @@ export class ProductsService {
         where: { id: dto.productId },
         include: getProductInclude(user.id)
       });
+
+      if (!product) {
+        throw new NotFoundException('Product not found');
+      }
+
       if (!product.favoritesProductsOnUser.length) {
         await this.prismaService.favoritesProductsOnUser.create({
           data: {
@@ -204,6 +274,7 @@ export class ProductsService {
             userId: user.id
           }
         });
+
         return { isInFavorites: true };
       } else {
         await this.prismaService.favoritesProductsOnUser.delete({
@@ -217,66 +288,7 @@ export class ProductsService {
         return { isInFavorites: false };
       }
     } catch (e: any) {
-      throw new BadRequestException(e.message || 'Error while switching favorites');
-    }
-  }
-
-  private async getCategoryById(id: string) {
-    return this.prismaService.productCategory.findUnique({
-      where: { id }
-    });
-  }
-
-  private async getProductById(id: string) {
-    return this.prismaService.product.findUnique({
-      where: { id }
-    });
-  }
-
-  private async getProductsRatings(productsIds: string[]) {
-    return this.prismaService.productReview.groupBy({
-      by: 'productId',
-      where: {
-        productId: {
-          in: productsIds
-        }
-      },
-      _avg: {
-        rating: true
-      }
-    });
-  }
-
-  private async getManyProducts({
-    page,
-    limit,
-    where,
-    user,
-    order
-  }: IGetManyQuizzesParams) {
-    const offset = getOffset(page, limit);
-
-    const products = await this.prismaService.product.findMany({
-      where,
-      orderBy: order,
-      take: limit,
-      skip: offset,
-      include: getProductInclude(user?.id)
-    });
-
-    const totalCount = await this.prismaService.product.count({ where });
-
-    const productsIds = products.map((product) => product.id);
-
-    const ratings = await this.getProductsRatings(productsIds);
-
-    try {
-      return {
-        products: products.map((product) => new ProductReturnDto(product, ratings, user)),
-        totalCount
-      };
-    } catch (e) {
-      throw new BadRequestException('Error while getting products');
+      catchError(e, 'Error while switching favorites');
     }
   }
 
