@@ -1,19 +1,21 @@
-import { extname } from 'path';
-import { v4 as uuidv4 } from 'uuid';
-import { MulterOptions } from '@nestjs/platform-express/multer/interfaces/multer-options.interface';
-import { diskStorage } from 'multer';
-import { existsSync, mkdirSync } from 'fs';
 import path from 'path';
+import { existsSync, mkdirSync, unlinkSync } from 'fs';
+
 import {
   FileTypeValidator,
   HttpException,
   HttpStatus,
   ParseFilePipe
 } from '@nestjs/common';
-import fs from 'fs';
+
+import { diskStorage } from 'multer';
+
+import { v4 as uuidv4 } from 'uuid';
+
+import { MulterOptions } from '@nestjs/platform-express/multer/interfaces/multer-options.interface';
 
 export const generateFileName = (file: Express.Multer.File) => {
-  return `${uuidv4()}${extname(file.originalname)}`;
+  return `${uuidv4()}${path.extname(file.originalname)}`;
 };
 
 export const getFileInterceptorOptions = (destination: string): MulterOptions => {
@@ -46,7 +48,7 @@ export const getFileParsePipeWithTypeValidation = (fileType: string) => {
 export const deleteFile = (link: string) => {
   try {
     const filePath = path.join(__dirname, '..', '..', 'static', link);
-    fs.unlinkSync(filePath);
+    unlinkSync(filePath);
   } catch (e) {
     throw new HttpException('Error in writing file', HttpStatus.INTERNAL_SERVER_ERROR);
   }
