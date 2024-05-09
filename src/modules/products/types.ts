@@ -1,43 +1,39 @@
-import { CreateProductDto } from './dto/CreateProductDto';
-import { UpdateProductDto } from './dto/UpdateProductDto';
-import { ToggleFavoritesDto } from './dto/ToggleFavoritesDto';
-import { IUserFromToken, IUserParam } from '../../domain/users.domain';
-import { GetProductsQueryDto } from './dto/GetProductsQueryDto';
-import { CategoryReturnDto } from '../categories/dto/CategoryReturnDto';
+import { IUserParam } from '../../domain/users.domain';
 import { Prisma } from '@prisma/client';
+
+import { CategoryReturnDto } from '../categories/dto/CategoryReturnDto';
+import { GetProductsQueryDto } from './dto/GetProductsQueryDto';
+import { ToggleFavoritesDto } from './dto/ToggleFavoritesDto';
+import { UpdateProductDto } from './dto/UpdateProductDto';
 import { GetFavoriteProductsDto } from './dto/GetFavoriteProductsDto';
 import { ProductDiscountReturnDto } from './dto/ProductDiscountReturnDto';
-import {EditProductDiscountDto} from "./dto/EditProductDiscountDto";
+import { EditProductDiscountDto } from './dto/EditProductDiscountDto';
+import { CreateProductDto } from './dto/CreateProductDto';
 
-export interface ICreateProductParams {
+export interface ICreateProductParams extends IUserParam {
   dto: CreateProductDto;
   file: Express.Multer.File;
-  user?: IUserFromToken;
 }
 
-export interface IUpdateProductParams {
+export interface IUpdateProductParams extends IUserParam {
   dto: UpdateProductDto;
   file: Express.Multer.File;
-  user?: IUserFromToken;
 }
 
 export interface IToggleFavoritesParams extends IUserParam {
   dto: ToggleFavoritesDto;
 }
 
-export interface IGetProductsParams {
+export interface IGetProductsParams extends IUserParam {
   dto: GetProductsQueryDto;
-  user?: IUserFromToken;
 }
 
-export interface IGetFavoriteProductsParams {
+export interface IGetFavoriteProductsParams extends IUserParam {
   dto: GetFavoriteProductsDto;
-  user: IUserFromToken;
 }
 
-export interface IGetSingleProductParams {
+export interface IGetSingleProductParams extends IUserParam {
   id: string;
-  user?: IUserFromToken;
 }
 
 export interface IFavoritesProductsOnUser {
@@ -78,15 +74,13 @@ export interface IRatingFromDb {
   productId: string;
 }
 
-export interface IGetManyProductsParams {
+export interface IGetManyProductsParams extends IUserParam {
   page: number;
   limit: number;
   where: Prisma.ProductWhereInput;
   order: Prisma.ProductOrderByWithRelationInput;
-  user?: IUserFromToken;
 }
 
-export interface IEditProductDiscountParams {
+export interface IEditProductDiscountParams extends IUserParam {
   dto: EditProductDiscountDto;
-  user?: IUserFromToken;
 }
