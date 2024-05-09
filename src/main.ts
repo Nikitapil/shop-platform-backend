@@ -1,8 +1,10 @@
 import { NestFactory } from '@nestjs/core';
-import { AppModule } from './app.module';
-import cookieParser from 'cookie-parser';
 import { ValidationPipe } from '@nestjs/common';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+
+import cookieParser from 'cookie-parser';
+
+import { AppModule } from './app.module';
 
 async function start() {
   const PORT = process.env.PORT || 5000;
